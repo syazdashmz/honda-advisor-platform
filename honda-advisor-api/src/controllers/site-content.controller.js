@@ -7,7 +7,7 @@ const fallbackHomeContent = {
   hero_title: 'Meet your personal Honda sales advisor',
   hero_subtitle:
     'Serving Honda customers since 2002 at Tenaga Setia Resources Sdn. Bhd. with personal guidance from inquiry to delivery.',
-  hero_image_url: '',
+  hero_image_url: '/images/home/home-showroom-01.webp',
   primary_cta_label: 'View Honda Models',
   primary_cta_link: '/cars',
   secondary_cta_label: 'Calculate Loan',
@@ -15,10 +15,25 @@ const fallbackHomeContent = {
   advisor_title: 'Serving Honda customers since 2002',
   advisor_text:
     'This platform helps customers explore models, estimate monthly payment, submit inquiries, and arrange appointments.',
-  advisor_image_url: '',
+  advisor_image_url: '/images/advisor/advisor-profile.webp',
   announcement_text: 'Sample homepage content. Admin can update this from the admin panel.',
   is_active: true,
 };
+
+function resolveHomeContent(content) {
+  if (!content) {
+    return fallbackHomeContent;
+  }
+
+  return {
+    ...fallbackHomeContent,
+    ...content,
+    hero_image_url:
+      content.hero_image_url || fallbackHomeContent.hero_image_url,
+    advisor_image_url:
+      content.advisor_image_url || fallbackHomeContent.advisor_image_url,
+  };
+}
 
 async function getPublicHomeContent(req, res) {
   try {
@@ -49,7 +64,7 @@ async function getPublicHomeContent(req, res) {
     return successResponse(
       res,
       'Homepage content fetched successfully',
-      rows[0] || fallbackHomeContent
+      resolveHomeContent(rows[0])
     );
   } catch (error) {
     console.error('getPublicHomeContent error:', error);
@@ -86,7 +101,7 @@ async function getAdminHomeContent(req, res) {
     return successResponse(
       res,
       'Admin homepage content fetched successfully',
-      rows[0] || fallbackHomeContent
+      resolveHomeContent(rows[0])
     );
   } catch (error) {
     console.error('getAdminHomeContent error:', error);

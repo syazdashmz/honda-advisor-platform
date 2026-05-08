@@ -11,7 +11,7 @@ const fallbackHomeContent: HomeContent = {
   hero_title: 'Meet your personal Honda sales advisor',
   hero_subtitle:
     'Serving Honda customers since 2002 at Tenaga Setia Resources Sdn. Bhd. with personal guidance from inquiry to delivery.',
-  hero_image_url: '',
+  hero_image_url: '/images/home/home-showroom-01.webp',
   primary_cta_label: 'View Honda Models',
   primary_cta_link: '/cars',
   secondary_cta_label: 'Calculate Loan',
@@ -19,7 +19,7 @@ const fallbackHomeContent: HomeContent = {
   advisor_title: 'Serving Honda customers since 2002',
   advisor_text:
     'This platform is designed as a personal online showroom for a Honda sales advisor based at Tenaga Setia Resources Sdn. Bhd. It helps customers explore models, estimate monthly payment, submit inquiries, and arrange appointments.',
-  advisor_image_url: '',
+  advisor_image_url: '/images/advisor/advisor-profile.webp',
   announcement_text: 'Sample homepage content. Admin can update this from the admin panel.',
   is_active: true
 };
@@ -97,7 +97,7 @@ export class Home implements OnInit {
   loadHomeContent(): void {
     this.siteContentService.getPublicHomeContent().subscribe({
       next: (response) => {
-        this.homeContent = response.data || fallbackHomeContent;
+        this.homeContent = this.resolveHomeContent(response.data);
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -106,5 +106,20 @@ export class Home implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  private resolveHomeContent(content?: HomeContent | null): HomeContent {
+    if (!content) {
+      return fallbackHomeContent;
+    }
+
+    return {
+      ...fallbackHomeContent,
+      ...content,
+      hero_image_url:
+        content.hero_image_url?.trim() || fallbackHomeContent.hero_image_url,
+      advisor_image_url:
+        content.advisor_image_url?.trim() || fallbackHomeContent.advisor_image_url
+    };
   }
 }

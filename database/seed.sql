@@ -141,14 +141,14 @@ INSERT INTO car_models (
   is_mock_data,
   data_status
 ) VALUES
-('Honda City', 'honda-city', 'sedan', 'petrol', 84900.00, 'A practical sedan with strong value for daily driving.', 'First-time buyers, city driving, value seekers', '/assets/mock-cars/honda-city.jpg', NULL, TRUE, TRUE, 'mock', TRUE, 'Estimated sample data — verify latest Honda Malaysia pricing later'),
-('Honda City Hatchback', 'honda-city-hatchback', 'hatchback', 'petrol', 85900.00, 'A compact hatchback with sporty styling and flexible space.', 'Young drivers, compact lifestyle, sporty look', '/assets/mock-cars/honda-city-hatchback.jpg', NULL, TRUE, TRUE, 'mock', TRUE, 'Estimated sample data — verify latest Honda Malaysia pricing later'),
-('Honda WR-V', 'honda-wrv', 'suv', 'petrol', 89900.00, 'A compact SUV with higher driving position and practical size.', 'Small families, city SUV buyers, weekend use', '/assets/mock-cars/honda-wrv.jpg', NULL, TRUE, TRUE, 'mock', TRUE, 'Estimated sample data — verify latest Honda Malaysia pricing later'),
-('Honda HR-V', 'honda-hrv', 'suv', 'petrol', 115900.00, 'A stylish compact SUV with family practicality and premium feel.', 'Family use, premium compact SUV buyers', '/assets/mock-cars/honda-hrv.jpg', NULL, TRUE, TRUE, 'mock', TRUE, 'Estimated sample data — verify latest Honda Malaysia pricing later'),
-('Honda Civic', 'honda-civic', 'sedan', 'petrol', 133900.00, 'An executive sedan with strong performance feel and premium comfort.', 'Executives, sedan lovers, performance feel', '/assets/mock-cars/honda-civic.jpg', NULL, TRUE, TRUE, 'mock', TRUE, 'Estimated sample data — verify latest Honda Malaysia pricing later'),
-('Honda e:N1', 'honda-en1', 'ev', 'ev', 150060.00, 'A modern electric SUV for EV-focused drivers.', 'EV buyers, modern tech users, clean mobility', '/assets/mock-cars/honda-en1.jpg', NULL, FALSE, TRUE, 'mock', TRUE, 'Estimated sample data — verify latest Honda Malaysia pricing later'),
-('Honda CR-V', 'honda-crv', 'suv', 'petrol', 178200.00, 'A larger SUV with premium comfort and family-friendly practicality.', 'Larger families, premium SUV buyers, long-distance comfort', '/assets/mock-cars/honda-crv.jpg', NULL, TRUE, TRUE, 'mock', TRUE, 'Estimated sample data — verify latest Honda Malaysia pricing later'),
-('Honda Type R', 'honda-type-r', 'performance', 'petrol', 399900.00, 'A performance flagship for Honda enthusiasts.', 'Performance enthusiasts, collectors, motorsport fans', '/assets/mock-cars/honda-type-r.jpg', NULL, FALSE, TRUE, 'mock', TRUE, 'Estimated sample data — verify latest Honda Malaysia pricing later');
+('Honda City', 'honda-city', 'sedan', 'petrol', 84900.00, 'A practical Honda sedan with strong value for daily Malaysian driving.', 'First-time buyers, city driving, value seekers', '/images/cars/city/hero.webp', NULL, TRUE, TRUE, 'verified', FALSE, 'Honda Malaysia reference price captured 2026-05-08. Final OTR price, stock, and promotions must be confirmed before quotation.'),
+('Honda City Hatchback', 'honda-city-hatchback', 'hatchback', 'petrol', 85900.00, 'A compact hatchback with sporty styling and flexible cabin space.', 'Young drivers, compact lifestyle, sporty look', '/images/cars/city-hatchback/hero.webp', NULL, TRUE, TRUE, 'verified', FALSE, 'Honda Malaysia reference price captured 2026-05-08. Final OTR price, stock, and promotions must be confirmed before quotation.'),
+('Honda WR-V', 'honda-wrv', 'suv', 'petrol', 89900.00, 'A compact SUV with a higher driving position and practical city-friendly size.', 'Small families, city SUV buyers, weekend use', '/images/cars/wr-v/hero.webp', NULL, TRUE, TRUE, 'verified', FALSE, 'Honda Malaysia reference price captured 2026-05-08. Final OTR price, stock, and promotions must be confirmed before quotation.'),
+('Honda HR-V', 'honda-hrv', 'suv', 'petrol', 115900.00, 'A stylish compact SUV with family practicality and a more premium feel.', 'Family use, premium compact SUV buyers', '/images/cars/hr-v/hero.webp', NULL, TRUE, TRUE, 'verified', FALSE, 'Honda Malaysia reference price captured 2026-05-08. Final OTR price, stock, and promotions must be confirmed before quotation.'),
+('Honda Civic', 'honda-civic', 'sedan', 'petrol', 133900.00, 'An executive sedan with VTEC Turbo performance, e:HEV option, Honda SENSING, and Honda CONNECT availability.', 'Executives, sedan lovers, tech-focused drivers, performance feel', '/images/cars/civic/hero.webp', NULL, TRUE, TRUE, 'verified', FALSE, 'Honda Malaysia Civic reference captured 2026-05-08. Final OTR price, stock, and promotions must be confirmed before quotation.'),
+('Honda e:N1', 'honda-en1', 'ev', 'ev', 150060.00, 'A modern electric SUV for EV-focused drivers and clean mobility ownership.', 'EV buyers, modern tech users, clean mobility', '/images/cars/en1/hero.webp', NULL, FALSE, TRUE, 'verified', FALSE, 'Honda Malaysia reference price captured 2026-05-08. Final OTR price, stock, and promotions must be confirmed before quotation.'),
+('Honda CR-V', 'honda-crv', 'suv', 'petrol', 178200.00, 'A larger SUV with premium comfort and family-friendly practicality.', 'Larger families, premium SUV buyers, long-distance comfort', '/images/cars/cr-v/hero.webp', NULL, TRUE, TRUE, 'verified', FALSE, 'Honda Malaysia reference price captured 2026-05-08. Final OTR price, stock, and promotions must be confirmed before quotation.'),
+('Honda Type R', 'honda-type-r', 'performance', 'petrol', 399900.00, 'Honda performance flagship built for drivers who want a focused manual driving experience.', 'Performance enthusiasts, collectors, motorsport fans', '/images/cars/type-r/hero.webp', NULL, FALSE, TRUE, 'verified', FALSE, 'Honda Malaysia reference price captured 2026-05-08. Final OTR price, stock, and promotions must be confirmed before quotation.');
 
 -- =========================================================
 -- CAR VARIANTS
@@ -181,9 +181,10 @@ INSERT INTO car_variants (
 (4, 'HR-V V', 130900.00, '1.5L Petrol', 'CVT', 'petrol', 'More features and comfort for family use.', 'Family buyers who want better comfort', 2, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
 (4, 'HR-V RS', 145900.00, '1.5L Petrol / Hybrid option placeholder', 'CVT', 'petrol', 'Premium styling and advanced features.', 'Premium compact SUV buyers', 3, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
 
-(5, 'Civic E', 133900.00, '1.5L Turbo Petrol', 'CVT', 'petrol', 'Executive sedan essentials with turbo performance.', 'Executive sedan buyers', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
-(5, 'Civic V', 145900.00, '1.5L Turbo Petrol', 'CVT', 'petrol', 'More comfort and technology features.', 'Customers who want balanced premium features', 2, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
-(5, 'Civic RS', 165900.00, '1.5L Turbo Petrol', 'CVT', 'petrol', 'Sportier design and higher specification.', 'Customers who want sporty executive sedan feel', 3, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
+(5, 'Civic 1.5L E', 133900.00, '1.5L VTEC Turbo Petrol', 'CVT', 'petrol', '182PS / 240Nm, Honda SENSING, Honda CONNECT, 7-inch TFT meter, and 16-inch alloy wheels.', 'Executive sedan buyers who want Civic turbo performance at the entry price point', 1, 'verified', FALSE, 'Honda Malaysia Civic variant reference captured 2026-05-08. Final OTR price must be confirmed before quotation.'),
+(5, 'Civic 1.5L V', 144900.00, '1.5L VTEC Turbo Petrol', 'CVT', 'petrol', '182PS / 240Nm, Honda LaneWatch, 8 speakers, 17-inch alloy wheels, and Honda SENSING.', 'Customers who want the balanced Civic petrol variant with more convenience features', 2, 'verified', FALSE, 'Honda Malaysia Civic variant reference captured 2026-05-08. Final OTR price must be confirmed before quotation.'),
+(5, 'Civic 1.5L RS', 149900.00, '1.5L VTEC Turbo Petrol', 'CVT', 'petrol', '182PS / 240Nm with RS exterior styling, 18-inch alloy wheels, wireless charger, and Honda SENSING.', 'Customers who want the sportier Civic petrol RS look and higher specification', 3, 'verified', FALSE, 'Honda Malaysia Civic variant reference captured 2026-05-08. Final OTR price must be confirmed before quotation.'),
+(5, 'Civic 2.0L e:HEV RS', 167900.00, '2.0L e:HEV Hybrid', 'e-CVT', 'hybrid', 'Electric motor output of 184PS / 315Nm, 4.0L/100km fuel consumption reference, 10.2-inch TFT meter, and RS hybrid features.', 'Drivers who want the strongest Civic acceleration feel with hybrid efficiency', 4, 'verified', FALSE, 'Honda Malaysia Civic e:HEV variant reference captured 2026-05-08. Final OTR price must be confirmed before quotation.'),
 
 (6, 'e:N1', 150060.00, 'Electric Motor', 'Single-speed EV transmission', 'ev', 'Electric SUV with modern EV-focused technology.', 'EV buyers and modern city drivers', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
 
@@ -200,13 +201,20 @@ INSERT INTO car_features (
   feature_title,
   feature_description,
   feature_category,
-  sort_order
+  sort_order,
+  data_mode,
+  is_mock_data,
+  data_status
 ) VALUES
-(1, 'Practical sedan design', 'Balanced size, comfort, and practicality for daily Malaysian driving.', 'utility', 1),
-(1, 'Value-focused ownership', 'A suitable option for first-time buyers and budget-conscious customers.', 'comfort', 2),
-(4, 'Compact SUV practicality', 'Higher driving position with flexible cabin space for family use.', 'utility', 1),
-(5, 'Executive sedan feel', 'Sporty design and turbo performance for drivers who want a premium sedan experience.', 'performance', 1),
-(7, 'Family SUV comfort', 'Larger cabin and premium comfort for long-distance family use.', 'comfort', 1);
+(1, 'Practical sedan design', 'Balanced size, comfort, and practicality for daily Malaysian driving.', 'utility', 1, 'mock', TRUE, 'Sample feature data — verify official details before publishing.'),
+(1, 'Value-focused ownership', 'A suitable option for first-time buyers and budget-conscious customers.', 'comfort', 2, 'mock', TRUE, 'Sample feature data — verify official details before publishing.'),
+(4, 'Compact SUV practicality', 'Higher driving position with flexible cabin space for family use.', 'utility', 1, 'mock', TRUE, 'Sample feature data — verify official details before publishing.'),
+(5, 'VTEC Turbo and e:HEV choices', 'Civic is offered with 1.5L VTEC Turbo petrol variants and a 2.0L e:HEV RS hybrid variant for stronger efficiency-focused performance.', 'performance', 1, 'verified', FALSE, 'Honda Malaysia Civic reference captured 2026-05-08.'),
+(5, 'Honda SENSING', 'Honda Malaysia lists Honda SENSING with nine advanced driver-assistive technologies for Civic.', 'safety', 2, 'verified', FALSE, 'Honda Malaysia Civic reference captured 2026-05-08.'),
+(5, 'Honda CONNECT', 'Honda CONNECT is listed for Civic with safety, security, and convenience support through connected vehicle features.', 'technology', 3, 'verified', FALSE, 'Honda Malaysia Civic reference captured 2026-05-08.'),
+(5, 'RS styling details', 'Civic RS highlights include sportier exterior treatment, 18-inch alloy wheels, and RS-focused visual upgrades.', 'design', 4, 'verified', FALSE, 'Honda Malaysia Civic reference captured 2026-05-08.'),
+(5, 'Hybrid efficiency reference', 'The Civic 2.0L e:HEV RS listing references 4.0L/100km fuel consumption and 7.9 seconds for 0-100km/h.', 'performance', 5, 'verified', FALSE, 'Honda Malaysia Civic reference captured 2026-05-08.'),
+(7, 'Family SUV comfort', 'Larger cabin and premium comfort for long-distance family use.', 'comfort', 1, 'mock', TRUE, 'Sample feature data — verify official details before publishing.');
 
 -- =========================================================
 -- SAMPLE CAR COLORS
@@ -232,16 +240,19 @@ INSERT INTO car_images (
   image_url,
   alt_text,
   image_type,
-  sort_order
+  sort_order,
+  data_mode,
+  is_mock_data,
+  data_status
 ) VALUES
-(1, '/assets/mock-cars/honda-city.jpg', 'Honda City sample exterior image', 'hero', 1),
-(2, '/assets/mock-cars/honda-city-hatchback.jpg', 'Honda City Hatchback sample exterior image', 'hero', 1),
-(3, '/assets/mock-cars/honda-wrv.jpg', 'Honda WR-V sample exterior image', 'hero', 1),
-(4, '/assets/mock-cars/honda-hrv.jpg', 'Honda HR-V sample exterior image', 'hero', 1),
-(5, '/assets/mock-cars/honda-civic.jpg', 'Honda Civic sample exterior image', 'hero', 1),
-(6, '/assets/mock-cars/honda-en1.jpg', 'Honda e:N1 sample exterior image', 'hero', 1),
-(7, '/assets/mock-cars/honda-crv.jpg', 'Honda CR-V sample exterior image', 'hero', 1),
-(8, '/assets/mock-cars/honda-type-r.jpg', 'Honda Type R sample exterior image', 'hero', 1);
+(1, '/images/cars/city/hero.webp', 'Honda City reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.'),
+(2, '/images/cars/city-hatchback/hero.webp', 'Honda City Hatchback reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.'),
+(3, '/images/cars/wr-v/hero.webp', 'Honda WR-V reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.'),
+(4, '/images/cars/hr-v/hero.webp', 'Honda HR-V reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.'),
+(5, '/images/cars/civic/hero.webp', 'Honda Civic reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.'),
+(6, '/images/cars/en1/hero.webp', 'Honda e:N1 reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.'),
+(7, '/images/cars/cr-v/hero.webp', 'Honda CR-V reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.'),
+(8, '/images/cars/type-r/hero.webp', 'Honda Type R reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.');
 
 -- =========================================================
 -- SAMPLE INQUIRIES

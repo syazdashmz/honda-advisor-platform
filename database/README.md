@@ -22,13 +22,15 @@ If you are using MySQL Workbench directly, open `schema.sql`, run it, then open 
 
 ## Existing Database Upgrade
 
-For a database that already exists, do not run `schema.sql` because it drops and recreates tables. Run only the needed migration file:
+For a database that already exists, do not run `schema.sql` because it drops and recreates tables. Run only the needed migration files in order:
 
 ```sql
 SOURCE database/migrations/2026-05-08-current-implementation-fixes.sql;
+SOURCE database/migrations/2026-05-08-honda-reference-assets.sql;
 ```
 
 The 2026-05-08 migration adds the admin-editable homepage content table, aligns appointment statuses with the API, and protects confirmed appointment slots from duplicate date/time bookings.
+The Honda reference asset migration updates empty homepage image paths, local Honda model image paths, and Civic reference details.
 
 ## Manual Maintenance
 

@@ -47,12 +47,19 @@
           <strong>{{ car.fuel_type | uppercase }}</strong>
         </div>
 
-        <div class="car-stage">
-          <div class="car-roof"></div>
-          <div class="car-body"></div>
-          <div class="wheel wheel-left"></div>
-          <div class="wheel wheel-right"></div>
-        </div>
+        @if (car.hero_image_url) {
+          <img
+            class="detail-car-image"
+            [src]="car.hero_image_url"
+            [alt]="car.name + ' preview'" />
+        } @else {
+          <div class="car-stage">
+            <div class="car-roof"></div>
+            <div class="car-body"></div>
+            <div class="wheel wheel-left"></div>
+            <div class="wheel wheel-right"></div>
+          </div>
+        }
 
         <div class="visual-bottom">
           <strong>{{ car.name }}</strong>
@@ -88,6 +95,31 @@
       <a routerLink="/inquiry" class="primary-btn">Start Inquiry</a>
     </article>
   </section>
+
+  @if (car.images.length > 0) {
+    <section class="gallery-section page-shell">
+      <div class="section-heading">
+        <p class="section-eyebrow">Model Gallery</p>
+        <h2 class="section-title">Reference visuals</h2>
+        <p class="section-text">
+          These images are loaded from local WebP assets and can be changed later from the admin model manager.
+        </p>
+      </div>
+
+      <div class="gallery-grid">
+        @for (image of car.images; track image.id) {
+          <article class="gallery-card">
+            <img
+              [src]="image.image_url"
+              [alt]="image.alt_text"
+              loading="lazy" />
+
+            <span>{{ image.image_type }}</span>
+          </article>
+        }
+      </div>
+    </section>
+  }
 
   @if (car.variants.length > 0) {
     <section class="variants-section page-shell">

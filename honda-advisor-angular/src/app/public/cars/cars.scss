@@ -73,6 +73,7 @@
 }
 
 .car-image {
+  position: relative;
   height: 210px;
   padding: 18px;
   display: flex;
@@ -83,7 +84,18 @@
     linear-gradient(135deg, rgba(17, 24, 39, 0.08), rgba(200, 16, 46, 0.12)),
     #f3f4f6;
 
+  img {
+    position: absolute;
+    inset: 28px 18px 18px;
+    width: calc(100% - 36px);
+    height: calc(100% - 46px);
+    object-fit: contain;
+    filter: drop-shadow(0 24px 28px rgba(17, 24, 39, 0.2));
+  }
+
   span {
+    position: relative;
+    z-index: 1;
     padding: 8px 12px;
     border-radius: 999px;
     background: var(--ink-black);

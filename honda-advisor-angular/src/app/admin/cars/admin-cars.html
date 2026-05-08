@@ -129,6 +129,16 @@
           </label>
         </div>
 
+        @if (carForm.value.hero_image_url) {
+          <div class="model-image-preview">
+            <img
+              [src]="carForm.value.hero_image_url"
+              [alt]="(carForm.value.name || selectedCar.name) + ' hero image preview'" />
+
+            <span>Public model image preview</span>
+          </div>
+        }
+
         <label>
           Short description
           <textarea rows="3" formControlName="short_description"></textarea>

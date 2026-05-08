@@ -29,6 +29,13 @@
     @for (car of filteredCars; track car.id) {
       <article class="car-card">
         <div class="car-image">
+          @if (car.hero_image_url) {
+            <img
+              [src]="car.hero_image_url"
+              [alt]="car.name + ' preview'"
+              loading="lazy" />
+          }
+
           <span>{{ car.category }}</span>
         </div>
 
