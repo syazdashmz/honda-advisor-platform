@@ -1,0 +1,158 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 78px;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-black);
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--honda-red), #7f0b1d);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 950;
+  box-shadow: 0 12px 28px rgba(200, 16, 46, 0.26);
+}
+
+.brand-copy {
+  strong {
+    display: block;
+    font-size: 16px;
+    line-height: 1.1;
+  }
+
+  small {
+    color: var(--muted);
+    font-size: 12px;
+  }
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  a {
+    color: var(--graphite);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 800;
+    transition: 0.2s ease;
+  }
+
+  a:hover,
+  a.active {
+    color: var(--honda-red);
+  }
+
+  .login-link {
+    padding: 11px 18px;
+    border-radius: 999px;
+    background: var(--ink-black);
+    color: #fff;
+
+    &:hover {
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+    }
+  }
+}
+
+@media (max-width: 920px) {
+  .navbar {
+    height: auto;
+    padding: 18px 20px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .nav-links {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+}
+
+.user-pill {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #fef2f2;
+  color: var(--honda-red);
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  padding: 11px 18px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--ink-black);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+  transition: 0.2s ease;
+
+  &:hover {
+    background: var(--honda-red);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+  }
+}
+
+.user-pill,
+.admin-pill {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.user-pill {
+  background: #fef2f2;
+  color: var(--honda-red);
+}
+
+.admin-pill {
+  background: #111827;
+  color: #fff;
+}
+
+.logout-btn {
+  padding: 11px 18px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--honda-red);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+  transition: 0.2s ease;
+
+  &:hover {
+    background: var(--ink-black);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+  }
+}

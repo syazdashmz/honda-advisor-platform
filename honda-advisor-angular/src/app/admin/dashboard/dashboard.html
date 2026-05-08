@@ -1,0 +1,281 @@
+<section class="admin-dashboard-hero honda-gradient">
+  <div>
+    <p class="section-eyebrow">Admin Dashboard</p>
+
+    <h1>Honda advisor control center</h1>
+
+    <p>
+      Welcome, {{ user()?.full_name }}. Manage customer activity, car model data,
+      homepage content, administrator access, and your own account security from one place.
+    </p>
+
+    <div class="hero-actions">
+      <a href="/admin/cars" class="primary-btn">🚗 Manage Cars</a>
+      <a href="/admin/home-content" class="secondary-btn">🖼️ Home Content</a>
+      <button type="button" class="ghost-btn" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-profile-summary">
+    <span>{{ user()?.full_name?.charAt(0) || 'A' }}</span>
+    <strong>{{ user()?.full_name }}</strong>
+    <small>{{ user()?.email }}</small>
+    <small>{{ user()?.role_name }}</small>
+  </div>
+</section>
+
+<section class="admin-dashboard-page">
+  @if (isLoadingDashboard) {
+    <div class="state-card">Loading admin dashboard...</div>
+  }
+
+  @if (dashboardErrorMessage) {
+    <div class="error-alert">{{ dashboardErrorMessage }}</div>
+  }
+
+  @if (dashboardData) {
+    <section class="summary-grid">
+      <article class="summary-card">
+        <span>💬</span>
+        <p>Total Inquiries</p>
+        <strong>{{ dashboardData.summary.total_inquiries }}</strong>
+      </article>
+
+      <article class="summary-card">
+        <span>📅</span>
+        <p>Total Appointments</p>
+        <strong>{{ dashboardData.summary.total_appointments }}</strong>
+      </article>
+
+      <article class="summary-card warning">
+        <span>⏳</span>
+        <p>Pending Appointments</p>
+        <strong>{{ dashboardData.summary.pending_appointments }}</strong>
+      </article>
+
+      <article class="summary-card">
+        <span>🚗</span>
+        <p>Active Car Models</p>
+        <strong>{{ dashboardData.summary.active_car_models }}</strong>
+      </article>
+
+      <article class="summary-card">
+        <span>🧮</span>
+        <p>Loan Calculations</p>
+        <strong>{{ dashboardData.summary.total_loan_calculations }}</strong>
+      </article>
+    </section>
+  }
+
+  <section class="dashboard-grid">
+    <main class="dashboard-main">
+      <article class="admin-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-eyebrow">Recent Leads</p>
+            <h2>Latest customer inquiries</h2>
+          </div>
+
+          <span class="panel-pill">Live from MySQL</span>
+        </div>
+
+        @if (getRecentInquiries().length === 0) {
+          <div class="empty-state">
+            No inquiries submitted yet.
+          </div>
+        }
+
+        <div class="activity-list">
+          @for (inquiry of getRecentInquiries(); track inquiry.id) {
+            <article class="activity-item">
+              <div>
+                <strong>{{ inquiry.full_name }}</strong>
+                <small>
+                  {{ inquiry.car_model_name || 'No model selected' }} ·
+                  {{ inquiry.preferred_contact_method }}
+                </small>
+              </div>
+
+              <span class="status-pill">{{ formatStatus(inquiry.status) }}</span>
+            </article>
+          }
+        </div>
+      </article>
+
+      <article class="admin-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-eyebrow">Recent Appointments</p>
+            <h2>Latest appointment requests</h2>
+          </div>
+
+          <span class="panel-pill">Track status</span>
+        </div>
+
+        @if (getRecentAppointments().length === 0) {
+          <div class="empty-state">
+            No appointment requests yet.
+          </div>
+        }
+
+        <div class="activity-list">
+          @for (appointment of getRecentAppointments(); track appointment.id) {
+            <article class="activity-item">
+              <div>
+                <strong>{{ appointment.full_name }}</strong>
+                <small>
+                  {{ appointment.car_model_name || 'Advisor recommendation' }} ·
+                  {{ formatType(appointment.appointment_type) }} ·
+                  {{ appointment.preferred_date }}
+                </small>
+              </div>
+
+              <span class="status-pill appointment">
+                {{ formatStatus(appointment.status) }}
+              </span>
+            </article>
+          }
+        </div>
+      </article>
+
+      <article class="admin-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-eyebrow">Admin Account</p>
+            <h2>Update your profile</h2>
+          </div>
+        </div>
+
+        @if (profileErrorMessage) {
+          <div class="error-alert">{{ profileErrorMessage }}</div>
+        }
+
+        @if (profileSuccessMessage) {
+          <div class="success-alert">{{ profileSuccessMessage }}</div>
+        }
+
+        <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="admin-form">
+          <div class="form-grid">
+            <label>
+              Full name
+              <input type="text" formControlName="full_name" />
+            </label>
+
+            <label>
+              Email
+              <input type="email" formControlName="email" />
+            </label>
+
+            <label>
+              Phone number
+              <input type="text" formControlName="phone_number" />
+            </label>
+          </div>
+
+          <button type="submit" class="primary-btn" [disabled]="isSavingProfile">
+            {{ isSavingProfile ? 'Saving...' : 'Save Profile' }}
+          </button>
+        </form>
+      </article>
+    </main>
+
+    <aside class="dashboard-side">
+      <article class="admin-panel">
+        <p class="section-eyebrow">Quick Controls</p>
+        <h2>Admin actions</h2>
+
+        <div class="quick-actions">
+          <a href="/admin/cars">🚗 Manage car prices and variants</a>
+          <a href="/admin/home-content">🖼️ Update homepage content</a>
+          <a href="/cars">👀 View public model page</a>
+          <a href="/loan-calculator">🧮 Test public loan calculator</a>
+        </div>
+      </article>
+
+      <article class="admin-panel">
+        <p class="section-eyebrow">Security</p>
+        <h2>Change password</h2>
+
+        @if (passwordErrorMessage) {
+          <div class="error-alert">{{ passwordErrorMessage }}</div>
+        }
+
+        @if (passwordSuccessMessage) {
+          <div class="success-alert">{{ passwordSuccessMessage }}</div>
+        }
+
+        <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="admin-form">
+          <label>
+            Current password
+            <input type="password" formControlName="current_password" />
+          </label>
+
+          <label>
+            New password
+            <input type="password" formControlName="new_password" />
+          </label>
+
+          <label>
+            Confirm password
+            <input type="password" formControlName="confirm_password" />
+          </label>
+
+          <button type="submit" class="secondary-btn" [disabled]="isChangingPassword">
+            {{ isChangingPassword ? 'Updating...' : 'Update Password' }}
+          </button>
+        </form>
+      </article>
+
+      <article class="admin-panel">
+        <p class="section-eyebrow">Admin Access</p>
+        <h2>Register another admin</h2>
+
+        @if (createAdminErrorMessage) {
+          <div class="error-alert">{{ createAdminErrorMessage }}</div>
+        }
+
+        @if (createAdminSuccessMessage) {
+          <div class="success-alert">{{ createAdminSuccessMessage }}</div>
+        }
+
+        <form [formGroup]="createAdminForm" (ngSubmit)="createAdmin()" class="admin-form">
+          <label>
+            Full name
+            <input type="text" formControlName="full_name" />
+          </label>
+
+          <label>
+            Email
+            <input type="email" formControlName="email" />
+          </label>
+
+          <label>
+            Phone number
+            <input type="text" formControlName="phone_number" />
+          </label>
+
+          <label>
+            Password
+            <input type="password" formControlName="password" />
+          </label>
+
+          <label>
+            Role
+            <select formControlName="role_name">
+              <option value="admin">Admin</option>
+              <option value="super_admin">Super Admin</option>
+            </select>
+          </label>
+
+          <button type="submit" class="primary-btn" [disabled]="isCreatingAdmin">
+            {{ isCreatingAdmin ? 'Creating...' : 'Create Admin' }}
+          </button>
+        </form>
+
+        <div class="admin-note">
+          Super admin creation is only allowed if the current logged-in user is a super admin.
+        </div>
+      </article>
+    </aside>
+  </section>
+</section>

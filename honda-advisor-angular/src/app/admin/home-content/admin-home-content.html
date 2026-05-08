@@ -1,0 +1,199 @@
+<section class="home-content-hero honda-gradient">
+  <div>
+    <p class="section-eyebrow">Admin Homepage Content</p>
+
+    <h1>Update what customers see on the homepage</h1>
+
+    <p>
+      Change hero text, homepage image, advisor story, announcement, and CTA buttons
+      without touching code. These changes are saved into MySQL and reflected on the public homepage.
+    </p>
+  </div>
+
+  <div class="cms-card">
+    <span>🖼️ CMS Control</span>
+    <strong>No coding needed</strong>
+    <small>
+      Paste asset paths or image URLs. Later, this can be upgraded with direct image upload.
+    </small>
+  </div>
+</section>
+
+<section class="home-content-page">
+  <form class="content-form" [formGroup]="contentForm" (ngSubmit)="saveContent()">
+    @if (isLoading) {
+      <div class="state-card">Loading homepage content...</div>
+    }
+
+    @if (errorMessage) {
+      <div class="error-alert">{{ errorMessage }}</div>
+    }
+
+    @if (successMessage) {
+      <div class="success-alert">{{ successMessage }}</div>
+    }
+
+    <div class="form-heading">
+      <div>
+        <p class="section-eyebrow">Homepage Editor</p>
+        <h2>Public homepage content</h2>
+      </div>
+
+      <button type="submit" class="primary-btn" [disabled]="isSaving">
+        {{ isSaving ? 'Saving...' : 'Save Homepage Content' }}
+      </button>
+    </div>
+
+    <section class="form-section">
+      <div class="section-title-row">
+        <span>1</span>
+        <div>
+          <h3>Hero section</h3>
+          <p>Main homepage headline and front-view image.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          Hero badge
+          <input type="text" formControlName="hero_badge" />
+        </label>
+
+        <label>
+          Hero image URL / asset path
+          <input
+            type="text"
+            formControlName="hero_image_url"
+            placeholder="/assets/home/honda-showroom-preview.webp" />
+        </label>
+      </div>
+
+      <label>
+        Hero title
+        <input type="text" formControlName="hero_title" />
+      </label>
+
+      <label>
+        Hero subtitle
+        <textarea rows="4" formControlName="hero_subtitle"></textarea>
+      </label>
+    </section>
+
+    <section class="form-section">
+      <div class="section-title-row">
+        <span>2</span>
+        <div>
+          <h3>Call-to-action buttons</h3>
+          <p>Control where homepage buttons send customers.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          Primary CTA label
+          <input type="text" formControlName="primary_cta_label" />
+        </label>
+
+        <label>
+          Primary CTA link
+          <input type="text" formControlName="primary_cta_link" />
+        </label>
+
+        <label>
+          Secondary CTA label
+          <input type="text" formControlName="secondary_cta_label" />
+        </label>
+
+        <label>
+          Secondary CTA link
+          <input type="text" formControlName="secondary_cta_link" />
+        </label>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <div class="section-title-row">
+        <span>3</span>
+        <div>
+          <h3>Advisor section</h3>
+          <p>Control advisor story and profile visual.</p>
+        </div>
+      </div>
+
+      <label>
+        Advisor title
+        <input type="text" formControlName="advisor_title" />
+      </label>
+
+      <label>
+        Advisor text
+        <textarea rows="5" formControlName="advisor_text"></textarea>
+      </label>
+
+      <label>
+        Advisor image URL / asset path
+        <input
+          type="text"
+          formControlName="advisor_image_url"
+          placeholder="/assets/advisor/advisor-profile.webp" />
+      </label>
+    </section>
+
+    <section class="form-section">
+      <div class="section-title-row">
+        <span>4</span>
+        <div>
+          <h3>Announcement and status</h3>
+          <p>Small message shown on the public homepage.</p>
+        </div>
+      </div>
+
+      <label>
+        Announcement text
+        <textarea rows="3" formControlName="announcement_text"></textarea>
+      </label>
+
+      <label class="switch-card">
+        <input type="checkbox" formControlName="is_active" />
+        <span>Homepage content active</span>
+      </label>
+    </section>
+
+    <div class="disclaimer-card">
+      Image uploads are not enabled yet. For now, place images inside Angular assets
+      and paste paths like <strong>/assets/home/example.webp</strong>.
+    </div>
+  </form>
+
+  <aside class="preview-panel">
+    <div class="preview-card">
+      <p class="section-eyebrow">Live Preview Notes</p>
+
+      <h2>{{ contentForm.value.hero_title || 'Homepage title preview' }}</h2>
+
+      <p>
+        {{ contentForm.value.hero_subtitle || 'Homepage subtitle preview will appear here.' }}
+      </p>
+
+      @if (contentForm.value.hero_image_url) {
+        <img
+          [src]="contentForm.value.hero_image_url"
+          alt="Hero preview" />
+      } @else {
+        <div class="image-placeholder">Hero image preview</div>
+      }
+
+      <div class="preview-actions">
+        <span>{{ contentForm.value.primary_cta_label }}</span>
+        <span>{{ contentForm.value.secondary_cta_label }}</span>
+      </div>
+    </div>
+
+    <div class="admin-tip">
+      <strong>Recommended image sizes</strong>
+      <p>
+        Hero image: 1600×900. Advisor image: 800×1000. Export as .webp for fast loading.
+      </p>
+    </div>
+  </aside>
+</section>

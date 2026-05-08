@@ -1,0 +1,360 @@
+<section class="appointment-hero honda-gradient">
+  <div class="appointment-copy">
+    <p class="section-eyebrow">Appointment Booking</p>
+
+    <h1>Book showroom visit, test drive, or consultation</h1>
+
+    <p>
+      Choose your preferred Honda model, appointment type, date, and time.
+      Appointment requests are available for registered customers so your history
+      can be tracked later in your customer dashboard.
+    </p>
+
+    <div class="hero-badges">
+      <span>📅 Appointment request</span>
+      <span>🚗 Test drive support</span>
+      <span>🧮 Loan consultation</span>
+      <span>👤 Customer tracking</span>
+    </div>
+  </div>
+
+  <div class="appointment-summary-card">
+    <span>Selected model</span>
+    <strong>{{ getSelectedCarName() }}</strong>
+    <small>
+      Login is required before submitting appointment so your request can be saved to your account.
+    </small>
+  </div>
+</section>
+
+@if (!isLoggedIn()) {
+  <section class="auth-gate">
+    <div class="auth-gate-card">
+      <div class="gate-icon">🔐</div>
+
+      <p class="section-eyebrow">Login Required</p>
+
+      <h2>Please login or register before setting an appointment</h2>
+
+      <p>
+        This helps your appointment request stay connected to your customer account.
+        Later, your customer dashboard can show your appointment history, inquiry history,
+        loan estimates, and saved Honda models.
+      </p>
+
+      <div class="gate-actions">
+        <a href="/login" class="primary-btn">
+          Login as Customer
+        </a>
+
+        <a href="/register" class="secondary-btn">
+          Register Account
+        </a>
+      </div>
+
+      <div class="gate-note">
+        Admin login is reserved in the footer. This appointment flow is for customers.
+      </div>
+    </div>
+  </section>
+}
+
+@if (isLoggedIn()) {
+  <section class="appointment-page">
+    <form class="appointment-card" [formGroup]="appointmentForm" (ngSubmit)="submitAppointment()">
+      <div class="card-heading">
+        <div>
+          <p class="section-eyebrow">Appointment Form</p>
+          <h2>Set your preferred appointment details</h2>
+        </div>
+
+        <button type="button" class="reset-btn" (click)="resetForm()">
+          Reset
+        </button>
+      </div>
+
+      @if (carsErrorMessage) {
+        <div class="warning-alert">
+          {{ carsErrorMessage }}
+        </div>
+      }
+
+      @if (formErrorMessage) {
+        <div class="error-alert">
+          {{ formErrorMessage }}
+        </div>
+      }
+
+      @if (successMessage) {
+        <div class="success-alert">
+          {{ successMessage }}
+        </div>
+      }
+
+      <div class="form-section">
+        <div class="section-mini-heading">
+          <span>1</span>
+          <div>
+            <h3>Appointment purpose</h3>
+            <p>Select what kind of support you want from the advisor.</p>
+          </div>
+        </div>
+
+        <div class="type-grid">
+          @for (type of appointmentTypes; track type.value) {
+            <label
+              class="type-card"
+              [class.active]="appointmentForm.value.appointment_type === type.value">
+              <input
+                type="radio"
+                formControlName="appointment_type"
+                [value]="type.value" />
+
+              <span class="type-icon">{{ type.icon }}</span>
+
+              <span>
+                <strong>{{ type.label }}</strong>
+                <small>{{ type.description }}</small>
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-mini-heading">
+          <span>2</span>
+          <div>
+            <h3>Honda model and schedule</h3>
+            <p>
+              Choose your interested Honda model, preferred date, and preferred time.
+              Appointment date must be from today up to 1 month ahead only.
+            </p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Preferred Honda model
+            <select formControlName="car_model_id" [disabled]="isLoadingCars">
+              <option [ngValue]="null">
+                {{ isLoadingCars ? 'Loading Honda models...' : 'Advisor recommendation' }}
+              </option>
+
+              @for (car of cars; track car.id) {
+                <option [ngValue]="car.id">
+                  {{ car.name }} — From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+                </option>
+              }
+            </select>
+          </label>
+
+          <label>
+            Preferred date <b>*</b>
+            <input
+              type="date"
+              formControlName="preferred_date"
+              [min]="getMinDate()"
+              [max]="getMaxDate()"
+              (change)="onDateChange()" />
+          </label>
+
+          <label>
+            Preferred time <b>*</b>
+            <select formControlName="preferred_time">
+              <option value="">
+                {{ isLoadingAvailability ? 'Checking available slots...' : 'Select time slot' }}
+              </option>
+
+              @for (slot of timeSlots; track slot) {
+                <option
+                  [value]="slot"
+                  [disabled]="isSlotUnavailable(slot)">
+                  {{ formatTimeSlot(slot) }}
+                  {{ unavailableSlots.includes(slot) ? ' — Already Booked' : '' }}
+                  {{ isPastTimeSlot(slot) ? ' — Time Passed' : '' }}
+                </option>
+              }
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-mini-heading">
+          <span>3</span>
+          <div>
+            <h3>Your contact details</h3>
+            <p>These details are connected to your customer account and appointment request.</p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div>
+            <label>
+              Full name <b>*</b>
+              <input
+                type="text"
+                formControlName="full_name"
+                placeholder="Your full name" />
+            </label>
+
+            @if (appointmentForm.controls.full_name.touched && appointmentForm.controls.full_name.invalid) {
+              <small class="field-error">Full name must be at least 3 characters.</small>
+            }
+          </div>
+
+          <div>
+            <label>
+              Phone number <b>*</b>
+              <input
+                type="text"
+                formControlName="phone_number"
+                placeholder="60123456789" />
+            </label>
+
+            @if (appointmentForm.controls.phone_number.touched && appointmentForm.controls.phone_number.invalid) {
+              <small class="field-error">Please enter a valid phone number.</small>
+            }
+          </div>
+
+          <div>
+            <label>
+              Email address
+              <input
+                type="email"
+                formControlName="email"
+                placeholder="customer@example.com" />
+            </label>
+
+            @if (appointmentForm.controls.email.touched && appointmentForm.controls.email.invalid) {
+              <small class="field-error">Please enter a valid email address.</small>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-mini-heading">
+          <span>4</span>
+          <div>
+            <h3>Message and confirmation</h3>
+            <p>Add anything useful for the advisor before the appointment.</p>
+          </div>
+        </div>
+
+        <label>
+          Message
+          <textarea
+            rows="5"
+            formControlName="message"
+            placeholder="Example: I want to test drive HR-V and discuss monthly payment estimate.">
+          </textarea>
+        </label>
+
+        <label class="consent-card">
+          <input type="checkbox" formControlName="appointment_consent" />
+
+          <span>
+            <strong>I understand this is an appointment request <b>*</b></strong>
+            <small>
+              Final appointment slot depends on advisor, dealership, vehicle, and schedule availability.
+            </small>
+          </span>
+        </label>
+
+        @if (appointmentForm.controls.appointment_consent.touched && appointmentForm.controls.appointment_consent.invalid) {
+          <small class="field-error">Confirmation is required before submitting.</small>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Submitting appointment...' : 'Submit Appointment Request' }}
+        </button>
+
+        <a href="/inquiry" class="secondary-btn">
+          Submit Inquiry Instead
+        </a>
+      </div>
+
+      <div class="disclaimer-card">
+        Appointment requests are not automatically confirmed. The advisor will follow up
+        to confirm the final time, vehicle availability, and next step.
+      </div>
+    </form>
+
+    <aside class="appointment-side-panel">
+      @if (!submittedAppointment) {
+        <div class="side-card">
+          <span class="side-icon">📅</span>
+
+          <h2>How appointment tracking will work</h2>
+
+          <div class="process-list">
+            <div>
+              <b>1</b>
+              <span>You submit appointment request while logged in.</span>
+            </div>
+
+            <div>
+              <b>2</b>
+              <span>Request is saved under your customer account.</span>
+            </div>
+
+            <div>
+              <b>3</b>
+              <span>Later, your dashboard can show appointment history and status.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-card dark">
+          <h2>Logged in as</h2>
+          <p>{{ user()?.full_name }} · {{ user()?.email }}</p>
+        </div>
+      }
+
+      @if (submittedAppointment) {
+        <div class="success-panel">
+          <span class="success-icon">✅</span>
+
+          <p class="section-eyebrow">Appointment Requested</p>
+
+          <h2>Thank you, {{ submittedAppointment.full_name }}</h2>
+
+          <p>
+            Your appointment request has been saved with status:
+            <strong>{{ submittedAppointment.status }}</strong>.
+          </p>
+
+          <div class="summary-box">
+            <div>
+              <span>Model</span>
+              <strong>{{ submittedAppointment.car_model_name || 'Advisor recommendation' }}</strong>
+            </div>
+
+            <div>
+              <span>Appointment Type</span>
+              <strong>{{ getAppointmentTypeLabel(submittedAppointment.appointment_type) }}</strong>
+            </div>
+
+            <div>
+              <span>Date</span>
+              <strong>{{ submittedAppointment.preferred_date }}</strong>
+            </div>
+
+            <div>
+              <span>Time</span>
+              <strong>{{ formatTimeSlot(submittedAppointment.preferred_time) }}</strong>
+            </div>
+          </div>
+
+          <div class="disclaimer-card">
+            Your request is saved. Final confirmation still depends on advisor and dealership availability.
+          </div>
+        </div>
+      }
+    </aside>
+  </section>
+}

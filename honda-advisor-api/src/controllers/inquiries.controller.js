@@ -1,9 +1,21 @@
 const { database } = require('../config/db');
 const { successResponse, errorResponse } = require('../utils/api-response');
 
-function toBoolean(value) {
-  return value === true || value === 'true' || value === 1 || value === '1';
-}
+const allowedInquiryStatuses = [
+  'new',
+  'contacted',
+  'interested',
+  'appointment_booked',
+  'loan_processing',
+  'won',
+  'lost',
+];
+
+const allowedContactMethods = [
+  'whatsapp',
+  'phone_call',
+  'email',
+];
 
 async function createInquiry(req, res) {
   try {
@@ -23,18 +35,27 @@ async function createInquiry(req, res) {
       lead_source,
     } = req.body;
 
-    if (!full_name || !phone_number) {
-      return errorResponse(res, 'Full name and phone number are required', 400);
+    if (!full_name || !phone_number || !preferred_contact_method) {
+      return errorResponse(
+        res,
+        'Full name, phone number, and preferred contact method are required',
+        400
+      );
     }
 
-    if (!toBoolean(privacy_consent)) {
-      return errorResponse(res, 'Privacy consent is required before submitting inquiry', 400);
+    if (!privacy_consent) {
+      return errorResponse(
+        res,
+        'Privacy consent is required before submitting inquiry',
+        400
+      );
     }
 
-    const allowedContactMethods = ['whatsapp', 'phone_call', 'email'];
-    const contactMethod = allowedContactMethods.includes(preferred_contact_method)
-      ? preferred_contact_method
-      : 'whatsapp';
+    if (!allowedContactMethods.includes(preferred_contact_method)) {
+      return errorResponse(res, 'Invalid preferred contact method', 400, {
+        allowedContactMethods,
+      });
+    }
 
     const [result] = await database.query(
       `
@@ -64,12 +85,12 @@ async function createInquiry(req, res) {
         budget_range || null,
         monthly_budget || null,
         buying_timeline || null,
-        toBoolean(needs_loan),
-        toBoolean(has_trade_in),
-        contactMethod,
+        Boolean(needs_loan),
+        Boolean(has_trade_in),
+        preferred_contact_method,
         message || null,
-        toBoolean(privacy_consent),
-        lead_source || 'website',
+        Boolean(privacy_consent),
+        lead_source || 'website_inquiry_page',
         'new',
       ]
     );
@@ -83,6 +104,7 @@ async function createInquiry(req, res) {
       FROM inquiries i
       LEFT JOIN car_models cm ON i.car_model_id = cm.id
       WHERE i.id = ?
+      LIMIT 1
       `,
       [result.insertId]
     );
@@ -104,6 +126,7 @@ async function getAllInquiries(req, res) {
     const [inquiries] = await database.query(`
       SELECT
         i.id,
+        i.car_model_id,
         i.full_name,
         i.phone_number,
         i.email,
@@ -123,7 +146,17 @@ async function getAllInquiries(req, res) {
         cm.slug AS car_model_slug
       FROM inquiries i
       LEFT JOIN car_models cm ON i.car_model_id = cm.id
-      ORDER BY i.created_at DESC
+      ORDER BY
+        CASE
+          WHEN i.status = 'new' THEN 1
+          WHEN i.status = 'contacted' THEN 2
+          WHEN i.status = 'interested' THEN 3
+          WHEN i.status = 'appointment_booked' THEN 4
+          WHEN i.status = 'loan_processing' THEN 5
+          WHEN i.status = 'won' THEN 6
+          ELSE 7
+        END,
+        i.created_at DESC
     `);
 
     return successResponse(res, 'Inquiries fetched successfully', inquiries);
@@ -155,7 +188,11 @@ async function getInquiryById(req, res) {
       return errorResponse(res, 'Inquiry not found', 404);
     }
 
-    return successResponse(res, 'Inquiry details fetched successfully', inquiries[0]);
+    return successResponse(
+      res,
+      'Inquiry details fetched successfully',
+      inquiries[0]
+    );
   } catch (error) {
     console.error('getInquiryById error:', error);
     return errorResponse(res, 'Failed to fetch inquiry details');
@@ -167,19 +204,9 @@ async function updateInquiryStatus(req, res) {
     const { id } = req.params;
     const { status } = req.body;
 
-    const allowedStatuses = [
-      'new',
-      'contacted',
-      'interested',
-      'appointment_booked',
-      'loan_processing',
-      'won',
-      'lost',
-    ];
-
-    if (!allowedStatuses.includes(status)) {
+    if (!allowedInquiryStatuses.includes(status)) {
       return errorResponse(res, 'Invalid inquiry status', 400, {
-        allowedStatuses,
+        allowedInquiryStatuses,
       });
     }
 
@@ -205,6 +232,7 @@ async function updateInquiryStatus(req, res) {
       FROM inquiries i
       LEFT JOIN car_models cm ON i.car_model_id = cm.id
       WHERE i.id = ?
+      LIMIT 1
       `,
       [id]
     );

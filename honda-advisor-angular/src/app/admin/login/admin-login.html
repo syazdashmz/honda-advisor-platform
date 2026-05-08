@@ -1,0 +1,52 @@
+<section class="admin-login-page">
+  <div class="admin-login-card">
+    <div class="admin-badge">🔐 Admin Access</div>
+
+    <h1>Advisor Dashboard Login</h1>
+
+    <p>
+      Reserved for authorised advisor/admin users to manage leads, appointments,
+      Honda model content, and dashboard metrics.
+    </p>
+
+    <form [formGroup]="adminLoginForm" (ngSubmit)="submitAdminLogin()">
+      @if (errorMessage) {
+        <div class="form-alert">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <label>
+        Admin email
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="admin@example.com" />
+      </label>
+
+      @if (adminLoginForm.controls.email.touched && adminLoginForm.controls.email.invalid) {
+        <small class="field-error">Please enter a valid admin email.</small>
+      }
+
+      <label>
+        Password
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Enter admin password" />
+      </label>
+
+      @if (adminLoginForm.controls.password.touched && adminLoginForm.controls.password.invalid) {
+        <small class="field-error">Password is required.</small>
+      }
+
+      <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Checking access...' : 'Login to Dashboard' }}
+      </button>
+    </form>
+
+    <div class="admin-note">
+      This page is intentionally placed in the footer area to keep customer navigation focused.
+    </div>
+  </div>
+</section>

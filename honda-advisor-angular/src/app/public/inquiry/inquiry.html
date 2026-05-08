@@ -1,0 +1,327 @@
+<section class="inquiry-hero honda-gradient">
+  <div class="inquiry-copy">
+    <p class="section-eyebrow">Customer Inquiry</p>
+
+    <h1>Ask the advisor about your preferred Honda</h1>
+
+    <p>
+      Share your preferred Honda model, budget, monthly payment target, and buying timeline.
+      The advisor can follow up with clearer model guidance, loan explanation, and appointment support.
+    </p>
+
+    <div class="hero-badges">
+      <span>💬 Fast follow-up</span>
+      <span>🚗 Model guidance</span>
+      <span>🧮 Loan support</span>
+      <span>📅 Appointment ready</span>
+    </div>
+  </div>
+
+  <div class="inquiry-summary-card">
+    <span>Selected model</span>
+    <strong>{{ getSelectedCarName() }}</strong>
+    <small>
+      Choose a Honda model in the form, or submit without one if you need recommendation.
+    </small>
+  </div>
+</section>
+
+<section class="inquiry-page">
+  <form class="inquiry-card" [formGroup]="inquiryForm" (ngSubmit)="submitInquiry()">
+    <div class="card-heading">
+      <div>
+        <p class="section-eyebrow">Inquiry Form</p>
+        <h2>Tell us what you are looking for</h2>
+      </div>
+
+      <button type="button" class="reset-btn" (click)="resetForm()">
+        Reset
+      </button>
+    </div>
+
+    @if (carsErrorMessage) {
+      <div class="warning-alert">
+        {{ carsErrorMessage }}
+      </div>
+    }
+
+    @if (formErrorMessage) {
+      <div class="error-alert">
+        {{ formErrorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="success-alert">
+        {{ successMessage }}
+      </div>
+    }
+
+    <div class="form-section">
+      <div class="section-mini-heading">
+        <span>1</span>
+        <div>
+          <h3>Honda interest</h3>
+          <p>Select a model or leave it blank for advisor recommendation.</p>
+        </div>
+      </div>
+
+      <label>
+        Preferred Honda model
+        <select formControlName="car_model_id" [disabled]="isLoadingCars">
+          <option [ngValue]="null">
+            {{ isLoadingCars ? 'Loading Honda models...' : 'Need advisor recommendation' }}
+          </option>
+
+          @for (car of cars; track car.id) {
+            <option [ngValue]="car.id">
+              {{ car.name }} — From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+            </option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="form-section">
+      <div class="section-mini-heading">
+        <span>2</span>
+        <div>
+          <h3>Customer details</h3>
+          <p>Provide your contact details for advisor follow-up.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label>
+            Full name
+            <input
+              type="text"
+              formControlName="full_name"
+              placeholder="Your full name" />
+          </label>
+
+          @if (inquiryForm.controls.full_name.touched && inquiryForm.controls.full_name.invalid) {
+            <small class="field-error">Full name must be at least 3 characters.</small>
+          }
+        </div>
+
+        <div>
+          <label>
+            Phone number
+            <input
+              type="text"
+              formControlName="phone_number"
+              placeholder="60123456789" />
+          </label>
+
+          @if (inquiryForm.controls.phone_number.touched && inquiryForm.controls.phone_number.invalid) {
+            <small class="field-error">Please enter a valid phone number.</small>
+          }
+        </div>
+
+        <div>
+          <label>
+            Email address
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="customer@example.com" />
+          </label>
+
+          @if (inquiryForm.controls.email.touched && inquiryForm.controls.email.invalid) {
+            <small class="field-error">Please enter a valid email address.</small>
+          }
+        </div>
+
+        <div>
+          <label>
+            Preferred contact method
+            <select formControlName="preferred_contact_method">
+              <option value="whatsapp">WhatsApp</option>
+              <option value="phone_call">Phone Call</option>
+              <option value="email">Email</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-mini-heading">
+        <span>3</span>
+        <div>
+          <h3>Budget and buying plan</h3>
+          <p>This helps the advisor recommend a suitable model and next step.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          Budget range
+          <select formControlName="budget_range">
+            @for (budget of budgetRanges; track budget) {
+              <option [value]="budget">{{ budget }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Monthly budget
+          <select formControlName="monthly_budget">
+            @for (budget of monthlyBudgetRanges; track budget) {
+              <option [value]="budget">{{ budget }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Buying timeline
+          <select formControlName="buying_timeline">
+            @for (timeline of buyingTimelines; track timeline) {
+              <option [value]="timeline">{{ timeline }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <label class="toggle-card">
+          <input type="checkbox" formControlName="needs_loan" />
+          <span>
+            <strong>Need loan guidance?</strong>
+            <small>Advisor can explain estimate, documents, and bank process.</small>
+          </span>
+        </label>
+
+        <label class="toggle-card">
+          <input type="checkbox" formControlName="has_trade_in" />
+          <span>
+            <strong>Have trade-in car?</strong>
+            <small>Advisor can guide indicative value and next inspection step.</small>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-mini-heading">
+        <span>4</span>
+        <div>
+          <h3>Message</h3>
+          <p>Add extra details, questions, preferred variant, or appointment interest.</p>
+        </div>
+      </div>
+
+      <label>
+        Message
+        <textarea
+          rows="5"
+          formControlName="message"
+          placeholder="Example: I am interested in Honda HR-V and want to know monthly payment estimate.">
+        </textarea>
+      </label>
+
+      <label class="consent-card">
+        <input type="checkbox" formControlName="privacy_consent" />
+
+        <span>
+          <strong>I agree to be contacted for this inquiry <b>*</b></strong>
+          <small>
+            Submitted details will be used for customer inquiry and advisor follow-up support.
+          </small>
+        </span>
+      </label>
+
+      @if (inquiryForm.controls.privacy_consent.touched && inquiryForm.controls.privacy_consent.invalid) {
+        <small class="field-error">Privacy consent is required before submitting.</small>
+      }
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Submitting inquiry...' : 'Submit Inquiry' }}
+      </button>
+
+      <a href="/appointment" class="secondary-btn">
+        Book Appointment Instead
+      </a>
+    </div>
+
+    <div class="disclaimer-card">
+      This website is a personal Honda sales advisor platform. Final prices, promotions,
+      stock availability, loan approval, and appointment confirmation must be verified with
+      the advisor, dealership, or Honda Malaysia.
+    </div>
+  </form>
+
+  <aside class="inquiry-side-panel">
+    @if (!submittedInquiry) {
+      <div class="side-card">
+        <span class="side-icon">💬</span>
+
+        <h2>What happens after submission?</h2>
+
+        <div class="process-list">
+          <div>
+            <b>1</b>
+            <span>Advisor reviews your inquiry details.</span>
+          </div>
+
+          <div>
+            <b>2</b>
+            <span>You receive follow-up through your selected contact method.</span>
+          </div>
+
+          <div>
+            <b>3</b>
+            <span>Advisor recommends model, loan direction, or appointment step.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-card dark">
+        <h2>Need faster support?</h2>
+        <p>
+          Submit your phone number and choose WhatsApp as contact method for easier follow-up.
+        </p>
+      </div>
+    }
+
+    @if (submittedInquiry) {
+      <div class="success-panel">
+        <span class="success-icon">✅</span>
+
+        <p class="section-eyebrow">Inquiry Received</p>
+
+        <h2>Thank you, {{ submittedInquiry.full_name }}</h2>
+
+        <p>
+          Your inquiry has been recorded with status:
+          <strong>{{ submittedInquiry.status }}</strong>.
+        </p>
+
+        <div class="summary-box">
+          <div>
+            <span>Model</span>
+            <strong>{{ submittedInquiry.car_model_name || 'Advisor recommendation' }}</strong>
+          </div>
+
+          <div>
+            <span>Contact</span>
+            <strong>{{ submittedInquiry.preferred_contact_method }}</strong>
+          </div>
+
+          <div>
+            <span>Timeline</span>
+            <strong>{{ submittedInquiry.buying_timeline || 'Not specified' }}</strong>
+          </div>
+        </div>
+
+        <a href="/appointment" class="primary-btn">
+          📅 Book Appointment
+        </a>
+      </div>
+    }
+  </aside>
+</section>

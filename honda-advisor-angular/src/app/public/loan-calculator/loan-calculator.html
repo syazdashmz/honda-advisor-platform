@@ -1,0 +1,280 @@
+<section class="loan-hero honda-gradient">
+  <div class="loan-hero-copy">
+    <p class="section-eyebrow">Honda Loan Calculator</p>
+
+    <h1>Estimate your monthly Honda installment</h1>
+
+    <p>
+      Plan your budget before submitting an inquiry. Choose a Honda model,
+      adjust down payment, interest rate, trade-in value, and loan period to
+      estimate your monthly commitment.
+    </p>
+
+    <div class="hero-badges">
+      <span>🧮 Monthly estimate</span>
+      <span>🚗 Model-based pricing</span>
+      <span>💬 Advisor-ready inquiry</span>
+    </div>
+  </div>
+
+  <div class="hero-summary-card">
+    <span>Estimated loan amount</span>
+    <strong>{{ getEstimatedLoanAmount() | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+    <small>Based on current form values before final calculation.</small>
+  </div>
+</section>
+
+<section class="loan-page">
+  <form class="calculator-card" [formGroup]="loanForm" (ngSubmit)="calculateLoan()">
+    <div class="card-heading">
+      <div>
+        <p class="section-eyebrow">Calculator Form</p>
+        <h2>Enter financing details</h2>
+      </div>
+
+      <button type="button" class="reset-btn" (click)="resetCalculator()">
+        Reset
+      </button>
+    </div>
+
+    @if (carsErrorMessage) {
+      <div class="warning-alert">
+        {{ carsErrorMessage }}
+      </div>
+    }
+
+    @if (formErrorMessage) {
+      <div class="error-alert">
+        {{ formErrorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="success-alert">
+        {{ successMessage }}
+      </div>
+    }
+
+    <div class="form-grid">
+      <label>
+        Honda model
+        <select formControlName="car_model_id" (change)="onCarModelChange()">
+          <option [ngValue]="null">
+            Select Honda model
+          </option>
+
+          @for (car of cars; track car.id) {
+            <option [ngValue]="car.id">
+              {{ car.name }} — From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+            </option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Variant
+        <select
+          formControlName="car_variant_id"
+          (change)="onVariantChange()"
+          [disabled]="variants.length === 0 || isLoadingVariants">
+          <option [ngValue]="null">
+            {{ isLoadingVariants ? 'Loading variants...' : 'Select variant' }}
+          </option>
+
+          @for (variant of variants; track variant.id) {
+            <option [ngValue]="variant.id">
+              {{ variant.variant_name }} — {{ variant.estimated_price | currency:'MYR':'symbol-narrow':'1.0-0' }}
+            </option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Car price
+        <input
+          type="number"
+          formControlName="car_price"
+          min="1"
+          placeholder="84900" />
+      </label>
+
+      <label>
+        Down payment
+        <input
+          type="number"
+          formControlName="down_payment"
+          min="0"
+          placeholder="8490" />
+      </label>
+
+      <label>
+        Trade-in value
+        <input
+          type="number"
+          formControlName="trade_in_value"
+          min="0"
+          placeholder="0" />
+      </label>
+
+      <label>
+        Interest rate per year (%)
+        <input
+          type="number"
+          formControlName="interest_rate"
+          min="0.01"
+          max="20"
+          step="0.01"
+          placeholder="2.35" />
+      </label>
+
+      <label>
+        Loan period
+        <select formControlName="loan_years">
+          @for (year of loanYearOptions; track year) {
+            <option [ngValue]="year">
+              {{ year }} years
+            </option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="quick-tools">
+      <span>Quick down payment:</span>
+
+      @for (percentage of downPaymentQuickOptions; track percentage) {
+        <button
+          type="button"
+          (click)="applyDownPaymentPercentage(percentage)">
+          {{ percentage }}%
+        </button>
+      }
+    </div>
+
+    <div class="live-preview">
+      <div>
+        <span>Car price</span>
+        <strong>{{ loanForm.value.car_price || 0 | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+      </div>
+
+      <div>
+        <span>Down payment</span>
+        <strong>{{ loanForm.value.down_payment || 0 | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+      </div>
+
+      <div>
+        <span>Trade-in</span>
+        <strong>{{ loanForm.value.trade_in_value || 0 | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+      </div>
+
+      <div>
+        <span>Estimated loan amount</span>
+        <strong>{{ getEstimatedLoanAmount() | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="primary-btn"
+        [disabled]="isCalculating">
+        {{ isCalculating ? 'Calculating...' : 'Calculate Monthly Payment' }}
+      </button>
+
+      <button
+        type="button"
+        class="secondary-btn"
+        (click)="saveCalculation()"
+        [disabled]="isSaving">
+        {{ isSaving ? 'Saving...' : 'Save Calculation' }}
+      </button>
+    </div>
+
+    <div class="disclaimer-card">
+      Estimated monthly installment only. Final price, interest rate, insurance,
+      road tax, promotions, stock availability, and bank approval must be confirmed
+      with the advisor, dealership, or Honda Malaysia.
+    </div>
+  </form>
+
+  <aside class="result-panel">
+    @if (!calculationResult) {
+      <div class="empty-result">
+        <span>🧮</span>
+        <h2>Your estimate will appear here</h2>
+        <p>
+          Fill in the calculator form and click calculate to view monthly payment,
+          total interest, loan amount, and advisor notes.
+        </p>
+      </div>
+    }
+
+    @if (calculationResult) {
+      <div class="result-card">
+        <p class="section-eyebrow">Estimated Monthly Payment</p>
+
+        <h2>
+          {{ calculationResult.estimated_monthly_payment | currency:'MYR':'symbol-narrow':'1.2-2' }}
+        </h2>
+
+        <p class="result-note">
+          {{ calculationResult.advisor_note }}
+        </p>
+
+        <div class="result-breakdown">
+          <div>
+            <span>Car price</span>
+            <strong>{{ calculationResult.car_price | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+          </div>
+
+          <div>
+            <span>Down payment</span>
+            <strong>{{ calculationResult.down_payment | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+          </div>
+
+          <div>
+            <span>Trade-in value</span>
+            <strong>{{ calculationResult.trade_in_value | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+          </div>
+
+          <div>
+            <span>Loan amount</span>
+            <strong>{{ calculationResult.loan_amount | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+          </div>
+
+          <div>
+            <span>Total interest</span>
+            <strong>{{ calculationResult.total_interest | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+          </div>
+
+          <div>
+            <span>Loan period</span>
+            <strong>{{ calculationResult.loan_years }} years</strong>
+          </div>
+
+          <div>
+            <span>Interest rate</span>
+            <strong>{{ calculationResult.interest_rate | number:'1.2-2' }}%</strong>
+          </div>
+        </div>
+
+        @if (calculationResult.disclaimer) {
+          <div class="result-disclaimer">
+            {{ calculationResult.disclaimer }}
+          </div>
+        }
+
+        <div class="result-actions">
+          <a href="/inquiry" class="primary-btn">
+            💬 Ask Advisor
+          </a>
+
+          <a href="/appointment" class="ghost-btn">
+            📅 Book Appointment
+          </a>
+        </div>
+        
+      </div>
+    }
+  </aside>
+</section>

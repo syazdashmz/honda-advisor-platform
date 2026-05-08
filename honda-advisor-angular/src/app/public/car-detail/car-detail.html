@@ -1,0 +1,206 @@
+@if (isLoading) {
+  <section class="page-shell">
+    <div class="state-card">Loading Honda model details...</div>
+  </section>
+}
+
+@if (errorMessage) {
+  <section class="page-shell">
+    <div class="state-card error">{{ errorMessage }}</div>
+  </section>
+}
+
+@if (!isLoading && !errorMessage && car) {
+  <section class="detail-hero honda-gradient">
+    <div class="detail-copy">
+      <p class="section-eyebrow">Honda Model Details</p>
+
+      <div class="title-row">
+        <h1>{{ car.name }}</h1>
+
+        @if (car.is_mock_data) {
+          <span class="mock-pill">Sample Data</span>
+        }
+      </div>
+
+      <p class="hero-text">
+        {{ car.short_description }}
+      </p>
+
+      <div class="price-card">
+        <span>Estimated from</span>
+        <strong>{{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+        <small>{{ car.data_status }}</small>
+      </div>
+
+      <div class="hero-actions">
+        <a routerLink="/inquiry" class="primary-btn">💬 Ask Advisor</a>
+        <a routerLink="/loan-calculator" class="secondary-btn">🧮 Calculate Loan</a>
+        <a routerLink="/appointment" class="ghost-btn">📅 Book Appointment</a>
+      </div>
+    </div>
+
+    <div class="detail-visual">
+      <div class="showroom-card">
+        <div class="visual-top">
+          <span>{{ car.category | uppercase }}</span>
+          <strong>{{ car.fuel_type | uppercase }}</strong>
+        </div>
+
+        <div class="car-stage">
+          <div class="car-roof"></div>
+          <div class="car-body"></div>
+          <div class="wheel wheel-left"></div>
+          <div class="wheel wheel-right"></div>
+        </div>
+
+        <div class="visual-bottom">
+          <strong>{{ car.name }}</strong>
+          <small>Honda-inspired preview visual</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="detail-grid page-shell">
+    <article class="info-panel">
+      <p class="section-eyebrow">Best For</p>
+
+      <h2>{{ car.best_for }}</h2>
+
+      <p>
+        This model is shown using sample development data. Final specifications,
+        stock, promotions, and prices should be confirmed with the advisor,
+        dealership, or Honda Malaysia.
+      </p>
+    </article>
+
+    <article class="info-panel dark">
+      <p class="section-eyebrow">Advisor CTA</p>
+
+      <h2>Need help choosing the right variant?</h2>
+
+      <p>
+        Share your budget, preferred monthly payment, and buying timeline. The
+        advisor can guide you through model selection, loan planning, and appointment setup.
+      </p>
+
+      <a routerLink="/inquiry" class="primary-btn">Start Inquiry</a>
+    </article>
+  </section>
+
+  @if (car.variants.length > 0) {
+    <section class="variants-section page-shell">
+      <div class="section-heading">
+        <p class="section-eyebrow">Available Variants</p>
+
+        <h2 class="section-title">Compare sample variants</h2>
+
+        <p class="section-text">
+          Select a variant to view estimated price, engine, transmission, and recommended use.
+        </p>
+      </div>
+
+      <div class="variants-layout">
+        <div class="variant-list">
+          @for (variant of car.variants; track variant.id) {
+            <button
+              type="button"
+              class="variant-card"
+              [class.active]="selectedVariant?.id === variant.id"
+              (click)="selectVariant(variant)">
+              <span>{{ variant.variant_name }}</span>
+              <strong>{{ variant.estimated_price | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+            </button>
+          }
+        </div>
+
+        @if (selectedVariant) {
+          <div class="variant-detail">
+            <div class="variant-top">
+              <div>
+                <p class="section-eyebrow">Selected Variant</p>
+                <h3>{{ selectedVariant.variant_name }}</h3>
+              </div>
+
+              @if (selectedVariant.is_mock_data) {
+                <span class="mock-pill">Sample</span>
+              }
+            </div>
+
+            <div class="variant-price">
+              {{ selectedVariant.estimated_price | currency:'MYR':'symbol-narrow':'1.0-0' }}
+            </div>
+
+            <div class="spec-grid">
+              <div>
+                <span>Engine</span>
+                <strong>{{ selectedVariant.engine }}</strong>
+              </div>
+
+              <div>
+                <span>Transmission</span>
+                <strong>{{ selectedVariant.transmission }}</strong>
+              </div>
+
+              <div>
+                <span>Fuel Type</span>
+                <strong>{{ selectedVariant.fuel_type | uppercase }}</strong>
+              </div>
+
+              <div>
+                <span>Recommended For</span>
+                <strong>{{ selectedVariant.recommended_for }}</strong>
+              </div>
+            </div>
+
+            <p class="highlight-text">
+              {{ selectedVariant.key_highlights }}
+            </p>
+
+            <div class="disclaimer-card">
+              {{ selectedVariant.data_status }}
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  @if (car.features.length > 0) {
+    <section class="features-section page-shell">
+      <div class="section-heading">
+        <p class="section-eyebrow">Model Highlights</p>
+        <h2 class="section-title">Key sample features</h2>
+      </div>
+
+      <div class="features-grid">
+        @for (feature of car.features; track feature.id) {
+          <article class="feature-card">
+            <span>{{ feature.feature_category }}</span>
+            <h3>{{ feature.feature_title }}</h3>
+            <p>{{ feature.feature_description }}</p>
+          </article>
+        }
+      </div>
+    </section>
+  }
+
+  @if (car.colors.length > 0) {
+    <section class="colors-section page-shell">
+      <div class="section-heading">
+        <p class="section-eyebrow">Color Preview</p>
+        <h2 class="section-title">Sample available colors</h2>
+      </div>
+
+      <div class="colors-row">
+        @for (color of car.colors; track color.id) {
+          <article class="color-chip">
+            <span class="color-dot" [style.background]="color.color_hex"></span>
+            <strong>{{ color.color_name }}</strong>
+          </article>
+        }
+      </div>
+    </section>
+  }
+}

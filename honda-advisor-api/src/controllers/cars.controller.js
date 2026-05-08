@@ -169,4 +169,4 @@ async function getCarBySlug(req, res) {
 module.exports = {
   getAllCars,
   getCarBySlug,
-};
+};  

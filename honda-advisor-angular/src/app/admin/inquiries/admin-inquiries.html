@@ -1,0 +1,209 @@
+<section class="admin-inquiries-hero honda-gradient">
+  <div>
+    <p class="section-eyebrow">Admin Inquiries</p>
+
+    <h1>Manage customer leads and inquiry status</h1>
+
+    <p>
+      Review customer interest, budget range, buying timeline, contact method,
+      loan needs, and trade-in interest. Update lead status as the sales process moves forward.
+    </p>
+  </div>
+
+  <div class="lead-rules-card">
+    <span>💬 Lead Management</span>
+    <strong>Inquiry → Contact → Appointment → Sale</strong>
+    <small>
+      Keep every lead organized so follow-up is easier and no customer request is missed.
+    </small>
+  </div>
+</section>
+
+<section class="admin-inquiries-page">
+  @if (errorMessage) {
+    <div class="error-alert">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="success-alert">{{ successMessage }}</div>
+  }
+
+  <section class="filter-row">
+    @for (status of statusFilters; track status) {
+      <button
+        type="button"
+        [class.active]="selectedStatus === status"
+        (click)="applyFilter(status)">
+        {{ formatStatus(status) }}
+        <span>{{ getStatusCount(status) }}</span>
+      </button>
+    }
+  </section>
+
+  @if (isLoading) {
+    <div class="state-card">Loading inquiries...</div>
+  }
+
+  @if (!isLoading && filteredInquiries.length === 0) {
+    <div class="empty-state">
+      <span>💬</span>
+      <h2>No inquiries found</h2>
+      <p>No customer inquiries match this filter.</p>
+    </div>
+  }
+
+  @if (!isLoading && filteredInquiries.length > 0) {
+    <section class="inquiries-grid">
+      @for (inquiry of filteredInquiries; track inquiry.id) {
+        <article class="inquiry-card">
+          <div class="inquiry-top">
+            <div>
+              <p class="section-eyebrow">
+                {{ inquiry.car_model_name || 'Advisor recommendation' }}
+              </p>
+
+              <h2>{{ inquiry.full_name }}</h2>
+
+              <p>
+                {{ inquiry.phone_number }} · {{ formatContactMethod(inquiry.preferred_contact_method) }}
+              </p>
+            </div>
+
+            <span class="status-pill" [class]="inquiry.status">
+              {{ formatStatus(inquiry.status) }}
+            </span>
+          </div>
+
+          <div class="lead-details">
+            <div>
+              <span>Budget</span>
+              <strong>{{ inquiry.budget_range || 'Not specified' }}</strong>
+            </div>
+
+            <div>
+              <span>Monthly Budget</span>
+              <strong>{{ inquiry.monthly_budget || 'Not specified' }}</strong>
+            </div>
+
+            <div>
+              <span>Timeline</span>
+              <strong>{{ inquiry.buying_timeline || 'Not specified' }}</strong>
+            </div>
+
+            <div>
+              <span>Loan Needed</span>
+              <strong>{{ inquiry.needs_loan ? 'Yes' : 'No' }}</strong>
+            </div>
+
+            <div>
+              <span>Trade-in</span>
+              <strong>{{ inquiry.has_trade_in ? 'Yes' : 'No' }}</strong>
+            </div>
+
+            <div>
+              <span>Source</span>
+              <strong>{{ inquiry.lead_source || 'Website' }}</strong>
+            </div>
+          </div>
+
+          @if (inquiry.message) {
+            <div class="message-box">
+              {{ inquiry.message }}
+            </div>
+          }
+
+          <div class="contact-actions">
+            <a
+              [href]="createWhatsAppLink(inquiry.phone_number)"
+              target="_blank"
+              rel="noopener">
+              WhatsApp
+            </a>
+
+            <a [href]="createPhoneLink(inquiry.phone_number)">
+              Call
+            </a>
+
+            @if (inquiry.email) {
+              <a [href]="createEmailLink(inquiry.email)">
+                Email
+              </a>
+            }
+          </div>
+
+          <div class="status-actions">
+            @if (inquiry.status === 'new') {
+              <button
+                type="button"
+                class="contacted"
+                [disabled]="updatingInquiryId === inquiry.id"
+                (click)="updateStatus(inquiry, 'contacted')">
+                Mark Contacted
+              </button>
+            }
+
+            @if (inquiry.status === 'contacted') {
+              <button
+                type="button"
+                class="interested"
+                [disabled]="updatingInquiryId === inquiry.id"
+                (click)="updateStatus(inquiry, 'interested')">
+                Mark Interested
+              </button>
+            }
+
+            @if (inquiry.status === 'interested') {
+              <button
+                type="button"
+                class="appointment"
+                [disabled]="updatingInquiryId === inquiry.id"
+                (click)="updateStatus(inquiry, 'appointment_booked')">
+                Appointment Booked
+              </button>
+            }
+
+            @if (inquiry.status === 'appointment_booked') {
+              <button
+                type="button"
+                class="loan"
+                [disabled]="updatingInquiryId === inquiry.id"
+                (click)="updateStatus(inquiry, 'loan_processing')">
+                Loan Processing
+              </button>
+            }
+
+            @if (inquiry.status === 'loan_processing' || inquiry.status === 'appointment_booked' || inquiry.status === 'interested') {
+              <button
+                type="button"
+                class="won"
+                [disabled]="updatingInquiryId === inquiry.id"
+                (click)="updateStatus(inquiry, 'won')">
+                Mark Won
+              </button>
+            }
+
+            @if (inquiry.status !== 'won' && inquiry.status !== 'lost') {
+              <button
+                type="button"
+                class="lost"
+                [disabled]="updatingInquiryId === inquiry.id"
+                (click)="updateStatus(inquiry, 'lost')">
+                Mark Lost
+              </button>
+            }
+
+            @if (inquiry.status === 'lost') {
+              <button
+                type="button"
+                class="interested"
+                [disabled]="updatingInquiryId === inquiry.id"
+                (click)="updateStatus(inquiry, 'interested')">
+                Reopen Lead
+              </button>
+            }
+          </div>
+        </article>
+      }
+    </section>
+  }
+</section>

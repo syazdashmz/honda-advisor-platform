@@ -1,0 +1,158 @@
+<section class="admin-appointments-hero honda-gradient">
+  <div>
+    <p class="section-eyebrow">Admin Appointments</p>
+
+    <h1>Manage customer appointment requests</h1>
+
+    <p>
+      Confirm, decline, cancel, or complete customer appointment requests.
+      Once an appointment is confirmed, its date and time becomes unavailable
+      for new customer requests.
+    </p>
+  </div>
+
+  <div class="booking-rules-card">
+    <span>📅 Booking Rule</span>
+    <strong>One confirmed appointment per time slot</strong>
+    <small>
+      Pending requests can overlap, but only one appointment can be confirmed
+      for the same date and time.
+    </small>
+  </div>
+</section>
+
+<section class="admin-appointments-page">
+  @if (errorMessage) {
+    <div class="error-alert">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="success-alert">{{ successMessage }}</div>
+  }
+
+  <section class="filter-row">
+    @for (status of statusFilters; track status) {
+      <button
+        type="button"
+        [class.active]="selectedStatus === status"
+        (click)="applyFilter(status)">
+        {{ formatStatus(status) }}
+        <span>{{ getStatusCount(status) }}</span>
+      </button>
+    }
+  </section>
+
+  @if (isLoading) {
+    <div class="state-card">Loading appointments...</div>
+  }
+
+  @if (!isLoading && filteredAppointments.length === 0) {
+    <div class="empty-state">
+      <span>📅</span>
+      <h2>No appointments found</h2>
+      <p>No appointment requests match this filter.</p>
+    </div>
+  }
+
+  @if (!isLoading && filteredAppointments.length > 0) {
+    <section class="appointments-grid">
+      @for (appointment of filteredAppointments; track appointment.id) {
+        <article class="appointment-card">
+          <div class="appointment-top">
+            <div>
+              <p class="section-eyebrow">
+                {{ formatType(appointment.appointment_type) }}
+              </p>
+
+              <h2>{{ appointment.full_name }}</h2>
+
+              <p>
+                {{ appointment.car_model_name || 'Advisor recommendation' }}
+              </p>
+            </div>
+
+            <span class="status-pill" [class]="appointment.status">
+              {{ formatStatus(appointment.status) }}
+            </span>
+          </div>
+
+          <div class="appointment-details">
+            <div>
+              <span>Date</span>
+              <strong>{{ appointment.preferred_date }}</strong>
+            </div>
+
+            <div>
+              <span>Time</span>
+              <strong>{{ formatTimeSlot(appointment.preferred_time) }}</strong>
+            </div>
+
+            <div>
+              <span>Phone</span>
+              <strong>{{ appointment.phone_number }}</strong>
+            </div>
+
+            <div>
+              <span>Email</span>
+              <strong>{{ appointment.email || '-' }}</strong>
+            </div>
+          </div>
+
+          @if (appointment.message) {
+            <div class="message-box">
+              {{ appointment.message }}
+            </div>
+          }
+
+          <div class="actions">
+            @if (appointment.status === 'pending') {
+              <button
+                type="button"
+                class="confirm"
+                [disabled]="updatingAppointmentId === appointment.id"
+                (click)="updateStatus(appointment, 'confirmed')">
+                Accept
+              </button>
+
+              <button
+                type="button"
+                class="decline"
+                [disabled]="updatingAppointmentId === appointment.id"
+                (click)="updateStatus(appointment, 'declined')">
+                Decline
+              </button>
+            }
+
+            @if (appointment.status === 'confirmed') {
+              <button
+                type="button"
+                class="complete"
+                [disabled]="updatingAppointmentId === appointment.id"
+                (click)="updateStatus(appointment, 'completed')">
+                Complete
+              </button>
+
+              <button
+                type="button"
+                class="cancel"
+                [disabled]="updatingAppointmentId === appointment.id"
+                (click)="updateStatus(appointment, 'cancelled')">
+                Cancel
+              </button>
+            }
+
+            @if (appointment.status === 'declined' || appointment.status === 'cancelled') {
+              <button
+                type="button"
+                class="confirm"
+                [disabled]="updatingAppointmentId === appointment.id"
+                (click)="updateStatus(appointment, 'confirmed')">
+                Re-accept
+              </button>
+            }
+          </div>
+        </article>
+      }
+    </section>
+  }
+</section>

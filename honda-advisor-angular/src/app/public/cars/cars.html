@@ -1,0 +1,64 @@
+<section class="cars-hero">
+  <p class="section-eyebrow">Latest Honda Models</p>
+  <h1>Explore Honda cars with personal advisor guidance</h1>
+  <p>
+    Browse estimated model prices, best-for recommendations, and sample data
+    prepared for this personal Honda advisor platform.
+  </p>
+</section>
+
+<section class="filters">
+  <button [class.active]="selectedCategory === 'all'" (click)="filterByCategory('all')">All</button>
+  <button [class.active]="selectedCategory === 'sedan'" (click)="filterByCategory('sedan')">Sedan</button>
+  <button [class.active]="selectedCategory === 'hatchback'" (click)="filterByCategory('hatchback')">Hatchback</button>
+  <button [class.active]="selectedCategory === 'suv'" (click)="filterByCategory('suv')">SUV</button>
+  <button [class.active]="selectedCategory === 'ev'" (click)="filterByCategory('ev')">EV</button>
+  <button [class.active]="selectedCategory === 'performance'" (click)="filterByCategory('performance')">Performance</button>
+</section>
+
+@if (isLoading) {
+  <div class="state-card">Loading Honda models...</div>
+}
+
+@if (errorMessage) {
+  <div class="state-card error">{{ errorMessage }}</div>
+}
+
+@if (!isLoading && !errorMessage) {
+  <section class="cars-grid">
+    @for (car of filteredCars; track car.id) {
+      <article class="car-card">
+        <div class="car-image">
+          <span>{{ car.category }}</span>
+        </div>
+
+        <div class="car-content">
+          <div class="car-topline">
+            <h2>{{ car.name }}</h2>
+
+            @if (car.is_mock_data) {
+              <span class="mock-badge">Sample</span>
+            }
+          </div>
+
+          <p class="description">{{ car.short_description }}</p>
+
+          <div class="price">
+            From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+          </div>
+
+          <p class="best-for">
+            <strong>Best for:</strong> {{ car.best_for }}
+          </p>
+
+          <p class="data-status">{{ car.data_status }}</p>
+
+          <div class="actions">
+            <a [routerLink]="['/cars', car.slug]" class="primary-btn">View Details</a>
+            <a routerLink="/inquiry" class="secondary-btn">Ask Advisor</a>
+          </div>
+        </div>
+      </article>
+    }
+  </section>
+}

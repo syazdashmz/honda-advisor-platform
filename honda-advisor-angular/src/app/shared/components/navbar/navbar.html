@@ -1,0 +1,98 @@
+<header class="navbar">
+  <a class="brand" routerLink="/">
+    <span class="brand-mark">H</span>
+
+    <span class="brand-copy">
+      <strong>Honda Advisor</strong>
+      <small>Since 2002 · Tenaga Setia</small>
+    </span>
+  </a>
+
+  <nav class="nav-links">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Home
+    </a>
+
+    <a routerLink="/cars" routerLinkActive="active">
+      Models
+    </a>
+
+    @if (!user()) {
+      <a routerLink="/loan-calculator" routerLinkActive="active">
+        Loan
+      </a>
+
+      <a routerLink="/inquiry" routerLinkActive="active">
+        Inquiry
+      </a>
+
+      <a routerLink="/appointment" routerLinkActive="active">
+        Appointment
+      </a>
+
+      <a routerLink="/login" routerLinkActive="active">
+        Customer Login
+      </a>
+
+      <a routerLink="/register" class="login-link">
+        Register
+      </a>
+    }
+
+    @if (isCustomer()) {
+      <a routerLink="/loan-calculator" routerLinkActive="active">
+        Loan
+      </a>
+
+      <a routerLink="/inquiry" routerLinkActive="active">
+        Inquiry
+      </a>
+
+      <a routerLink="/appointment" routerLinkActive="active">
+        Appointment
+      </a>
+
+      <a routerLink="/dashboard" routerLinkActive="active">
+        My Dashboard
+      </a>
+
+      <span class="user-pill">
+        👤 {{ user()?.full_name }}
+      </span>
+
+      <button type="button" class="logout-btn" (click)="logout()">
+        Logout
+      </button>
+    }
+
+    @if (isAdmin()) {
+      <a routerLink="/admin/dashboard" routerLinkActive="active">
+        Admin Dashboard
+      </a>
+
+      <a routerLink="/admin/inquiries" routerLinkActive="active">
+        Inquiries
+      </a>
+
+      <a routerLink="/admin/appointments" routerLinkActive="active">
+        Appointments
+      </a>
+
+      <a routerLink="/admin/cars" routerLinkActive="active">
+        Manage Cars
+      </a>
+
+      <a routerLink="/admin/home-content" routerLinkActive="active">
+        Home Content
+      </a>
+
+      <span class="admin-pill">
+        🛠️ {{ user()?.full_name }}
+      </span>
+
+      <button type="button" class="logout-btn" (click)="logout()">
+        Logout
+      </button>
+    }
+  </nav>
+</header>

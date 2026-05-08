@@ -1,0 +1,161 @@
+<section class="dashboard-hero honda-gradient">
+  <div>
+    <p class="section-eyebrow">Customer Dashboard</p>
+
+    <h1>Welcome back, {{ user()?.full_name }}</h1>
+
+    <p>
+      This is your personal Honda advisor dashboard. You can track your appointment
+      requests, profile details, and later your inquiry history, loan calculations,
+      and saved Honda models.
+    </p>
+  </div>
+
+  <div class="profile-card">
+    <span class="profile-avatar">
+      {{ user()?.full_name?.charAt(0) || 'U' }}
+    </span>
+
+    <div>
+      <strong>{{ user()?.full_name }}</strong>
+      <small>{{ user()?.email }}</small>
+      <small>{{ user()?.phone_number || 'Phone number not added yet' }}</small>
+    </div>
+  </div>
+</section>
+
+<section class="dashboard-page">
+  <div class="dashboard-main">
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <p class="section-eyebrow">Profile Overview</p>
+          <h2>Your customer account</h2>
+        </div>
+
+        <span class="status-pill">Active</span>
+      </div>
+
+      <div class="profile-grid">
+        <div>
+          <span>Full Name</span>
+          <strong>{{ user()?.full_name }}</strong>
+        </div>
+
+        <div>
+          <span>Email</span>
+          <strong>{{ user()?.email }}</strong>
+        </div>
+
+        <div>
+          <span>Phone</span>
+          <strong>{{ user()?.phone_number || 'Not provided' }}</strong>
+        </div>
+
+        <div>
+          <span>Role</span>
+          <strong>{{ user()?.role_name }}</strong>
+        </div>
+      </div>
+
+      <div class="info-note">
+        Profile editing will be added in the next phase with backend update support.
+      </div>
+    </article>
+
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <p class="section-eyebrow">Appointment History</p>
+          <h2>Your appointment requests</h2>
+        </div>
+
+        <a href="/appointment" class="mini-action">
+          New Appointment
+        </a>
+      </div>
+
+      @if (isLoadingAppointments) {
+        <div class="state-card">
+          Loading your appointments...
+        </div>
+      }
+
+      @if (appointmentErrorMessage) {
+        <div class="state-card error">
+          {{ appointmentErrorMessage }}
+        </div>
+      }
+
+      @if (!isLoadingAppointments && !appointmentErrorMessage && appointments.length === 0) {
+        <div class="empty-state">
+          <span>📅</span>
+          <h3>No appointments yet</h3>
+          <p>
+            Once you request a showroom visit, test drive, or consultation,
+            it will appear here.
+          </p>
+
+          <a href="/appointment" class="primary-btn">
+            Book Appointment
+          </a>
+        </div>
+      }
+
+      @if (!isLoadingAppointments && appointments.length > 0) {
+        <div class="appointment-list">
+          @for (appointment of appointments; track appointment.id) {
+            <article class="appointment-item">
+              <div class="appointment-top">
+                <div>
+                  <strong>
+                    {{ appointment.car_model_name || 'Advisor recommendation' }}
+                  </strong>
+
+                  <small>
+                    {{ formatAppointmentType(appointment.appointment_type) }}
+                  </small>
+                </div>
+
+                <span class="appointment-status" [class]="appointment.status">
+                  {{ getStatusLabel(appointment.status) }}
+                </span>
+              </div>
+
+              <div class="appointment-meta">
+                <span>📅 {{ appointment.preferred_date }}</span>
+                <span>🕒 {{ formatTimeSlot(appointment.preferred_time) }}</span>
+              </div>
+
+              @if (appointment.message) {
+                <p>{{ appointment.message }}</p>
+              }
+            </article>
+          }
+        </div>
+      }
+    </article>
+  </div>
+
+  <aside class="dashboard-side">
+    <article class="side-card dark">
+      <h3>Next dashboard features</h3>
+
+      <ul>
+        <li>Inquiry history</li>
+        <li>Saved loan calculations</li>
+        <li>Saved Honda models</li>
+        <li>Profile edit/update</li>
+      </ul>
+    </article>
+
+    <article class="side-card">
+      <h3>Quick actions</h3>
+
+      <a href="/cars">🚗 Explore Honda Models</a>
+      <a href="/loan-calculator">🧮 Calculate Loan</a>
+      <a href="/inquiry">💬 Submit Inquiry</a>
+      <a href="/appointment">📅 Book Appointment</a>
+    </article>
+  </aside>
+</section>

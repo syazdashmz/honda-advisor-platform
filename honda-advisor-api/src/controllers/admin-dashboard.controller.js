@@ -1,54 +1,26 @@
 const { database } = require('../config/db');
 const { successResponse, errorResponse } = require('../utils/api-response');
 
-async function getAdminDashboardSummary(req, res) {
+async function getAdminDashboard(req, res) {
   try {
-    const [[totalInquiries]] = await database.query(`
-      SELECT COUNT(*) AS count
-      FROM inquiries
+    const [[inquiryCount]] = await database.query(`
+      SELECT COUNT(*) AS total FROM inquiries
     `);
 
-    const [[newLeadsToday]] = await database.query(`
-      SELECT COUNT(*) AS count
-      FROM inquiries
-      WHERE DATE(created_at) = CURDATE()
+    const [[appointmentCount]] = await database.query(`
+      SELECT COUNT(*) AS total FROM appointments
     `);
 
-    const [[appointmentsThisWeek]] = await database.query(`
-      SELECT COUNT(*) AS count
-      FROM appointments
-      WHERE YEARWEEK(preferred_date, 1) = YEARWEEK(CURDATE(), 1)
+    const [[pendingAppointmentCount]] = await database.query(`
+      SELECT COUNT(*) AS total FROM appointments WHERE status = 'pending'
     `);
 
-    const [[loanCalculationsUsed]] = await database.query(`
-      SELECT COUNT(*) AS count
-      FROM loan_calculations
+    const [[carModelCount]] = await database.query(`
+      SELECT COUNT(*) AS total FROM car_models WHERE is_active = TRUE
     `);
 
-    const [[galleryStories]] = await database.query(`
-      SELECT COUNT(*) AS count
-      FROM customer_gallery
-    `);
-
-    const [[mostRequestedModel]] = await database.query(`
-      SELECT
-        cm.name AS model_name,
-        COUNT(i.id) AS inquiry_count
-      FROM inquiries i
-      LEFT JOIN car_models cm ON i.car_model_id = cm.id
-      WHERE i.car_model_id IS NOT NULL
-      GROUP BY cm.id, cm.name
-      ORDER BY inquiry_count DESC
-      LIMIT 1
-    `);
-
-    const [leadStatusBreakdown] = await database.query(`
-      SELECT
-        status,
-        COUNT(*) AS count
-      FROM inquiries
-      GROUP BY status
-      ORDER BY count DESC
+    const [[loanCalculationCount]] = await database.query(`
+      SELECT COUNT(*) AS total FROM loan_calculations
     `);
 
     const [recentInquiries] = await database.query(`
@@ -56,53 +28,55 @@ async function getAdminDashboardSummary(req, res) {
         i.id,
         i.full_name,
         i.phone_number,
+        i.email,
+        i.budget_range,
+        i.monthly_budget,
+        i.buying_timeline,
+        i.preferred_contact_method,
         i.status,
-        i.lead_source,
         i.created_at,
         cm.name AS car_model_name
       FROM inquiries i
       LEFT JOIN car_models cm ON i.car_model_id = cm.id
       ORDER BY i.created_at DESC
-      LIMIT 5
+      LIMIT 6
     `);
 
-    const [upcomingAppointments] = await database.query(`
+    const [recentAppointments] = await database.query(`
       SELECT
         a.id,
         a.full_name,
         a.phone_number,
+        a.email,
         a.appointment_type,
         a.preferred_date,
         a.preferred_time,
         a.status,
+        a.created_at,
         cm.name AS car_model_name
       FROM appointments a
       LEFT JOIN car_models cm ON a.car_model_id = cm.id
-      WHERE a.preferred_date >= CURDATE()
-      ORDER BY a.preferred_date ASC, a.preferred_time ASC
-      LIMIT 5
+      ORDER BY a.created_at DESC
+      LIMIT 6
     `);
 
-    return successResponse(res, 'Admin dashboard summary fetched successfully', {
-      metrics: {
-        total_inquiries: totalInquiries.count,
-        new_leads_today: newLeadsToday.count,
-        appointments_this_week: appointmentsThisWeek.count,
-        loan_calculations_used: loanCalculationsUsed.count,
-        gallery_stories: galleryStories.count,
-        most_requested_model: mostRequestedModel?.model_name || 'No data yet',
-        most_requested_model_count: mostRequestedModel?.inquiry_count || 0,
+    return successResponse(res, 'Admin dashboard fetched successfully', {
+      summary: {
+        total_inquiries: Number(inquiryCount.total || 0),
+        total_appointments: Number(appointmentCount.total || 0),
+        pending_appointments: Number(pendingAppointmentCount.total || 0),
+        active_car_models: Number(carModelCount.total || 0),
+        total_loan_calculations: Number(loanCalculationCount.total || 0)
       },
-      lead_status_breakdown: leadStatusBreakdown,
       recent_inquiries: recentInquiries,
-      upcoming_appointments: upcomingAppointments,
+      recent_appointments: recentAppointments
     });
   } catch (error) {
-    console.error('getAdminDashboardSummary error:', error);
-    return errorResponse(res, 'Failed to fetch admin dashboard summary');
+    console.error('getAdminDashboard error:', error);
+    return errorResponse(res, 'Failed to fetch admin dashboard');
   }
 }
 
 module.exports = {
-  getAdminDashboardSummary,
+  getAdminDashboard
 };

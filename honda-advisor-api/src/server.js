@@ -6,10 +6,14 @@ const { testDatabaseConnection } = require('./config/db');
 
 const authRoutes = require('./routes/auth.routes');
 const carsRoutes = require('./routes/cars.routes');
+const adminCarsRoutes = require('./routes/admin-cars.routes');
 const inquiriesRoutes = require('./routes/inquiries.routes');
 const appointmentsRoutes = require('./routes/appointments.routes');
 const loanCalculationsRoutes = require('./routes/loan-calculations.routes');
 const adminDashboardRoutes = require('./routes/admin-dashboard.routes');
+const siteContentRoutes = require('./routes/site-content.routes');
+const adminSiteContentRoutes = require('./routes/admin-site-content.routes');
+const adminAccountRoutes = require('./routes/admin-account.routes');
 
 const app = express();
 
@@ -41,6 +45,10 @@ app.use('/api/inquiries', inquiriesRoutes);
 app.use('/api/appointments', appointmentsRoutes);
 app.use('/api/loan-calculations', loanCalculationsRoutes);
 app.use('/api/admin/dashboard', adminDashboardRoutes);
+app.use('/api/admin/cars', adminCarsRoutes);
+app.use('/api/site', siteContentRoutes);
+app.use('/api/admin/site', adminSiteContentRoutes);
+app.use('/api/admin/account', adminAccountRoutes);
 
 app.use((req, res) => {
   res.status(404).json({

@@ -1,0 +1,140 @@
+@if (isAdmin()) {
+  <section class="admin-home honda-gradient">
+    <div class="admin-home-copy">
+      <p class="section-eyebrow">Admin Home</p>
+
+      <h1>Welcome, {{ user()?.full_name }}</h1>
+
+      <p>
+        This is your admin control home. Manage the customer-facing Honda website
+        without editing code. Update car models, prices, homepage content, and
+        dashboard data from admin tools.
+      </p>
+
+      <div class="admin-note">
+        Admin view is different from customer view. Customer actions like loan,
+        inquiry, and appointment are hidden from the admin navigation.
+      </div>
+    </div>
+
+    <div class="admin-status-card">
+      <span>🛠️ Admin Mode</span>
+      <strong>Website Control Panel</strong>
+      <small>
+        Updates from admin pages are saved to MySQL and reflected automatically on the public site.
+      </small>
+    </div>
+  </section>
+
+  <section class="admin-control-grid">
+    @for (card of adminCards; track card.title) {
+      <a class="admin-control-card" [routerLink]="card.link">
+        <span>{{ card.icon }}</span>
+        <h2>{{ card.title }}</h2>
+        <p>{{ card.text }}</p>
+      </a>
+    }
+  </section>
+} @else {
+  <section class="hero honda-gradient">
+    <div class="hero-copy">
+      <p class="section-eyebrow">{{ homeContent.hero_badge }}</p>
+
+      <h1>{{ homeContent.hero_title }}</h1>
+
+      <p>
+        {{ homeContent.hero_subtitle }}
+      </p>
+
+      @if (homeContent.announcement_text) {
+        <div class="home-announcement">
+          {{ homeContent.announcement_text }}
+        </div>
+      }
+
+      <div class="hero-actions">
+        <a [routerLink]="homeContent.primary_cta_link" class="primary-btn">
+          🚗 {{ homeContent.primary_cta_label }}
+        </a>
+
+        <a [routerLink]="homeContent.secondary_cta_link" class="secondary-btn">
+          🧮 {{ homeContent.secondary_cta_label }}
+        </a>
+
+        <a routerLink="/appointment" class="ghost-btn">
+          📅 Book Appointment
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="car-showcase">
+        <div class="showcase-top">
+          <span class="showcase-icon">🚗</span>
+          <span class="mock-pill">Homepage Preview</span>
+        </div>
+
+        @if (homeContent.hero_image_url) {
+          <img
+            class="hero-uploaded-image"
+            [src]="homeContent.hero_image_url"
+            alt="Homepage hero preview" />
+        } @else {
+          <div class="car-silhouette">
+            <div class="car-roof"></div>
+            <div class="car-body"></div>
+            <div class="wheel wheel-left"></div>
+            <div class="wheel wheel-right"></div>
+          </div>
+        }
+
+        <div class="showcase-info">
+          <strong>Honda-inspired showroom preview</strong>
+          <small>Admin can update this visual from the homepage content manager.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-section">
+    @for (badge of trustBadges; track badge.title) {
+      <article class="trust-card">
+        <span>{{ badge.icon }}</span>
+        <h3>{{ badge.title }}</h3>
+        <p>{{ badge.text }}</p>
+      </article>
+    }
+  </section>
+
+  <section class="advisor-section page-shell">
+    <div>
+      <p class="section-eyebrow">Advisor Story</p>
+      <h2 class="section-title">Built around trust, clarity, and personal follow-up.</h2>
+    </div>
+
+    <div class="advisor-card">
+      @if (homeContent.advisor_image_url) {
+        <img
+          class="advisor-photo-img"
+          [src]="homeContent.advisor_image_url"
+          alt="Advisor profile" />
+      } @else {
+        <div class="advisor-photo">Advisor Photo</div>
+      }
+
+      <div>
+        <h3>{{ homeContent.advisor_title }}</h3>
+
+        <p>
+          {{ homeContent.advisor_text }}
+        </p>
+
+        <div class="disclaimer-card">
+          Public homepage content can be updated by admin. Final car prices,
+          stock, promotions, and loan details must still be verified with the advisor,
+          dealership, or Honda Malaysia.
+        </div>
+      </div>
+    </div>
+  </section>
+}

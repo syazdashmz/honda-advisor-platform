@@ -1,0 +1,266 @@
+<section class="admin-cars-hero honda-gradient">
+  <div>
+    <p class="section-eyebrow">Admin Car Management</p>
+
+    <h1>Manage Honda models, prices, and variant data</h1>
+
+    <p>
+      Updates here are saved into MySQL. Public model pages, car detail pages,
+      and loan calculator selections will automatically read the latest database values.
+    </p>
+  </div>
+
+  <div class="sync-card">
+    <span>🔄 Data Sync</span>
+    <strong>Admin updates → MySQL → Public website</strong>
+    <small>
+      Update once here, and the customer-facing pages will reflect the latest information.
+    </small>
+  </div>
+</section>
+
+<section class="admin-cars-page">
+  <aside class="cars-list-panel">
+    <div class="panel-heading">
+      <p class="section-eyebrow">Models</p>
+      <h2>Honda car list</h2>
+    </div>
+
+    @if (isLoadingCars) {
+      <div class="state-card">Loading cars...</div>
+    }
+
+    @if (!isLoadingCars) {
+      <div class="admin-car-list">
+        @for (car of cars; track car.id) {
+          <button
+            type="button"
+            class="admin-car-item"
+            [class.active]="selectedCar?.id === car.id"
+            (click)="selectCar(car.id)">
+            <span>
+              <strong>{{ car.name }}</strong>
+              <small>{{ car.category }} · {{ car.variant_count || 0 }} variants</small>
+            </span>
+
+            <b>{{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}</b>
+          </button>
+        }
+      </div>
+    }
+  </aside>
+
+  <main class="editor-panel">
+    @if (errorMessage) {
+      <div class="error-alert">{{ errorMessage }}</div>
+    }
+
+    @if (successMessage) {
+      <div class="success-alert">{{ successMessage }}</div>
+    }
+
+    @if (!selectedCar && !isLoadingDetail) {
+      <div class="empty-editor">
+        <span>🚗</span>
+        <h2>Select a Honda model to manage</h2>
+        <p>
+          Choose a model from the left panel to update price, model details,
+          image URL, status, and variant prices.
+        </p>
+      </div>
+    }
+
+    @if (isLoadingDetail) {
+      <div class="state-card">Loading selected car details...</div>
+    }
+
+    @if (selectedCar && !isLoadingDetail) {
+      <form class="admin-form-card" [formGroup]="carForm" (ngSubmit)="saveCarModel()">
+        <div class="form-heading">
+          <div>
+            <p class="section-eyebrow">Model Editor</p>
+            <h2>{{ selectedCar.name }}</h2>
+          </div>
+
+          <button type="submit" class="primary-btn" [disabled]="isSavingCar">
+            {{ isSavingCar ? 'Saving...' : 'Save Model' }}
+          </button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Model name
+            <input type="text" formControlName="name" />
+          </label>
+
+          <label>
+            Slug
+            <input type="text" formControlName="slug" />
+          </label>
+
+          <label>
+            Category
+            <select formControlName="category">
+              <option value="sedan">Sedan</option>
+              <option value="hatchback">Hatchback</option>
+              <option value="suv">SUV</option>
+              <option value="ev">EV</option>
+              <option value="performance">Performance</option>
+            </select>
+          </label>
+
+          <label>
+            Fuel type
+            <select formControlName="fuel_type">
+              <option value="petrol">Petrol</option>
+              <option value="hybrid">Hybrid</option>
+              <option value="ev">EV</option>
+            </select>
+          </label>
+
+          <label>
+            Estimated from price
+            <input type="number" formControlName="estimated_price_from" min="1" />
+          </label>
+
+          <label>
+            Hero image URL
+            <input type="text" formControlName="hero_image_url" />
+          </label>
+        </div>
+
+        <label>
+          Short description
+          <textarea rows="3" formControlName="short_description"></textarea>
+        </label>
+
+        <label>
+          Best for
+          <textarea rows="3" formControlName="best_for"></textarea>
+        </label>
+
+        <label>
+          Data status
+          <textarea rows="3" formControlName="data_status"></textarea>
+        </label>
+
+        <div class="switch-grid">
+          <label class="switch-card">
+            <input type="checkbox" formControlName="is_featured" />
+            <span>Featured model</span>
+          </label>
+
+          <label class="switch-card">
+            <input type="checkbox" formControlName="is_active" />
+            <span>Visible to users</span>
+          </label>
+
+          <label class="switch-card">
+            <input type="checkbox" formControlName="is_mock_data" />
+            <span>Mock/sample data</span>
+          </label>
+        </div>
+      </form>
+
+      <section class="variant-manager">
+        <div class="variant-list">
+          <p class="section-eyebrow">Variants</p>
+          <h2>Update variant prices</h2>
+
+          @for (variant of selectedCar.variants; track variant.id) {
+            <button
+              type="button"
+              class="variant-item"
+              [class.active]="selectedVariant?.id === variant.id"
+              (click)="selectVariant(variant)">
+              <span>
+                <strong>{{ variant.variant_name }}</strong>
+                <small>{{ variant.engine }}</small>
+              </span>
+
+              <b>{{ variant.estimated_price | currency:'MYR':'symbol-narrow':'1.0-0' }}</b>
+            </button>
+          }
+        </div>
+
+        @if (selectedVariant) {
+          <form class="variant-form" [formGroup]="variantForm" (ngSubmit)="saveVariant()">
+            <div class="form-heading">
+              <div>
+                <p class="section-eyebrow">Variant Editor</p>
+                <h2>{{ selectedVariant.variant_name }}</h2>
+              </div>
+
+              <button type="submit" class="primary-btn" [disabled]="isSavingVariant">
+                {{ isSavingVariant ? 'Saving...' : 'Save Variant' }}
+              </button>
+            </div>
+
+            <div class="form-grid">
+              <label>
+                Variant name
+                <input type="text" formControlName="variant_name" />
+              </label>
+
+              <label>
+                Variant price
+                <input type="number" formControlName="estimated_price" min="1" />
+              </label>
+
+              <label>
+                Engine
+                <input type="text" formControlName="engine" />
+              </label>
+
+              <label>
+                Transmission
+                <input type="text" formControlName="transmission" />
+              </label>
+
+              <label>
+                Fuel type
+                <select formControlName="fuel_type">
+                  <option value="petrol">Petrol</option>
+                  <option value="hybrid">Hybrid</option>
+                  <option value="ev">EV</option>
+                </select>
+              </label>
+
+              <label>
+                Sort order
+                <input type="number" formControlName="sort_order" />
+              </label>
+            </div>
+
+            <label>
+              Key highlights
+              <textarea rows="3" formControlName="key_highlights"></textarea>
+            </label>
+
+            <label>
+              Recommended for
+              <textarea rows="3" formControlName="recommended_for"></textarea>
+            </label>
+
+            <label>
+              Data status
+              <textarea rows="3" formControlName="data_status"></textarea>
+            </label>
+
+            <div class="switch-grid">
+              <label class="switch-card">
+                <input type="checkbox" formControlName="is_active" />
+                <span>Variant active</span>
+              </label>
+
+              <label class="switch-card">
+                <input type="checkbox" formControlName="is_mock_data" />
+                <span>Mock/sample data</span>
+              </label>
+            </div>
+          </form>
+        }
+      </section>
+    }
+  </main>
+</section>

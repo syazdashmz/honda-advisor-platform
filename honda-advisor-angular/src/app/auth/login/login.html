@@ -1,0 +1,67 @@
+<section class="auth-page honda-gradient">
+  <div class="auth-copy">
+    <p class="section-eyebrow">Customer Login</p>
+
+    <h1>Welcome back to your Honda advisor portal</h1>
+
+    <p>
+      Login to save preferred Honda models, track inquiry progress, and manage
+      appointment or loan calculation records later.
+    </p>
+
+    <div class="trust-list">
+      <span>🚗 Save preferred models</span>
+      <span>🧮 Revisit loan estimates</span>
+      <span>📅 Track appointment requests</span>
+    </div>
+  </div>
+
+  <form class="auth-card" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+    <div class="card-heading">
+      <span>🔐</span>
+      <div>
+        <h2>Customer Login</h2>
+        <p>Access your customer account.</p>
+      </div>
+    </div>
+
+    @if (errorMessage) {
+      <div class="form-alert">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <label>
+      Email address
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="customer@example.com" />
+    </label>
+
+    @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+      <small class="field-error">Please enter a valid email address.</small>
+    }
+
+    <label>
+      Password
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Enter your password" />
+    </label>
+
+    @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+      <small class="field-error">Password is required.</small>
+    }
+
+    <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Logging in...' : 'Login' }}
+    </button>
+
+    <p class="switch-text">
+      New customer?
+      <a routerLink="/register">Create an account</a>
+    </p>
+  </form>
+</section>

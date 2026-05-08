@@ -1,0 +1,87 @@
+<section class="auth-page honda-gradient">
+  <div class="auth-copy">
+    <p class="section-eyebrow">Customer Register</p>
+
+    <h1>Create your Honda customer account</h1>
+
+    <p>
+      Register to save your preferred models, keep loan estimates, and make future
+      inquiry or appointment tracking easier.
+    </p>
+
+    <div class="trust-list">
+      <span>💬 Easier follow-up</span>
+      <span>🚗 Save Honda interests</span>
+      <span>📅 Appointment support</span>
+    </div>
+  </div>
+
+  <form class="auth-card" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+    <div class="card-heading">
+      <span>👤</span>
+      <div>
+        <h2>Register</h2>
+        <p>Create a customer account.</p>
+      </div>
+    </div>
+
+    @if (errorMessage) {
+      <div class="form-alert">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <label>
+      Full name
+      <input
+        type="text"
+        formControlName="full_name"
+        placeholder="Your full name" />
+    </label>
+
+    @if (registerForm.controls.full_name.touched && registerForm.controls.full_name.invalid) {
+      <small class="field-error">Full name must be at least 3 characters.</small>
+    }
+
+    <label>
+      Email address
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="customer@example.com" />
+    </label>
+
+    @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+      <small class="field-error">Please enter a valid email address.</small>
+    }
+
+    <label>
+      Phone number
+      <input
+        type="text"
+        formControlName="phone_number"
+        placeholder="60123456789" />
+    </label>
+
+    <label>
+      Password
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="At least 8 characters" />
+    </label>
+
+    @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+      <small class="field-error">Password must be at least 8 characters.</small>
+    }
+
+    <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Creating account...' : 'Create Account' }}
+    </button>
+
+    <p class="switch-text">
+      Already registered?
+      <a routerLink="/login">Login here</a>
+    </p>
+  </form>
+</section>
