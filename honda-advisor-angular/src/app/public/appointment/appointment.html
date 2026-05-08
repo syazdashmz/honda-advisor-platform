@@ -5,16 +5,15 @@
     <h1>Book showroom visit, test drive, or consultation</h1>
 
     <p>
-      Choose your preferred Honda model, appointment type, date, and time.
-      Appointment requests are available for registered customers so your history
-      can be tracked later in your customer dashboard.
+      Choose your preferred Honda model, appointment purpose, date, and available
+      advisor time slot. The flow is guided so the customer always knows the next step.
     </p>
 
     <div class="hero-badges">
-      <span>📅 Appointment request</span>
-      <span>🚗 Test drive support</span>
-      <span>🧮 Loan consultation</span>
-      <span>👤 Customer tracking</span>
+      <span>Appointment request</span>
+      <span>Test drive support</span>
+      <span>Loan consultation</span>
+      <span>Customer tracking</span>
     </div>
   </div>
 
@@ -30,7 +29,7 @@
 @if (!isLoggedIn()) {
   <section class="auth-gate">
     <div class="auth-gate-card">
-      <div class="gate-icon">🔐</div>
+      <div class="gate-icon">Lock</div>
 
       <p class="section-eyebrow">Login Required</p>
 
@@ -43,11 +42,11 @@
       </p>
 
       <div class="gate-actions">
-        <a routerLink="/login" class="primary-btn">
+        <a mat-flat-button routerLink="/login" class="primary-btn">
           Login as Customer
         </a>
 
-        <a routerLink="/register" class="secondary-btn">
+        <a mat-stroked-button routerLink="/register" class="secondary-btn">
           Register Account
         </a>
       </div>
@@ -61,14 +60,14 @@
 
 @if (isLoggedIn()) {
   <section class="appointment-page">
-    <form class="appointment-card" [formGroup]="appointmentForm" (ngSubmit)="submitAppointment()">
+    <form class="appointment-card honda-material-form" [formGroup]="appointmentForm" (ngSubmit)="submitAppointment()">
       <div class="card-heading">
         <div>
           <p class="section-eyebrow">Appointment Form</p>
           <h2>Set your preferred appointment details</h2>
         </div>
 
-        <button type="button" class="reset-btn" (click)="resetForm()">
+        <button mat-stroked-button type="button" class="reset-btn" (click)="resetForm()">
           Reset
         </button>
       </div>
@@ -100,25 +99,21 @@
           </div>
         </div>
 
-        <div class="type-grid">
+        <mat-button-toggle-group
+          class="appointment-type-toggle"
+          formControlName="appointment_type"
+          aria-label="Appointment purpose">
           @for (type of appointmentTypes; track type.value) {
-            <label
-              class="type-card"
-              [class.active]="appointmentForm.value.appointment_type === type.value">
-              <input
-                type="radio"
-                formControlName="appointment_type"
-                [value]="type.value" />
-
+            <mat-button-toggle [value]="type.value" class="type-card">
               <span class="type-icon">{{ type.icon }}</span>
 
               <span>
                 <strong>{{ type.label }}</strong>
                 <small>{{ type.description }}</small>
               </span>
-            </label>
+            </mat-button-toggle>
           }
-        </div>
+        </mat-button-toggle-group>
       </div>
 
       <div class="form-section">
@@ -134,49 +129,81 @@
         </div>
 
         <div class="form-grid">
-          <label>
-            Preferred Honda model
-            <select formControlName="car_model_id" [disabled]="isLoadingCars">
-              <option [ngValue]="null">
+          <mat-form-field appearance="outline">
+            <mat-label>Preferred Honda model</mat-label>
+
+            <mat-select formControlName="car_model_id" [disabled]="isLoadingCars">
+              <mat-option [value]="null">
                 {{ isLoadingCars ? 'Loading Honda models...' : 'Advisor recommendation' }}
-              </option>
+              </mat-option>
 
               @for (car of cars; track car.id) {
-                <option [ngValue]="car.id">
-                  {{ car.name }} — From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
-                </option>
+                <mat-option [value]="car.id">
+                  {{ car.name }} - From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+                </mat-option>
               }
-            </select>
-          </label>
+            </mat-select>
+          </mat-form-field>
 
-          <label>
-            Preferred date <b>*</b>
+          <mat-form-field appearance="outline">
+            <mat-label>Preferred date</mat-label>
+
             <input
-              type="date"
+              matInput
+              readonly
               formControlName="preferred_date"
-              [min]="getMinDate()"
-              [max]="getMaxDate()"
-              (change)="onDateChange()" />
-          </label>
+              [matDatepicker]="appointmentPicker"
+              [min]="minAppointmentDate"
+              [max]="maxAppointmentDate"
+              (dateChange)="onDateChange()" />
 
-          <label>
-            Preferred time <b>*</b>
-            <select formControlName="preferred_time">
-              <option value="">
-                {{ isLoadingAvailability ? 'Checking available slots...' : 'Select time slot' }}
-              </option>
+            <mat-datepicker-toggle matIconSuffix [for]="appointmentPicker"></mat-datepicker-toggle>
+            <mat-datepicker #appointmentPicker></mat-datepicker>
+            <mat-hint>Today up to 1 month ahead.</mat-hint>
 
-              @for (slot of timeSlots; track slot) {
-                <option
-                  [value]="slot"
-                  [disabled]="isSlotUnavailable(slot)">
-                  {{ formatTimeSlot(slot) }}
-                  {{ unavailableSlots.includes(slot) ? ' — Already Booked' : '' }}
-                  {{ isPastTimeSlot(slot) ? ' — Time Passed' : '' }}
-                </option>
-              }
-            </select>
-          </label>
+            @if (appointmentForm.controls.preferred_date.touched && appointmentForm.controls.preferred_date.invalid) {
+              <mat-error>Please choose a preferred appointment date.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="time-slot-block">
+          <div class="time-slot-heading">
+            <span>Preferred time</span>
+
+            @if (isLoadingAvailability) {
+              <small>Checking available slots...</small>
+            } @else if (!appointmentForm.value.preferred_date) {
+              <small>Choose a date first to enable time selection.</small>
+            } @else {
+              <small>Unavailable or past slots are disabled automatically.</small>
+            }
+          </div>
+
+          <mat-button-toggle-group
+            class="time-slot-grid"
+            formControlName="preferred_time"
+            aria-label="Preferred appointment time">
+            @for (slot of timeSlots; track slot) {
+              <mat-button-toggle
+                [value]="slot"
+                [disabled]="!appointmentForm.value.preferred_date || isSlotUnavailable(slot)">
+                <strong>{{ formatTimeSlot(slot) }}</strong>
+
+                @if (unavailableSlots.includes(slot)) {
+                  <small>Booked</small>
+                } @else if (isPastTimeSlot(slot)) {
+                  <small>Passed</small>
+                } @else {
+                  <small>Available</small>
+                }
+              </mat-button-toggle>
+            }
+          </mat-button-toggle-group>
+
+          @if (appointmentForm.controls.preferred_time.touched && appointmentForm.controls.preferred_time.invalid) {
+            <small class="field-error">Please select a preferred appointment time.</small>
+          }
         </div>
       </div>
 
@@ -190,47 +217,32 @@
         </div>
 
         <div class="form-grid">
-          <div>
-            <label>
-              Full name <b>*</b>
-              <input
-                type="text"
-                formControlName="full_name"
-                placeholder="Your full name" />
-            </label>
+          <mat-form-field appearance="outline">
+            <mat-label>Full name</mat-label>
+            <input matInput type="text" formControlName="full_name" placeholder="Your full name" />
 
             @if (appointmentForm.controls.full_name.touched && appointmentForm.controls.full_name.invalid) {
-              <small class="field-error">Full name must be at least 3 characters.</small>
+              <mat-error>Full name must be at least 3 characters.</mat-error>
             }
-          </div>
+          </mat-form-field>
 
-          <div>
-            <label>
-              Phone number <b>*</b>
-              <input
-                type="text"
-                formControlName="phone_number"
-                placeholder="60123456789" />
-            </label>
+          <mat-form-field appearance="outline">
+            <mat-label>Phone number</mat-label>
+            <input matInput type="tel" formControlName="phone_number" placeholder="60123456789" />
 
             @if (appointmentForm.controls.phone_number.touched && appointmentForm.controls.phone_number.invalid) {
-              <small class="field-error">Please enter a valid phone number.</small>
+              <mat-error>Please enter a valid phone number.</mat-error>
             }
-          </div>
+          </mat-form-field>
 
-          <div>
-            <label>
-              Email address
-              <input
-                type="email"
-                formControlName="email"
-                placeholder="customer@example.com" />
-            </label>
+          <mat-form-field appearance="outline">
+            <mat-label>Email address</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="customer@example.com" />
 
             @if (appointmentForm.controls.email.touched && appointmentForm.controls.email.invalid) {
-              <small class="field-error">Please enter a valid email address.</small>
+              <mat-error>Please enter a valid email address.</mat-error>
             }
-          </div>
+          </mat-form-field>
         </div>
       </div>
 
@@ -243,25 +255,21 @@
           </div>
         </div>
 
-        <label>
-          Message
+        <mat-form-field appearance="outline" class="full-field">
+          <mat-label>Message</mat-label>
           <textarea
+            matInput
             rows="5"
             formControlName="message"
-            placeholder="Example: I want to test drive HR-V and discuss monthly payment estimate.">
-          </textarea>
-        </label>
+            placeholder="Example: I want to test drive HR-V and discuss monthly payment estimate."></textarea>
+        </mat-form-field>
 
-        <label class="consent-card">
-          <input type="checkbox" formControlName="appointment_consent" />
-
-          <span>
-            <strong>I understand this is an appointment request <b>*</b></strong>
-            <small>
-              Final appointment slot depends on advisor, dealership, vehicle, and schedule availability.
-            </small>
-          </span>
-        </label>
+        <mat-checkbox class="consent-card material-consent" formControlName="appointment_consent">
+          <strong>I understand this is an appointment request <b>*</b></strong>
+          <small>
+            Final appointment slot depends on advisor, dealership, vehicle, and schedule availability.
+          </small>
+        </mat-checkbox>
 
         @if (appointmentForm.controls.appointment_consent.touched && appointmentForm.controls.appointment_consent.invalid) {
           <small class="field-error">Confirmation is required before submitting.</small>
@@ -269,11 +277,11 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+        <button mat-flat-button type="submit" class="primary-btn" [disabled]="isSubmitting">
           {{ isSubmitting ? 'Submitting appointment...' : 'Submit Appointment Request' }}
         </button>
 
-        <a routerLink="/inquiry" class="secondary-btn">
+        <a mat-stroked-button routerLink="/inquiry" class="secondary-btn">
           Submit Inquiry Instead
         </a>
       </div>
@@ -287,9 +295,9 @@
     <aside class="appointment-side-panel">
       @if (!submittedAppointment) {
         <div class="side-card">
-          <span class="side-icon">📅</span>
+          <span class="side-icon">Plan</span>
 
-          <h2>How appointment tracking will work</h2>
+          <h2>How appointment tracking works</h2>
 
           <div class="process-list">
             <div>
@@ -304,7 +312,7 @@
 
             <div>
               <b>3</b>
-              <span>Later, your dashboard can show appointment history and status.</span>
+              <span>Your dashboard can show appointment history and status.</span>
             </div>
           </div>
         </div>
@@ -317,7 +325,7 @@
 
       @if (submittedAppointment) {
         <div class="success-panel">
-          <span class="success-icon">✅</span>
+          <span class="success-icon">Done</span>
 
           <p class="section-eyebrow">Appointment Requested</p>
 

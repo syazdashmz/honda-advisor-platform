@@ -1,3 +1,5 @@
+@import '@angular/material/prebuilt-themes/rose-red.css';
+
 :root {
   --honda-red: #c8102e;
   --honda-red-dark: #9f0d25;
@@ -30,6 +32,18 @@ body {
   font-family: Inter, Arial, Helvetica, sans-serif;
   background: var(--white);
   color: var(--ink-black);
+  --mat-sys-primary: var(--honda-red);
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: #ffe0e4;
+  --mat-sys-on-primary-container: #41000a;
+  --mat-sys-secondary: var(--ink-black);
+  --mat-sys-on-secondary: #ffffff;
+  --mat-sys-surface: #ffffff;
+  --mat-sys-surface-container: #f9fafb;
+  --mat-sys-outline: var(--border);
+  --mat-sys-corner-small: 14px;
+  --mat-sys-corner-medium: 18px;
+  --mat-sys-corner-large: 24px;
 }
 
 a {

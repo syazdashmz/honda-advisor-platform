@@ -6,6 +6,13 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { CarsService } from '../../core/services/cars.service';
 import { InquiriesService } from '../../core/services/inquiries.service';
@@ -20,7 +27,14 @@ import {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   templateUrl: './inquiry.html',
   styleUrl: './inquiry.scss'

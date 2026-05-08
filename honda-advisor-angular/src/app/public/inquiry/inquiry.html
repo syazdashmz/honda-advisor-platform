@@ -5,15 +5,15 @@
     <h1>Ask the advisor about your preferred Honda</h1>
 
     <p>
-      Share your preferred Honda model, budget, monthly payment target, and buying timeline.
-      The advisor can follow up with clearer model guidance, loan explanation, and appointment support.
+      Share your preferred model, budget, monthly payment target, and buying timeline.
+      The form guides customers step by step so the advisor receives clearer information.
     </p>
 
     <div class="hero-badges">
-      <span>💬 Fast follow-up</span>
-      <span>🚗 Model guidance</span>
-      <span>🧮 Loan support</span>
-      <span>📅 Appointment ready</span>
+      <span>Fast follow-up</span>
+      <span>Model guidance</span>
+      <span>Loan support</span>
+      <span>Appointment ready</span>
     </div>
   </div>
 
@@ -27,14 +27,14 @@
 </section>
 
 <section class="inquiry-page">
-  <form class="inquiry-card" [formGroup]="inquiryForm" (ngSubmit)="submitInquiry()">
+  <form class="inquiry-card honda-material-form" [formGroup]="inquiryForm" (ngSubmit)="submitInquiry()">
     <div class="card-heading">
       <div>
         <p class="section-eyebrow">Inquiry Form</p>
         <h2>Tell us what you are looking for</h2>
       </div>
 
-      <button type="button" class="reset-btn" (click)="resetForm()">
+      <button mat-stroked-button type="button" class="reset-btn" (click)="resetForm()">
         Reset
       </button>
     </div>
@@ -66,20 +66,23 @@
         </div>
       </div>
 
-      <label>
-        Preferred Honda model
-        <select formControlName="car_model_id" [disabled]="isLoadingCars">
-          <option [ngValue]="null">
+      <mat-form-field appearance="outline" class="full-field">
+        <mat-label>Preferred Honda model</mat-label>
+
+        <mat-select formControlName="car_model_id" [disabled]="isLoadingCars">
+          <mat-option [value]="null">
             {{ isLoadingCars ? 'Loading Honda models...' : 'Need advisor recommendation' }}
-          </option>
+          </mat-option>
 
           @for (car of cars; track car.id) {
-            <option [ngValue]="car.id">
-              {{ car.name }} — From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
-            </option>
+            <mat-option [value]="car.id">
+              {{ car.name }} - From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+            </mat-option>
           }
-        </select>
-      </label>
+        </mat-select>
+
+        <mat-hint>The advisor can recommend a model if you are still comparing.</mat-hint>
+      </mat-form-field>
     </div>
 
     <div class="form-section">
@@ -92,57 +95,45 @@
       </div>
 
       <div class="form-grid">
-        <div>
-          <label>
-            Full name
-            <input
-              type="text"
-              formControlName="full_name"
-              placeholder="Your full name" />
-          </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Full name</mat-label>
+          <input matInput type="text" formControlName="full_name" placeholder="Your full name" />
 
           @if (inquiryForm.controls.full_name.touched && inquiryForm.controls.full_name.invalid) {
-            <small class="field-error">Full name must be at least 3 characters.</small>
+            <mat-error>Full name must be at least 3 characters.</mat-error>
           }
-        </div>
+        </mat-form-field>
 
-        <div>
-          <label>
-            Phone number
-            <input
-              type="text"
-              formControlName="phone_number"
-              placeholder="60123456789" />
-          </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Phone number</mat-label>
+          <input matInput type="tel" formControlName="phone_number" placeholder="60123456789" />
+          <mat-hint>WhatsApp-friendly format is recommended.</mat-hint>
 
           @if (inquiryForm.controls.phone_number.touched && inquiryForm.controls.phone_number.invalid) {
-            <small class="field-error">Please enter a valid phone number.</small>
+            <mat-error>Please enter a valid phone number.</mat-error>
           }
-        </div>
+        </mat-form-field>
 
-        <div>
-          <label>
-            Email address
-            <input
-              type="email"
-              formControlName="email"
-              placeholder="customer@example.com" />
-          </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Email address</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="customer@example.com" />
 
           @if (inquiryForm.controls.email.touched && inquiryForm.controls.email.invalid) {
-            <small class="field-error">Please enter a valid email address.</small>
+            <mat-error>Please enter a valid email address.</mat-error>
           }
-        </div>
+        </mat-form-field>
 
-        <div>
-          <label>
-            Preferred contact method
-            <select formControlName="preferred_contact_method">
-              <option value="whatsapp">WhatsApp</option>
-              <option value="phone_call">Phone Call</option>
-              <option value="email">Email</option>
-            </select>
-          </label>
+        <div class="material-choice-block">
+          <span class="field-label">Preferred contact method</span>
+
+          <mat-button-toggle-group
+            class="contact-toggle"
+            formControlName="preferred_contact_method"
+            aria-label="Preferred contact method">
+            <mat-button-toggle value="whatsapp">WhatsApp</mat-button-toggle>
+            <mat-button-toggle value="phone_call">Phone Call</mat-button-toggle>
+            <mat-button-toggle value="email">Email</mat-button-toggle>
+          </mat-button-toggle-group>
         </div>
       </div>
     </div>
@@ -157,50 +148,44 @@
       </div>
 
       <div class="form-grid">
-        <label>
-          Budget range
-          <select formControlName="budget_range">
+        <mat-form-field appearance="outline">
+          <mat-label>Budget range</mat-label>
+          <mat-select formControlName="budget_range">
             @for (budget of budgetRanges; track budget) {
-              <option [value]="budget">{{ budget }}</option>
+              <mat-option [value]="budget">{{ budget }}</mat-option>
             }
-          </select>
-        </label>
+          </mat-select>
+        </mat-form-field>
 
-        <label>
-          Monthly budget
-          <select formControlName="monthly_budget">
+        <mat-form-field appearance="outline">
+          <mat-label>Monthly budget</mat-label>
+          <mat-select formControlName="monthly_budget">
             @for (budget of monthlyBudgetRanges; track budget) {
-              <option [value]="budget">{{ budget }}</option>
+              <mat-option [value]="budget">{{ budget }}</mat-option>
             }
-          </select>
-        </label>
+          </mat-select>
+        </mat-form-field>
 
-        <label>
-          Buying timeline
-          <select formControlName="buying_timeline">
+        <mat-form-field appearance="outline">
+          <mat-label>Buying timeline</mat-label>
+          <mat-select formControlName="buying_timeline">
             @for (timeline of buyingTimelines; track timeline) {
-              <option [value]="timeline">{{ timeline }}</option>
+              <mat-option [value]="timeline">{{ timeline }}</mat-option>
             }
-          </select>
-        </label>
+          </mat-select>
+        </mat-form-field>
       </div>
 
-      <div class="toggle-row">
-        <label class="toggle-card">
-          <input type="checkbox" formControlName="needs_loan" />
-          <span>
-            <strong>Need loan guidance?</strong>
-            <small>Advisor can explain estimate, documents, and bank process.</small>
-          </span>
-        </label>
+      <div class="toggle-row material-toggles">
+        <mat-slide-toggle formControlName="needs_loan">
+          <strong>Need loan guidance?</strong>
+          <small>Advisor can explain estimates, documents, and bank process.</small>
+        </mat-slide-toggle>
 
-        <label class="toggle-card">
-          <input type="checkbox" formControlName="has_trade_in" />
-          <span>
-            <strong>Have trade-in car?</strong>
-            <small>Advisor can guide indicative value and next inspection step.</small>
-          </span>
-        </label>
+        <mat-slide-toggle formControlName="has_trade_in">
+          <strong>Have trade-in car?</strong>
+          <small>Advisor can guide indicative value and inspection next step.</small>
+        </mat-slide-toggle>
       </div>
     </div>
 
@@ -213,25 +198,21 @@
         </div>
       </div>
 
-      <label>
-        Message
+      <mat-form-field appearance="outline" class="full-field">
+        <mat-label>Message</mat-label>
         <textarea
+          matInput
           rows="5"
           formControlName="message"
-          placeholder="Example: I am interested in Honda HR-V and want to know monthly payment estimate.">
-        </textarea>
-      </label>
+          placeholder="Example: I am interested in Honda HR-V and want to know monthly payment estimate."></textarea>
+      </mat-form-field>
 
-      <label class="consent-card">
-        <input type="checkbox" formControlName="privacy_consent" />
-
-        <span>
-          <strong>I agree to be contacted for this inquiry <b>*</b></strong>
-          <small>
-            Submitted details will be used for customer inquiry and advisor follow-up support.
-          </small>
-        </span>
-      </label>
+      <mat-checkbox class="consent-card material-consent" formControlName="privacy_consent">
+        <strong>I agree to be contacted for this inquiry <b>*</b></strong>
+        <small>
+          Submitted details will be used for customer inquiry and advisor follow-up support.
+        </small>
+      </mat-checkbox>
 
       @if (inquiryForm.controls.privacy_consent.touched && inquiryForm.controls.privacy_consent.invalid) {
         <small class="field-error">Privacy consent is required before submitting.</small>
@@ -239,11 +220,11 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+      <button mat-flat-button type="submit" class="primary-btn" [disabled]="isSubmitting">
         {{ isSubmitting ? 'Submitting inquiry...' : 'Submit Inquiry' }}
       </button>
 
-      <a routerLink="/appointment" class="secondary-btn">
+      <a mat-stroked-button routerLink="/appointment" class="secondary-btn">
         Book Appointment Instead
       </a>
     </div>
@@ -258,9 +239,9 @@
   <aside class="inquiry-side-panel">
     @if (!submittedInquiry) {
       <div class="side-card">
-        <span class="side-icon">💬</span>
+        <span class="side-icon">1</span>
 
-        <h2>What happens after submission?</h2>
+        <h2>Guided follow-up flow</h2>
 
         <div class="process-list">
           <div>
@@ -290,7 +271,7 @@
 
     @if (submittedInquiry) {
       <div class="success-panel">
-        <span class="success-icon">✅</span>
+        <span class="success-icon">Done</span>
 
         <p class="section-eyebrow">Inquiry Received</p>
 
@@ -318,8 +299,8 @@
           </div>
         </div>
 
-        <a routerLink="/appointment" class="primary-btn">
-          📅 Book Appointment
+        <a mat-flat-button routerLink="/appointment" class="primary-btn">
+          Book Appointment
         </a>
       </div>
     }

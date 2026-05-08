@@ -6,6 +6,13 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AuthService } from '../../core/services/auth.service';
 import { CarsService } from '../../core/services/cars.service';
@@ -23,7 +30,14 @@ import {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
   ],
   templateUrl: './appointment.html',
   styleUrl: './appointment.scss'
@@ -40,6 +54,8 @@ export class Appointment implements OnInit {
 
   cars: CarModel[] = [];
   unavailableSlots: string[] = [];
+  minAppointmentDate = this.startOfDay(new Date());
+  maxAppointmentDate = this.addMonths(this.minAppointmentDate, 1);
 
   isLoadingCars = true;
   isLoadingAvailability = false;
@@ -140,7 +156,7 @@ export class Appointment implements OnInit {
     ],
 
     preferred_date: [
-      '',
+      null as Date | null,
       [
         Validators.required
       ]
@@ -205,7 +221,8 @@ export class Appointment implements OnInit {
   }
 
   onDateChange(): void {
-    const selectedDate = this.appointmentForm.value.preferred_date || '';
+    const selectedDate = this.appointmentForm.value.preferred_date;
+    const selectedDateString = this.formatDateForInput(selectedDate);
 
     this.unavailableSlots = [];
     this.formErrorMessage = '';
@@ -214,21 +231,21 @@ export class Appointment implements OnInit {
       preferred_time: ''
     });
 
-    if (!selectedDate) {
+    if (!selectedDate || !selectedDateString) {
       return;
     }
 
-    if (selectedDate < this.getMinDate()) {
+    if (selectedDateString < this.getMinDateString()) {
       this.formErrorMessage = 'Preferred appointment date cannot be in the past.';
       return;
     }
 
-    if (selectedDate > this.getMaxDate()) {
+    if (selectedDateString > this.getMaxDateString()) {
       this.formErrorMessage = 'Appointments can only be requested within 1 month from today.';
       return;
     }
 
-    this.loadAvailability(selectedDate);
+    this.loadAvailability(selectedDateString);
   }
 
   loadAvailability(date: string): void {
@@ -255,9 +272,11 @@ export class Appointment implements OnInit {
   }
 
   isPastTimeSlot(slot: string): boolean {
-    const selectedDate = this.appointmentForm.value.preferred_date || '';
+    const selectedDate = this.formatDateForInput(
+      this.appointmentForm.value.preferred_date
+    );
 
-    if (!selectedDate || selectedDate !== this.getMinDate()) {
+    if (!selectedDate || selectedDate !== this.getMinDateString()) {
       return false;
     }
 
@@ -306,7 +325,7 @@ export class Appointment implements OnInit {
           phone_number: currentUser?.phone_number || '',
           email: currentUser?.email || '',
           appointment_type: 'showroom_visit',
-          preferred_date: '',
+          preferred_date: null,
           preferred_time: '',
           message: '',
           appointment_consent: false
@@ -338,7 +357,7 @@ export class Appointment implements OnInit {
       phone_number: currentUser?.phone_number || '',
       email: currentUser?.email || '',
       appointment_type: 'showroom_visit',
-      preferred_date: '',
+      preferred_date: null,
       preferred_time: '',
       message: '',
       appointment_consent: false
@@ -348,17 +367,6 @@ export class Appointment implements OnInit {
     this.formErrorMessage = '';
     this.successMessage = '';
     this.submittedAppointment = undefined;
-  }
-
-  getMinDate(): string {
-    const today = new Date();
-    return this.formatDateForInput(today);
-  }
-
-  getMaxDate(): string {
-    const maxDate = new Date();
-    maxDate.setMonth(maxDate.getMonth() + 1);
-    return this.formatDateForInput(maxDate);
   }
 
   getCurrentTimeString(): string {
@@ -405,7 +413,9 @@ export class Appointment implements OnInit {
         : null,
       appointment_type:
         this.appointmentForm.value.appointment_type || 'showroom_visit',
-      preferred_date: String(this.appointmentForm.value.preferred_date || ''),
+      preferred_date: this.formatDateForInput(
+        this.appointmentForm.value.preferred_date
+      ),
       preferred_time: String(this.appointmentForm.value.preferred_time || ''),
       message: this.appointmentForm.value.message
         ? String(this.appointmentForm.value.message).trim()
@@ -430,11 +440,11 @@ export class Appointment implements OnInit {
       return 'Please select preferred appointment date.';
     }
 
-    if (payload.preferred_date < this.getMinDate()) {
+    if (payload.preferred_date < this.getMinDateString()) {
       return 'Preferred appointment date cannot be in the past.';
     }
 
-    if (payload.preferred_date > this.getMaxDate()) {
+    if (payload.preferred_date > this.getMaxDateString()) {
       return 'Appointments can only be requested within 1 month from today.';
     }
 
@@ -457,11 +467,39 @@ export class Appointment implements OnInit {
     return '';
   }
 
-  private formatDateForInput(date: Date): string {
+  private getMinDateString(): string {
+    return this.formatDateForInput(this.minAppointmentDate);
+  }
+
+  private getMaxDateString(): string {
+    return this.formatDateForInput(this.maxAppointmentDate);
+  }
+
+  private formatDateForInput(date?: Date | string | null): string {
+    if (!date) {
+      return '';
+    }
+
+    if (typeof date === 'string') {
+      return date;
+    }
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
+  }
+
+  private startOfDay(date: Date): Date {
+    const value = new Date(date);
+    value.setHours(0, 0, 0, 0);
+    return value;
+  }
+
+  private addMonths(date: Date, months: number): Date {
+    const value = new Date(date);
+    value.setMonth(value.getMonth() + months);
+    return value;
   }
 }

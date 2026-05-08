@@ -218,6 +218,104 @@ textarea {
   line-height: 1.7;
 }
 
+.honda-material-form {
+  --mdc-outlined-text-field-container-shape: 18px;
+  --mdc-outlined-text-field-focus-outline-color: var(--honda-red);
+  --mdc-outlined-text-field-hover-outline-color: var(--honda-red);
+  --mdc-outlined-text-field-focus-label-text-color: var(--honda-red);
+  --mat-select-focused-arrow-color: var(--honda-red);
+}
+
+.full-field,
+.honda-material-form mat-form-field {
+  width: 100%;
+}
+
+:host ::ng-deep .honda-material-form .mat-mdc-text-field-wrapper {
+  background: #fff;
+}
+
+:host ::ng-deep .honda-material-form .mat-mdc-form-field input,
+:host ::ng-deep .honda-material-form .mat-mdc-form-field textarea {
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:host ::ng-deep .honda-material-form .mat-mdc-form-field textarea {
+  line-height: 1.7;
+}
+
+.material-choice-block {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.field-label {
+  color: var(--ink-black);
+  font-weight: 900;
+}
+
+.contact-toggle {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+}
+
+:host ::ng-deep .contact-toggle .mat-button-toggle {
+  border: 0;
+  color: var(--graphite);
+  font-weight: 900;
+}
+
+:host ::ng-deep .contact-toggle .mat-button-toggle-checked {
+  background: var(--honda-red);
+  color: #fff;
+}
+
+.material-toggles {
+  mat-slide-toggle {
+    min-height: 96px;
+    padding: 16px;
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid var(--border);
+  }
+
+  strong,
+  small {
+    display: block;
+  }
+
+  small {
+    margin-top: 4px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+}
+
+.material-consent {
+  width: 100%;
+  margin-top: 18px;
+}
+
+:host ::ng-deep .material-consent .mdc-form-field {
+  width: 100%;
+}
+
+:host ::ng-deep .material-consent label {
+  width: 100%;
+}
+
 .field-error {
   display: block;
   margin-top: 8px;

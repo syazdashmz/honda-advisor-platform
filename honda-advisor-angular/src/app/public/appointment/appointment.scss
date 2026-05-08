@@ -337,6 +337,161 @@ textarea {
   line-height: 1.7;
 }
 
+.honda-material-form {
+  --mdc-outlined-text-field-container-shape: 18px;
+  --mdc-outlined-text-field-focus-outline-color: var(--honda-red);
+  --mdc-outlined-text-field-hover-outline-color: var(--honda-red);
+  --mdc-outlined-text-field-focus-label-text-color: var(--honda-red);
+  --mat-select-focused-arrow-color: var(--honda-red);
+}
+
+.full-field,
+.honda-material-form mat-form-field {
+  width: 100%;
+}
+
+:host ::ng-deep .honda-material-form .mat-mdc-text-field-wrapper {
+  background: #fff;
+}
+
+:host ::ng-deep .honda-material-form .mat-mdc-form-field input,
+:host ::ng-deep .honda-material-form .mat-mdc-form-field textarea {
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:host ::ng-deep .honda-material-form .mat-mdc-form-field textarea {
+  line-height: 1.7;
+}
+
+.appointment-type-toggle {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  border: 0;
+  overflow: visible;
+}
+
+:host ::ng-deep .appointment-type-toggle .mat-button-toggle {
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: #fff;
+  color: var(--graphite);
+  white-space: normal;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.04);
+  transition: 0.2s ease;
+}
+
+:host ::ng-deep .appointment-type-toggle .mat-button-toggle:hover,
+:host ::ng-deep .appointment-type-toggle .mat-button-toggle-checked {
+  border-color: var(--honda-red);
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.08), #fff);
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-2px);
+}
+
+:host ::ng-deep .appointment-type-toggle .mat-button-toggle-label-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  line-height: normal;
+  text-align: left;
+}
+
+:host ::ng-deep .appointment-type-toggle .mat-button-toggle-checked .type-icon {
+  background: var(--honda-red);
+  color: #fff;
+}
+
+.time-slot-block {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.time-slot-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+
+  span {
+    color: var(--ink-black);
+    font-weight: 950;
+  }
+
+  small {
+    color: var(--muted);
+    line-height: 1.5;
+  }
+}
+
+.time-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  border: 0;
+  overflow: visible;
+}
+
+:host ::ng-deep .time-slot-grid .mat-button-toggle {
+  min-height: 76px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: #fff;
+  color: var(--graphite);
+  white-space: normal;
+}
+
+:host ::ng-deep .time-slot-grid .mat-button-toggle-label-content {
+  display: grid;
+  gap: 4px;
+  padding: 13px;
+  line-height: 1.2;
+}
+
+:host ::ng-deep .time-slot-grid .mat-button-toggle-checked {
+  background: var(--honda-red);
+  color: #fff;
+  border-color: var(--honda-red);
+  box-shadow: 0 14px 28px rgba(200, 16, 46, 0.22);
+}
+
+:host ::ng-deep .time-slot-grid .mat-button-toggle-disabled {
+  opacity: 0.48;
+  background: #f3f4f6;
+}
+
+.time-slot-grid strong,
+.time-slot-grid small {
+  display: block;
+}
+
+.time-slot-grid small {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.material-consent {
+  width: 100%;
+  margin-top: 18px;
+}
+
+:host ::ng-deep .material-consent .mdc-form-field {
+  width: 100%;
+}
+
+:host ::ng-deep .material-consent label {
+  width: 100%;
+}
+
 .field-error {
   display: block;
   margin-top: 8px;
@@ -582,6 +737,8 @@ textarea {
 
   .form-grid,
   .type-grid,
+  .appointment-type-toggle,
+  .time-slot-grid,
   .form-actions {
     grid-template-columns: 1fr;
   }
