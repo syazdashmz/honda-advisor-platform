@@ -10,15 +10,15 @@
     </p>
 
     <div class="trust-list">
-      <span>🚗 Save preferred models</span>
-      <span>🧮 Revisit loan estimates</span>
-      <span>📅 Track appointment requests</span>
+      <span><mat-icon>directions_car</mat-icon> Save preferred models</span>
+      <span><mat-icon>calculate</mat-icon> Revisit loan estimates</span>
+      <span><mat-icon>event_available</mat-icon> Track appointment requests</span>
     </div>
   </div>
 
-  <form class="auth-card" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+  <form class="auth-card honda-material-form" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
     <div class="card-heading">
-      <span>🔐</span>
+      <span class="heading-icon"><mat-icon>lock</mat-icon></span>
       <div>
         <h2>Customer Login</h2>
         <p>Access your customer account.</p>
@@ -31,31 +31,28 @@
       </div>
     }
 
-    <label>
-      Email address
-      <input
-        type="email"
-        formControlName="email"
-        placeholder="customer@example.com" />
-    </label>
+    <mat-form-field appearance="outline">
+      <mat-label>Email address</mat-label>
+      <input matInput type="email" formControlName="email" placeholder="customer@example.com" />
+      <mat-icon matPrefix>mail</mat-icon>
 
-    @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
-      <small class="field-error">Please enter a valid email address.</small>
-    }
+      @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+        <mat-error>Please enter a valid email address.</mat-error>
+      }
+    </mat-form-field>
 
-    <label>
-      Password
-      <input
-        type="password"
-        formControlName="password"
-        placeholder="Enter your password" />
-    </label>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" placeholder="Enter your password" />
+      <mat-icon matPrefix>key</mat-icon>
 
-    @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
-      <small class="field-error">Password is required.</small>
-    }
+      @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+        <mat-error>Password is required.</mat-error>
+      }
+    </mat-form-field>
 
-    <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+    <button mat-flat-button type="submit" class="primary-btn" [disabled]="isSubmitting">
+      <mat-icon>login</mat-icon>
       {{ isSubmitting ? 'Logging in...' : 'Login' }}
     </button>
 

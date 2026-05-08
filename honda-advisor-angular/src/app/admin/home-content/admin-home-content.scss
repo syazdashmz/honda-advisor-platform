@@ -11,7 +11,7 @@
     max-width: 900px;
     font-size: clamp(42px, 6vw, 76px);
     line-height: 0.98;
-    letter-spacing: -0.06em;
+    letter-spacing: 0;
   }
 
   p {
@@ -41,7 +41,7 @@
     display: block;
     margin: 10px 0;
     font-size: 32px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 }
 
@@ -73,7 +73,7 @@
   h2 {
     margin: 0;
     font-size: 34px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 }
 
@@ -186,7 +186,7 @@ textarea {
   h2 {
     margin: 0 0 12px;
     font-size: 32px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   p {

@@ -10,15 +10,15 @@
     </p>
 
     <div class="trust-list">
-      <span>💬 Easier follow-up</span>
-      <span>🚗 Save Honda interests</span>
-      <span>📅 Appointment support</span>
+      <span><mat-icon>forum</mat-icon> Easier follow-up</span>
+      <span><mat-icon>directions_car</mat-icon> Save Honda interests</span>
+      <span><mat-icon>event_available</mat-icon> Appointment support</span>
     </div>
   </div>
 
-  <form class="auth-card" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+  <form class="auth-card honda-material-form" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
     <div class="card-heading">
-      <span>👤</span>
+      <span class="heading-icon"><mat-icon>person_add</mat-icon></span>
       <div>
         <h2>Register</h2>
         <p>Create a customer account.</p>
@@ -31,51 +31,45 @@
       </div>
     }
 
-    <label>
-      Full name
-      <input
-        type="text"
-        formControlName="full_name"
-        placeholder="Your full name" />
-    </label>
+    <mat-form-field appearance="outline">
+      <mat-label>Full name</mat-label>
+      <input matInput type="text" formControlName="full_name" placeholder="Your full name" />
+      <mat-icon matPrefix>badge</mat-icon>
 
-    @if (registerForm.controls.full_name.touched && registerForm.controls.full_name.invalid) {
-      <small class="field-error">Full name must be at least 3 characters.</small>
-    }
+      @if (registerForm.controls.full_name.touched && registerForm.controls.full_name.invalid) {
+        <mat-error>Full name must be at least 3 characters.</mat-error>
+      }
+    </mat-form-field>
 
-    <label>
-      Email address
-      <input
-        type="email"
-        formControlName="email"
-        placeholder="customer@example.com" />
-    </label>
+    <mat-form-field appearance="outline">
+      <mat-label>Email address</mat-label>
+      <input matInput type="email" formControlName="email" placeholder="customer@example.com" />
+      <mat-icon matPrefix>mail</mat-icon>
 
-    @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
-      <small class="field-error">Please enter a valid email address.</small>
-    }
+      @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+        <mat-error>Please enter a valid email address.</mat-error>
+      }
+    </mat-form-field>
 
-    <label>
-      Phone number
-      <input
-        type="text"
-        formControlName="phone_number"
-        placeholder="60123456789" />
-    </label>
+    <mat-form-field appearance="outline">
+      <mat-label>Phone number</mat-label>
+      <input matInput type="tel" formControlName="phone_number" placeholder="60123456789" />
+      <mat-icon matPrefix>phone</mat-icon>
+      <mat-hint>Optional, but useful for advisor follow-up.</mat-hint>
+    </mat-form-field>
 
-    <label>
-      Password
-      <input
-        type="password"
-        formControlName="password"
-        placeholder="At least 8 characters" />
-    </label>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" placeholder="At least 8 characters" />
+      <mat-icon matPrefix>key</mat-icon>
 
-    @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
-      <small class="field-error">Password must be at least 8 characters.</small>
-    }
+      @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+        <mat-error>Password must be at least 8 characters.</mat-error>
+      }
+    </mat-form-field>
 
-    <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+    <button mat-flat-button type="submit" class="primary-btn" [disabled]="isSubmitting">
+      <mat-icon>person_add</mat-icon>
       {{ isSubmitting ? 'Creating account...' : 'Create Account' }}
     </button>
 

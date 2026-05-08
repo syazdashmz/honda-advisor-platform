@@ -14,7 +14,7 @@
     color: var(--ink-black);
     font-size: clamp(42px, 6vw, 76px);
     line-height: 0.98;
-    letter-spacing: -0.06em;
+    letter-spacing: 0;
   }
 
   p {
@@ -32,6 +32,9 @@
   gap: 12px;
 
   span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 11px 15px;
     border-radius: 999px;
     background: #fff;
@@ -39,6 +42,13 @@
     border: 1px solid var(--border);
     font-weight: 900;
     box-shadow: 0 10px 30px rgba(17, 24, 39, 0.05);
+  }
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--honda-red);
+    font-size: 18px;
   }
 }
 
@@ -62,7 +72,7 @@
     margin: 10px 0;
     font-size: 38px;
     line-height: 1;
-    letter-spacing: -0.05em;
+    letter-spacing: 0;
   }
 
   small {
@@ -102,7 +112,7 @@
     margin: 0;
     color: var(--ink-black);
     font-size: 34px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 }
 
@@ -128,65 +138,115 @@
   gap: 18px;
 }
 
-label {
-  display: grid;
-  gap: 8px;
-  color: var(--ink-black);
-  font-weight: 900;
+.calculator-section {
+  margin-top: 24px;
+  padding: 22px;
+  border-radius: 24px;
+  background: #fbfbfc;
+  border: 1px solid var(--border);
 }
 
-input,
-select {
+.section-mini-heading {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+
+  span {
+    color: var(--honda-red);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin: 4px 0 0;
+    color: var(--ink-black);
+    font-size: 24px;
+    letter-spacing: 0;
+  }
+
+  p,
+  small {
+    margin: 0;
+    max-width: 320px;
+    color: var(--muted);
+    line-height: 1.6;
+    text-align: right;
+  }
+}
+
+.honda-material-form mat-form-field {
   width: 100%;
-  height: 52px;
-  padding: 0 16px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--ink-black);
-  outline: none;
-  transition: 0.2s ease;
+}
 
-  &:focus {
-    border-color: var(--honda-red);
-    box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.1);
-  }
+:host ::ng-deep .calculator-card .mat-mdc-form-field-icon-prefix {
+  padding: 0 10px 0 0;
+  color: var(--honda-red);
+}
 
-  &:disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-    background: #f9fafb;
-  }
+:host ::ng-deep .calculator-card .mat-mdc-form-field input {
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font: inherit;
+}
+
+:host ::ng-deep .calculator-card .mat-mdc-form-field input:disabled {
+  opacity: 1;
+  cursor: default;
 }
 
 .quick-tools {
   margin: 22px 0;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  gap: 12px;
 
   span {
     color: var(--muted);
     font-weight: 900;
   }
+}
 
-  button {
-    padding: 9px 13px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: #fff;
-    cursor: pointer;
-    color: var(--graphite);
-    font-weight: 900;
-    transition: 0.2s ease;
+:host ::ng-deep .quick-tools .mat-button-toggle-group,
+:host ::ng-deep .loan-years-toggle {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+}
 
-    &:hover {
-      background: var(--honda-red);
-      color: #fff;
-      border-color: var(--honda-red);
-    }
-  }
+:host ::ng-deep .quick-tools .mat-button-toggle,
+:host ::ng-deep .loan-years-toggle .mat-button-toggle {
+  flex: 1 1 0;
+  color: var(--graphite);
+  font-weight: 900;
+}
+
+:host ::ng-deep .quick-tools .mat-button-toggle:hover,
+:host ::ng-deep .quick-tools .mat-button-toggle-checked,
+:host ::ng-deep .loan-years-toggle .mat-button-toggle:hover,
+:host ::ng-deep .loan-years-toggle .mat-button-toggle-checked {
+  background: var(--honda-red);
+  color: #fff;
+}
+
+:host ::ng-deep .quick-tools .mat-button-toggle-label-content,
+:host ::ng-deep .loan-years-toggle .mat-button-toggle-label-content {
+  width: 100%;
+  padding: 11px 12px;
+  line-height: 1.2;
+}
+
+.loan-years-toggle {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .live-preview {
@@ -203,6 +263,13 @@ select {
     padding: 14px;
     border-radius: 18px;
     background: #fff;
+  }
+
+  mat-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--honda-red);
+    font-size: 22px;
   }
 
   span,
@@ -230,9 +297,16 @@ select {
   gap: 14px;
   margin-bottom: 18px;
 
-  button {
+  button,
+  a {
     width: 100%;
+  }
 
+  mat-icon {
+    margin-right: 8px;
+  }
+
+  button {
     &:disabled {
       opacity: 0.65;
       cursor: not-allowed;
@@ -290,13 +364,19 @@ select {
     display: grid;
     place-items: center;
     background: #fef2f2;
-    font-size: 34px;
+    color: var(--honda-red);
+
+    mat-icon {
+      width: 36px;
+      height: 36px;
+      font-size: 36px;
+    }
   }
 
   h2 {
     margin: 18px 0 8px;
     font-size: 30px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   p {
@@ -314,7 +394,7 @@ select {
     color: var(--honda-red);
     font-size: 48px;
     line-height: 1;
-    letter-spacing: -0.06em;
+    letter-spacing: 0;
   }
 }
 
@@ -368,6 +448,10 @@ select {
   a {
     width: 100%;
   }
+
+  mat-icon {
+    margin-right: 8px;
+  }
 }
 
 @media (max-width: 1180px) {
@@ -395,5 +479,21 @@ select {
 
   .card-heading {
     flex-direction: column;
+  }
+
+  .section-mini-heading {
+    display: block;
+
+    p,
+    small {
+      display: block;
+      margin-top: 8px;
+      max-width: none;
+      text-align: left;
+    }
+  }
+
+  .loan-years-toggle {
+    grid-template-columns: 1fr;
   }
 }

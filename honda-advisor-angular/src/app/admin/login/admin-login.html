@@ -1,6 +1,9 @@
 <section class="admin-login-page">
-  <div class="admin-login-card">
-    <div class="admin-badge">🔐 Admin Access</div>
+  <div class="admin-login-card honda-material-form">
+    <div class="admin-badge">
+      <mat-icon>admin_panel_settings</mat-icon>
+      Admin Access
+    </div>
 
     <h1>Advisor Dashboard Login</h1>
 
@@ -16,31 +19,28 @@
         </div>
       }
 
-      <label>
-        Admin email
-        <input
-          type="email"
-          formControlName="email"
-          placeholder="admin@example.com" />
-      </label>
+      <mat-form-field appearance="outline">
+        <mat-label>Admin email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="admin@example.com" />
+        <mat-icon matPrefix>mail</mat-icon>
 
-      @if (adminLoginForm.controls.email.touched && adminLoginForm.controls.email.invalid) {
-        <small class="field-error">Please enter a valid admin email.</small>
-      }
+        @if (adminLoginForm.controls.email.touched && adminLoginForm.controls.email.invalid) {
+          <mat-error>Please enter a valid admin email.</mat-error>
+        }
+      </mat-form-field>
 
-      <label>
-        Password
-        <input
-          type="password"
-          formControlName="password"
-          placeholder="Enter admin password" />
-      </label>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="Enter admin password" />
+        <mat-icon matPrefix>key</mat-icon>
 
-      @if (adminLoginForm.controls.password.touched && adminLoginForm.controls.password.invalid) {
-        <small class="field-error">Password is required.</small>
-      }
+        @if (adminLoginForm.controls.password.touched && adminLoginForm.controls.password.invalid) {
+          <mat-error>Password is required.</mat-error>
+        }
+      </mat-form-field>
 
-      <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+      <button mat-flat-button type="submit" class="primary-btn" [disabled]="isSubmitting">
+        <mat-icon>login</mat-icon>
         {{ isSubmitting ? 'Checking access...' : 'Login to Dashboard' }}
       </button>
     </form>

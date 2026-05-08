@@ -6,6 +6,10 @@ import {
   Validators
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 import { AuthService } from '../../core/services/auth.service';
 
@@ -13,7 +17,11 @@ import { AuthService } from '../../core/services/auth.service';
   selector: 'app-admin-login',
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule
   ],
   templateUrl: './admin-login.html',
   styleUrl: './admin-login.scss'

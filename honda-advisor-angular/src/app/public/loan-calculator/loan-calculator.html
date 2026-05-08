@@ -11,9 +11,9 @@
     </p>
 
     <div class="hero-badges">
-      <span>🧮 Monthly estimate</span>
-      <span>🚗 Model-based pricing</span>
-      <span>💬 Advisor-ready inquiry</span>
+      <span><mat-icon>calculate</mat-icon> Monthly estimate</span>
+      <span><mat-icon>directions_car</mat-icon> Model-based pricing</span>
+      <span><mat-icon>forum</mat-icon> Advisor-ready inquiry</span>
     </div>
   </div>
 
@@ -25,14 +25,14 @@
 </section>
 
 <section class="loan-page">
-  <form class="calculator-card" [formGroup]="loanForm" (ngSubmit)="calculateLoan()">
+  <form class="calculator-card honda-material-form" [formGroup]="loanForm" (ngSubmit)="calculateLoan()">
     <div class="card-heading">
       <div>
         <p class="section-eyebrow">Calculator Form</p>
         <h2>Enter financing details</h2>
       </div>
 
-      <button type="button" class="reset-btn" (click)="resetCalculator()">
+      <button mat-stroked-button type="button" class="reset-btn" (click)="resetCalculator()">
         Reset
       </button>
     </div>
@@ -55,137 +55,164 @@
       </div>
     }
 
-    <div class="form-grid">
-      <label>
-        Honda model
-        <select formControlName="car_model_id" (change)="onCarModelChange()">
-          <option [ngValue]="null">
-            Select Honda model
-          </option>
+    <div class="calculator-section">
+      <div class="section-mini-heading">
+        <span>1</span>
+        <div>
+          <h3>Honda model</h3>
+          <p>Use official model/variant prices from the database or enter a custom price.</p>
+        </div>
+      </div>
 
-          @for (car of cars; track car.id) {
-            <option [ngValue]="car.id">
-              {{ car.name }} — From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
-            </option>
-          }
-        </select>
-      </label>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Honda model</mat-label>
+          <mat-select formControlName="car_model_id" (selectionChange)="onCarModelChange()">
+            <mat-option [value]="null">Select Honda model</mat-option>
 
-      <label>
-        Variant
-        <select
-          formControlName="car_variant_id"
-          (change)="onVariantChange()"
-          [disabled]="variants.length === 0 || isLoadingVariants">
-          <option [ngValue]="null">
-            {{ isLoadingVariants ? 'Loading variants...' : 'Select variant' }}
-          </option>
+            @for (car of cars; track car.id) {
+              <mat-option [value]="car.id">
+                {{ car.name }} - From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>directions_car</mat-icon>
+        </mat-form-field>
 
-          @for (variant of variants; track variant.id) {
-            <option [ngValue]="variant.id">
-              {{ variant.variant_name }} — {{ variant.estimated_price | currency:'MYR':'symbol-narrow':'1.0-0' }}
-            </option>
-          }
-        </select>
-      </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Variant</mat-label>
+          <mat-select
+            formControlName="car_variant_id"
+            (selectionChange)="onVariantChange()"
+            [disabled]="variants.length === 0 || isLoadingVariants">
+            <mat-option [value]="null">
+              {{ isLoadingVariants ? 'Loading variants...' : 'Select variant' }}
+            </mat-option>
 
-      <label>
-        Car price
-        <input
-          type="number"
-          formControlName="car_price"
-          min="1"
-          placeholder="84900" />
-      </label>
-
-      <label>
-        Down payment
-        <input
-          type="number"
-          formControlName="down_payment"
-          min="0"
-          placeholder="8490" />
-      </label>
-
-      <label>
-        Trade-in value
-        <input
-          type="number"
-          formControlName="trade_in_value"
-          min="0"
-          placeholder="0" />
-      </label>
-
-      <label>
-        Interest rate per year (%)
-        <input
-          type="number"
-          formControlName="interest_rate"
-          min="0.01"
-          max="20"
-          step="0.01"
-          placeholder="2.35" />
-      </label>
-
-      <label>
-        Loan period
-        <select formControlName="loan_years">
-          @for (year of loanYearOptions; track year) {
-            <option [ngValue]="year">
-              {{ year }} years
-            </option>
-          }
-        </select>
-      </label>
+            @for (variant of variants; track variant.id) {
+              <mat-option [value]="variant.id">
+                {{ variant.variant_name }} - {{ variant.estimated_price | currency:'MYR':'symbol-narrow':'1.0-0' }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>tune</mat-icon>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="quick-tools">
-      <span>Quick down payment:</span>
+    <div class="calculator-section">
+      <div class="section-mini-heading">
+        <span>2</span>
+        <div>
+          <h3>Financing values</h3>
+          <p>Adjust the price, upfront payment, trade-in, and estimated annual interest.</p>
+        </div>
+      </div>
 
-      @for (percentage of downPaymentQuickOptions; track percentage) {
-        <button
-          type="button"
-          (click)="applyDownPaymentPercentage(percentage)">
-          {{ percentage }}%
-        </button>
-      }
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Car price</mat-label>
+          <input matInput type="number" formControlName="car_price" min="1" placeholder="84900" />
+          <span matTextPrefix>RM&nbsp;</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Down payment</mat-label>
+          <input matInput type="number" formControlName="down_payment" min="0" placeholder="8490" />
+          <span matTextPrefix>RM&nbsp;</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Trade-in value</mat-label>
+          <input matInput type="number" formControlName="trade_in_value" min="0" placeholder="0" />
+          <span matTextPrefix>RM&nbsp;</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Interest rate per year</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="interest_rate"
+            min="0.01"
+            max="20"
+            step="0.01"
+            placeholder="2.35" />
+          <span matTextSuffix>%</span>
+        </mat-form-field>
+      </div>
+
+      <div class="quick-tools">
+        <span>Quick down payment</span>
+
+        <mat-button-toggle-group aria-label="Quick down payment percentage">
+          @for (percentage of downPaymentQuickOptions; track percentage) {
+            <mat-button-toggle
+              [value]="percentage"
+              (click)="applyDownPaymentPercentage(percentage)">
+              {{ percentage }}%
+            </mat-button-toggle>
+          }
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="calculator-section">
+      <div class="section-mini-heading">
+        <span>3</span>
+        <div>
+          <h3>Loan period</h3>
+          <p>Choose a common Malaysian hire-purchase period for the estimate.</p>
+        </div>
+      </div>
+
+      <mat-button-toggle-group
+        class="loan-years-toggle"
+        formControlName="loan_years"
+        aria-label="Loan period">
+        @for (year of loanYearOptions; track year) {
+          <mat-button-toggle [value]="year">
+            <strong>{{ year }}</strong>
+            <small>years</small>
+          </mat-button-toggle>
+        }
+      </mat-button-toggle-group>
     </div>
 
     <div class="live-preview">
       <div>
+        <mat-icon>payments</mat-icon>
         <span>Car price</span>
         <strong>{{ loanForm.value.car_price || 0 | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
       </div>
 
       <div>
+        <mat-icon>savings</mat-icon>
         <span>Down payment</span>
         <strong>{{ loanForm.value.down_payment || 0 | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
       </div>
 
       <div>
+        <mat-icon>sync_alt</mat-icon>
         <span>Trade-in</span>
         <strong>{{ loanForm.value.trade_in_value || 0 | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
       </div>
 
       <div>
-        <span>Estimated loan amount</span>
+        <mat-icon>request_quote</mat-icon>
+        <span>Loan amount</span>
         <strong>{{ getEstimatedLoanAmount() | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
       </div>
     </div>
 
     <div class="form-actions">
-      <button
-        type="submit"
-        class="primary-btn"
-        [disabled]="isCalculating">
+      <button mat-flat-button type="submit" class="primary-btn" [disabled]="isCalculating">
+        <mat-icon>calculate</mat-icon>
         {{ isCalculating ? 'Calculating...' : 'Calculate Monthly Payment' }}
       </button>
 
-      <button
-        type="button"
-        class="secondary-btn"
-        (click)="saveCalculation()"
-        [disabled]="isSaving">
+      <button mat-stroked-button type="button" class="secondary-btn" (click)="saveCalculation()" [disabled]="isSaving">
+        <mat-icon>bookmark_add</mat-icon>
         {{ isSaving ? 'Saving...' : 'Save Calculation' }}
       </button>
     </div>
@@ -200,7 +227,7 @@
   <aside class="result-panel">
     @if (!calculationResult) {
       <div class="empty-result">
-        <span>🧮</span>
+        <span><mat-icon>calculate</mat-icon></span>
         <h2>Your estimate will appear here</h2>
         <p>
           Fill in the calculator form and click calculate to view monthly payment,
@@ -265,15 +292,16 @@
         }
 
         <div class="result-actions">
-          <a routerLink="/inquiry" class="primary-btn">
-            💬 Ask Advisor
+          <a mat-flat-button routerLink="/inquiry" class="primary-btn">
+            <mat-icon>forum</mat-icon>
+            Ask Advisor
           </a>
 
-          <a routerLink="/appointment" class="ghost-btn">
-            📅 Book Appointment
+          <a mat-stroked-button routerLink="/appointment" class="ghost-btn">
+            <mat-icon>event_available</mat-icon>
+            Book Appointment
           </a>
         </div>
-        
       </div>
     }
   </aside>

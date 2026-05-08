@@ -14,7 +14,7 @@
     color: var(--ink-black);
     font-size: clamp(42px, 6vw, 76px);
     line-height: 0.98;
-    letter-spacing: -0.06em;
+    letter-spacing: 0;
   }
 
   p {
@@ -62,7 +62,7 @@
     margin: 10px 0;
     font-size: 34px;
     line-height: 1;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   small {
@@ -102,7 +102,7 @@
     margin: 0;
     color: var(--ink-black);
     font-size: 34px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 }
 
@@ -450,7 +450,7 @@ textarea {
   h2 {
     margin: 18px 0 10px;
     font-size: 30px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   p {
@@ -516,7 +516,7 @@ textarea {
   h2 {
     margin: 16px 0 10px;
     font-size: 34px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   p {

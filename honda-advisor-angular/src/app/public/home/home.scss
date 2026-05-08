@@ -15,7 +15,7 @@
     color: var(--ink-black);
     font-size: clamp(42px, 6vw, 78px);
     line-height: 0.98;
-    letter-spacing: -0.06em;
+    letter-spacing: 0;
   }
 
   p {
@@ -263,7 +263,7 @@
     color: var(--ink-black);
     font-size: clamp(42px, 6vw, 76px);
     line-height: 0.98;
-    letter-spacing: -0.06em;
+    letter-spacing: 0;
   }
 
   p {
@@ -305,7 +305,7 @@
     margin: 10px 0;
     font-size: 30px;
     line-height: 1;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   small {
@@ -343,7 +343,7 @@
     margin: 22px 0 10px;
     color: var(--ink-black);
     font-size: 28px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   p {

@@ -22,7 +22,7 @@
     color: var(--ink-black);
     font-size: clamp(44px, 6vw, 82px);
     line-height: 0.95;
-    letter-spacing: -0.07em;
+    letter-spacing: 0;
   }
 
   .hero-text {
@@ -54,7 +54,7 @@
     color: var(--honda-red);
     font-size: 34px;
     font-weight: 950;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   small {
@@ -199,7 +199,7 @@
   h2 {
     margin: 0 0 12px;
     font-size: 32px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   p {
@@ -294,7 +294,7 @@
   h3 {
     margin: 0;
     font-size: 34px;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 }
 
@@ -303,7 +303,7 @@
   color: var(--honda-red);
   font-size: 36px;
   font-weight: 950;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .spec-grid {
@@ -410,7 +410,7 @@
   h3 {
     margin: 18px 0 10px;
     font-size: 24px;
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
   }
 
   p {
