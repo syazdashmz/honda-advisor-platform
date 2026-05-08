@@ -1,6 +1,10 @@
 const { database } = require('../config/db');
 const { successResponse, errorResponse } = require('../utils/api-response');
 
+function isMissing(value) {
+  return value === undefined || value === null || value === '';
+}
+
 function calculateHirePurchase({
   car_price,
   down_payment,
@@ -46,6 +50,61 @@ function buildAdvisorNote(monthlyPayment) {
   return 'Estimated monthly payment is premium-level. Confirm affordability, loan eligibility, and final package with the advisor.';
 }
 
+function validateLoanPayload({
+  car_price,
+  down_payment,
+  interest_rate,
+  loan_years,
+  trade_in_value = 0,
+}) {
+  if (
+    isMissing(car_price) ||
+    isMissing(down_payment) ||
+    isMissing(interest_rate) ||
+    isMissing(loan_years)
+  ) {
+    return 'Car price, down payment, interest rate, and loan years are required';
+  }
+
+  const carPrice = Number(car_price);
+  const downPayment = Number(down_payment);
+  const interestRate = Number(interest_rate);
+  const loanYears = Number(loan_years);
+  const tradeInValue = Number(trade_in_value || 0);
+
+  if (
+    !Number.isFinite(carPrice) ||
+    !Number.isFinite(downPayment) ||
+    !Number.isFinite(interestRate) ||
+    !Number.isFinite(loanYears) ||
+    !Number.isFinite(tradeInValue)
+  ) {
+    return 'Loan values must be valid numbers';
+  }
+
+  if (carPrice <= 0 || loanYears <= 0) {
+    return 'Car price and loan years must be greater than zero';
+  }
+
+  if (downPayment < 0 || tradeInValue < 0) {
+    return 'Down payment and trade-in value cannot be negative';
+  }
+
+  if (downPayment + tradeInValue >= carPrice) {
+    return 'Down payment and trade-in value cannot be equal to or higher than car price';
+  }
+
+  if (interestRate <= 0 || interestRate > 20) {
+    return 'Interest rate must be between 0.01% and 20%';
+  }
+
+  if (!Number.isInteger(loanYears) || loanYears < 1 || loanYears > 15) {
+    return 'Loan years must be a whole number between 1 and 15';
+  }
+
+  return '';
+}
+
 async function calculateLoan(req, res) {
   try {
     const {
@@ -56,16 +115,16 @@ async function calculateLoan(req, res) {
       trade_in_value,
     } = req.body;
 
-    if (!car_price || !down_payment || !interest_rate || !loan_years) {
-      return errorResponse(
-        res,
-        'Car price, down payment, interest rate, and loan years are required',
-        400
-      );
-    }
+    const validationError = validateLoanPayload({
+      car_price,
+      down_payment,
+      interest_rate,
+      loan_years,
+      trade_in_value,
+    });
 
-    if (Number(car_price) <= 0 || Number(loan_years) <= 0) {
-      return errorResponse(res, 'Car price and loan years must be greater than zero', 400);
+    if (validationError) {
+      return errorResponse(res, validationError, 400);
     }
 
     const calculation = calculateHirePurchase({
@@ -92,8 +151,9 @@ async function calculateLoan(req, res) {
 
 async function saveLoanCalculation(req, res) {
   try {
+    const userId = req.user?.id;
+
     const {
-      user_id,
       car_model_id,
       car_variant_id,
       car_price,
@@ -103,12 +163,16 @@ async function saveLoanCalculation(req, res) {
       trade_in_value,
     } = req.body;
 
-    if (!car_price || !down_payment || !interest_rate || !loan_years) {
-      return errorResponse(
-        res,
-        'Car price, down payment, interest rate, and loan years are required',
-        400
-      );
+    const validationError = validateLoanPayload({
+      car_price,
+      down_payment,
+      interest_rate,
+      loan_years,
+      trade_in_value,
+    });
+
+    if (validationError) {
+      return errorResponse(res, validationError, 400);
     }
 
     const calculation = calculateHirePurchase({
@@ -140,7 +204,7 @@ async function saveLoanCalculation(req, res) {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       [
-        user_id || null,
+        userId,
         car_model_id || null,
         car_variant_id || null,
         calculation.car_price,
@@ -181,6 +245,37 @@ async function saveLoanCalculation(req, res) {
   }
 }
 
+async function getMyLoanCalculations(req, res) {
+  try {
+    const userId = req.user?.id;
+
+    const [calculations] = await database.query(
+      `
+      SELECT
+        lc.*,
+        cm.name AS car_model_name,
+        cm.slug AS car_model_slug,
+        cv.variant_name AS car_variant_name
+      FROM loan_calculations lc
+      LEFT JOIN car_models cm ON lc.car_model_id = cm.id
+      LEFT JOIN car_variants cv ON lc.car_variant_id = cv.id
+      WHERE lc.user_id = ?
+      ORDER BY lc.created_at DESC
+      `,
+      [userId]
+    );
+
+    return successResponse(
+      res,
+      'Customer loan calculations fetched successfully',
+      calculations
+    );
+  } catch (error) {
+    console.error('getMyLoanCalculations error:', error);
+    return errorResponse(res, 'Failed to fetch customer loan calculations');
+  }
+}
+
 async function getAllLoanCalculations(req, res) {
   try {
     const [calculations] = await database.query(`
@@ -209,5 +304,6 @@ async function getAllLoanCalculations(req, res) {
 module.exports = {
   calculateLoan,
   saveLoanCalculation,
+  getMyLoanCalculations,
   getAllLoanCalculations,
 };

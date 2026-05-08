@@ -35,4 +35,8 @@ export class LoanCalculationsService {
   getLoanCalculations(): Observable<ApiResponse<LoanCalculationResult[]>> {
     return this.apiService.get<LoanCalculationResult[]>('/loan-calculations');
   }
+
+  getMyLoanCalculations(): Observable<ApiResponse<LoanCalculationResult[]>> {
+    return this.apiService.get<LoanCalculationResult[]>('/loan-calculations/my');
+  }
 }

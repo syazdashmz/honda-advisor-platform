@@ -38,7 +38,7 @@ async function updateAdminProfile(req, res) {
         u.email,
         u.phone_number,
         u.status,
-        r.role_name
+        r.name AS role_name
       FROM users u
       JOIN roles r ON u.role_id = r.id
       WHERE u.id = ?
@@ -145,9 +145,9 @@ async function createAdminAccount(req, res) {
 
     const [roles] = await database.query(
       `
-      SELECT id, role_name
+      SELECT id, name AS role_name
       FROM roles
-      WHERE role_name = ?
+      WHERE name = ?
       LIMIT 1
       `,
       [targetRole]
@@ -190,7 +190,7 @@ async function createAdminAccount(req, res) {
         u.email,
         u.phone_number,
         u.status,
-        r.role_name,
+        r.name AS role_name,
         u.created_at
       FROM users u
       JOIN roles r ON u.role_id = r.id

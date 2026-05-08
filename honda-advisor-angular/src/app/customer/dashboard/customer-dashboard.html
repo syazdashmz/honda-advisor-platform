@@ -6,8 +6,8 @@
 
     <p>
       This is your personal Honda advisor dashboard. You can track your appointment
-      requests, profile details, and later your inquiry history, loan calculations,
-      and saved Honda models.
+      requests, saved loan calculations, profile details, and later your inquiry
+      history and saved Honda models.
     </p>
   </div>
 
@@ -70,7 +70,7 @@
           <h2>Your appointment requests</h2>
         </div>
 
-        <a href="/appointment" class="mini-action">
+        <a routerLink="/appointment" class="mini-action">
           New Appointment
         </a>
       </div>
@@ -96,7 +96,7 @@
             it will appear here.
           </p>
 
-          <a href="/appointment" class="primary-btn">
+          <a routerLink="/appointment" class="primary-btn">
             Book Appointment
           </a>
         </div>
@@ -135,6 +135,81 @@
         </div>
       }
     </article>
+
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <p class="section-eyebrow">Loan Estimates</p>
+          <h2>Your saved loan calculations</h2>
+        </div>
+
+        <a routerLink="/loan-calculator" class="mini-action">
+          New Estimate
+        </a>
+      </div>
+
+      @if (isLoadingLoanCalculations) {
+        <div class="state-card">
+          Loading your saved loan calculations...
+        </div>
+      }
+
+      @if (loanCalculationErrorMessage) {
+        <div class="state-card error">
+          {{ loanCalculationErrorMessage }}
+        </div>
+      }
+
+      @if (!isLoadingLoanCalculations && !loanCalculationErrorMessage && loanCalculations.length === 0) {
+        <div class="empty-state">
+          <span>🧮</span>
+          <h3>No saved loan calculations yet</h3>
+          <p>
+            Save a calculation from the loan calculator and it will appear here
+            under your customer account.
+          </p>
+
+          <a routerLink="/loan-calculator" class="primary-btn">
+            Calculate Loan
+          </a>
+        </div>
+      }
+
+      @if (!isLoadingLoanCalculations && loanCalculations.length > 0) {
+        <div class="loan-list">
+          @for (calculation of loanCalculations; track calculation.id) {
+            <article class="loan-item">
+              <div class="loan-top">
+                <div>
+                  <strong>
+                    {{ calculation.car_model_name || 'Manual car price' }}
+                  </strong>
+
+                  <small>
+                    {{ calculation.car_variant_name || 'No variant selected' }}
+                  </small>
+                </div>
+
+                <span class="loan-payment">
+                  {{ formatCurrency(calculation.estimated_monthly_payment) }}/mo
+                </span>
+              </div>
+
+              <div class="loan-meta">
+                <span>Price {{ formatCurrency(calculation.car_price) }}</span>
+                <span>Down {{ formatCurrency(calculation.down_payment) }}</span>
+                <span>{{ calculation.loan_years }} years</span>
+                <span>{{ calculation.interest_rate }}%</span>
+              </div>
+
+              @if (calculation.advisor_note) {
+                <p>{{ calculation.advisor_note }}</p>
+              }
+            </article>
+          }
+        </div>
+      }
+    </article>
   </div>
 
   <aside class="dashboard-side">
@@ -143,7 +218,6 @@
 
       <ul>
         <li>Inquiry history</li>
-        <li>Saved loan calculations</li>
         <li>Saved Honda models</li>
         <li>Profile edit/update</li>
       </ul>
@@ -152,10 +226,10 @@
     <article class="side-card">
       <h3>Quick actions</h3>
 
-      <a href="/cars">🚗 Explore Honda Models</a>
-      <a href="/loan-calculator">🧮 Calculate Loan</a>
-      <a href="/inquiry">💬 Submit Inquiry</a>
-      <a href="/appointment">📅 Book Appointment</a>
+      <a routerLink="/cars">🚗 Explore Honda Models</a>
+      <a routerLink="/loan-calculator">🧮 Calculate Loan</a>
+      <a routerLink="/inquiry">💬 Submit Inquiry</a>
+      <a routerLink="/appointment">📅 Book Appointment</a>
     </article>
   </aside>
 </section>

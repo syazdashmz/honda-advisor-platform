@@ -27,6 +27,10 @@ function normalizeStatus(status) {
   return status;
 }
 
+function isAdminUser(user) {
+  return user?.role_name === 'admin' || user?.role_name === 'super_admin';
+}
+
 async function hasConfirmedSlot(preferredDate, preferredTime, excludeAppointmentId = null) {
   const params = [preferredDate, preferredTime];
 
@@ -114,34 +118,34 @@ async function createAppointment(req, res) {
     }
 
     const selectedDate = new Date(`${preferred_date}T00:00:00`);
-const today = new Date();
-today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-const maxDate = new Date(today);
-maxDate.setMonth(maxDate.getMonth() + 1);
+    const maxDate = new Date(today);
+    maxDate.setMonth(maxDate.getMonth() + 1);
 
-if (Number.isNaN(selectedDate.getTime()) || selectedDate < today) {
-  return errorResponse(res, 'Preferred date cannot be in the past', 400);
-}
+    if (Number.isNaN(selectedDate.getTime()) || selectedDate < today) {
+      return errorResponse(res, 'Preferred date cannot be in the past', 400);
+    }
 
-if (selectedDate > maxDate) {
-  return errorResponse(
-    res,
-    'Appointments can only be requested within 1 month from today',
-    400
-  );
-}
+    if (selectedDate > maxDate) {
+      return errorResponse(
+        res,
+        'Appointments can only be requested within 1 month from today',
+        400
+      );
+    }
 
-  const currentDateString = today.toISOString().split('T')[0];
-  const currentTimeString = new Date().toTimeString().slice(0, 8);
+    const currentDateString = today.toISOString().split('T')[0];
+    const currentTimeString = new Date().toTimeString().slice(0, 8);
 
-  if (preferred_date === currentDateString && preferred_time <= currentTimeString) {
-    return errorResponse(
-      res,
-      'This appointment time has already passed for today. Please choose another time.',
-      400
-    );
-}
+    if (preferred_date === currentDateString && preferred_time <= currentTimeString) {
+      return errorResponse(
+        res,
+        'This appointment time has already passed for today. Please choose another time.',
+        400
+      );
+    }
 
     const slotAlreadyConfirmed = await hasConfirmedSlot(preferred_date, preferred_time);
 
@@ -302,6 +306,15 @@ async function getAllAppointments(req, res) {
 async function getAppointmentById(req, res) {
   try {
     const { id } = req.params;
+    const user = req.user;
+    const params = [id];
+
+    let ownershipFilter = '';
+
+    if (!isAdminUser(user)) {
+      ownershipFilter = 'AND a.user_id = ?';
+      params.push(user.id);
+    }
 
     const [appointments] = await database.query(
       `
@@ -312,9 +325,10 @@ async function getAppointmentById(req, res) {
       FROM appointments a
       LEFT JOIN car_models cm ON a.car_model_id = cm.id
       WHERE a.id = ?
+      ${ownershipFilter}
       LIMIT 1
       `,
-      [id]
+      params
     );
 
     if (appointments.length === 0) {

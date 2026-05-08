@@ -1,1 +1,21 @@
-<p>car-card works!</p>
+<article class="car-card">
+  <div class="car-card-top">
+    <span>{{ car.category }}</span>
+
+    @if (car.is_mock_data) {
+      <small>Sample</small>
+    }
+  </div>
+
+  <h3>{{ car.name }}</h3>
+
+  <p>{{ car.short_description }}</p>
+
+  <strong>
+    From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+  </strong>
+
+  <a [routerLink]="['/cars', car.slug]">
+    View details
+  </a>
+</article>

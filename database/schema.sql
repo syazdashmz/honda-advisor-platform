@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS quotation_pdfs;
 DROP TABLE IF EXISTS faq_items;
 DROP TABLE IF EXISTS blog_posts;
 DROP TABLE IF EXISTS promotions;
+DROP TABLE IF EXISTS site_home_content;
 DROP TABLE IF EXISTS customer_gallery;
 DROP TABLE IF EXISTS testimonials;
 DROP TABLE IF EXISTS customer_notes;
@@ -66,7 +67,41 @@ CREATE TABLE users (
 );
 
 -- =========================================================
--- 3. ADVISOR PROFILES
+-- 3. SITE HOME CONTENT
+-- =========================================================
+CREATE TABLE site_home_content (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+
+  hero_badge VARCHAR(120) NOT NULL DEFAULT 'Trusted Honda Advisor',
+  hero_title VARCHAR(255) NOT NULL,
+  hero_subtitle TEXT NOT NULL,
+  hero_image_url VARCHAR(500) NULL,
+
+  primary_cta_label VARCHAR(80) NOT NULL DEFAULT 'View Honda Models',
+  primary_cta_link VARCHAR(255) NOT NULL DEFAULT '/cars',
+  secondary_cta_label VARCHAR(80) NOT NULL DEFAULT 'Calculate Loan',
+  secondary_cta_link VARCHAR(255) NOT NULL DEFAULT '/loan-calculator',
+
+  advisor_title VARCHAR(255) NOT NULL,
+  advisor_text TEXT NOT NULL,
+  advisor_image_url VARCHAR(500) NULL,
+
+  announcement_text VARCHAR(255) NULL,
+
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  updated_by INT NULL,
+
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_site_home_content_updated_by
+    FOREIGN KEY (updated_by) REFERENCES users(id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+);
+
+-- =========================================================
+-- 4. ADVISOR PROFILES
 -- =========================================================
 CREATE TABLE advisor_profiles (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -94,7 +129,7 @@ CREATE TABLE advisor_profiles (
 );
 
 -- =========================================================
--- 4. DEALERSHIP PROFILES
+-- 5. DEALERSHIP PROFILES
 -- =========================================================
 CREATE TABLE dealership_profiles (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -129,7 +164,7 @@ CREATE TABLE dealership_profiles (
 );
 
 -- =========================================================
--- 5. CAR MODELS
+-- 6. CAR MODELS
 -- =========================================================
 CREATE TABLE car_models (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -326,7 +361,15 @@ CREATE TABLE appointments (
   preferred_time TIME NOT NULL,
   message TEXT,
 
-  status ENUM('pending', 'confirmed', 'completed', 'cancelled', 'rescheduled') DEFAULT 'pending',
+  status ENUM('pending', 'confirmed', 'declined', 'cancelled', 'completed', 'rescheduled') DEFAULT 'pending',
+  confirmed_slot_key VARCHAR(64)
+    GENERATED ALWAYS AS (
+      CASE
+        WHEN status = 'confirmed'
+          THEN CONCAT(preferred_date, ' ', preferred_time)
+        ELSE NULL
+      END
+    ) STORED,
 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -344,7 +387,10 @@ CREATE TABLE appointments (
   CONSTRAINT fk_appointments_car_model_id
     FOREIGN KEY (car_model_id) REFERENCES car_models(id)
     ON DELETE SET NULL
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE,
+
+  INDEX idx_appointments_date_time_status (preferred_date, preferred_time, status),
+  UNIQUE INDEX unique_appointments_confirmed_slot (confirmed_slot_key)
 );
 
 -- =========================================================

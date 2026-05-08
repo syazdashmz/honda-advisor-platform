@@ -9,6 +9,42 @@ INSERT INTO roles (name, description) VALUES
 ('super_admin', 'System owner with full access to all modules');
 
 -- =========================================================
+-- SITE HOME CONTENT
+-- =========================================================
+INSERT INTO site_home_content (
+  hero_badge,
+  hero_title,
+  hero_subtitle,
+  hero_image_url,
+  primary_cta_label,
+  primary_cta_link,
+  secondary_cta_label,
+  secondary_cta_link,
+  advisor_title,
+  advisor_text,
+  advisor_image_url,
+  announcement_text,
+  is_active
+)
+SELECT
+  'Trusted Honda Advisor',
+  'Meet your personal Honda sales advisor',
+  'Serving Honda customers since 2002 at Tenaga Setia Resources Sdn. Bhd. with personal guidance from inquiry to delivery.',
+  '/images/home/home-showroom-01.webp',
+  'View Honda Models',
+  '/cars',
+  'Calculate Loan',
+  '/loan-calculator',
+  'Serving Honda customers since 2002',
+  'This platform is designed as a personal online showroom for a Honda sales advisor based at Tenaga Setia Resources Sdn. Bhd. It helps customers explore models, estimate monthly payment, submit inquiries, and arrange appointments.',
+  '/images/advisor/advisor-profile.webp',
+  'Sample homepage content. Admin can update this from the admin panel.',
+  TRUE
+WHERE NOT EXISTS (
+  SELECT 1 FROM site_home_content LIMIT 1
+);
+
+-- =========================================================
 -- ADVISOR PROFILE
 -- =========================================================
 INSERT INTO advisor_profiles (

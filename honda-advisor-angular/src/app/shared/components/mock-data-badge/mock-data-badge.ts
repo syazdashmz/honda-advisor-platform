@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-mock-data-badge',
@@ -6,4 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './mock-data-badge.html',
   styleUrl: './mock-data-badge.scss',
 })
-export class MockDataBadge {}
+export class MockDataBadge {
+  @Input() label = 'Sample Data';
+  @Input() status = 'Verify before publishing';
+}

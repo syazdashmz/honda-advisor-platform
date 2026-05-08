@@ -1,11 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import {
   FormBuilder,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
 
+import { AuthService } from '../../core/services/auth.service';
 import { CarsService } from '../../core/services/cars.service';
 import { LoanCalculationsService } from '../../core/services/loan-calculations.service';
 import {
@@ -22,13 +24,15 @@ import {
   selector: 'app-loan-calculator',
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './loan-calculator.html',
   styleUrl: './loan-calculator.scss'
 })
 export class LoanCalculator implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
   private readonly carsService = inject(CarsService);
   private readonly loanCalculationsService = inject(LoanCalculationsService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -245,6 +249,12 @@ export class LoanCalculator implements OnInit {
   saveCalculation(): void {
     this.formErrorMessage = '';
     this.successMessage = '';
+
+    if (!this.authService.isLoggedIn()) {
+      this.formErrorMessage =
+        'Please login or register before saving a loan calculation to your dashboard.';
+      return;
+    }
 
     if (this.loanForm.invalid) {
       this.loanForm.markAllAsTouched();

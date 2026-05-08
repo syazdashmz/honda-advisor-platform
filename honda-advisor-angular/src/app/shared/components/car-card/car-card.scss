@@ -1,0 +1,66 @@
+.car-card {
+  height: 100%;
+  padding: 22px;
+  display: grid;
+  gap: 12px;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 24px;
+    color: var(--ink-black);
+  }
+
+  p {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  strong {
+    color: var(--honda-red);
+    font-size: 20px;
+  }
+
+  a {
+    width: fit-content;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: var(--honda-red);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 900;
+  }
+}
+
+.car-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-transform: capitalize;
+
+  span,
+  small {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  span {
+    background: var(--soft-grey);
+    color: var(--graphite);
+  }
+
+  small {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+}
