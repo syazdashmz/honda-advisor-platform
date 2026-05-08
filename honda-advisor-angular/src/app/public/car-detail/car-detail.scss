@@ -68,6 +68,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
 }
 
 .detail-visual {

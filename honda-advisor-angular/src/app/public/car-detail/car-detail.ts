@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 import { CarsService } from '../../core/services/cars.service';
 import {
@@ -12,6 +13,7 @@ import {
   selector: 'app-car-detail',
   imports: [
     CommonModule,
+    MatIconModule,
     RouterLink,
     CurrencyPipe
   ],

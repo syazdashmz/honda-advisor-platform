@@ -11,6 +11,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -36,6 +37,7 @@ import {
     MatCheckboxModule,
     MatDatepickerModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatSelectModule
   ],
@@ -76,37 +78,37 @@ export class Appointment implements OnInit {
     {
       value: 'showroom_visit',
       label: 'Showroom Visit',
-      icon: '🏢',
+      icon: 'storefront',
       description: 'Visit the dealership showroom for model consultation.'
     },
     {
       value: 'test_drive',
       label: 'Test Drive',
-      icon: '🚗',
+      icon: 'directions_car',
       description: 'Request a test drive appointment for preferred Honda model.'
     },
     {
       value: 'loan_consultation',
       label: 'Loan Consultation',
-      icon: '🧮',
+      icon: 'calculate',
       description: 'Discuss monthly estimate, documents, and loan direction.'
     },
     {
       value: 'trade_in_valuation',
       label: 'Trade-in Valuation',
-      icon: '🔁',
+      icon: 'sync_alt',
       description: 'Discuss your current car and trade-in possibility.'
     },
     {
       value: 'model_comparison',
       label: 'Model Comparison',
-      icon: '⚖️',
+      icon: 'compare_arrows',
       description: 'Compare models or variants before deciding.'
     },
     {
       value: 'delivery_discussion',
       label: 'Delivery Discussion',
-      icon: '🎁',
+      icon: 'redeem',
       description: 'Discuss delivery planning and next steps.'
     }
   ];

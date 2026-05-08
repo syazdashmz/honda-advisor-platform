@@ -34,8 +34,24 @@
 
   span,
   small {
-    display: block;
     color: #d1d5db;
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  small {
+    display: block;
+  }
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    color: #fca5a5;
+    font-size: 18px;
   }
 
   strong {
@@ -308,7 +324,20 @@
   text-align: center;
 
   span {
-    font-size: 44px;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    background: #fef2f2;
+    color: var(--honda-red);
+
+    mat-icon {
+      width: 34px;
+      height: 34px;
+      font-size: 34px;
+    }
   }
 
   h2 {

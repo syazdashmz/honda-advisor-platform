@@ -18,6 +18,7 @@
   </div>
 
   <div class="hero-summary-card">
+    <mat-icon>request_quote</mat-icon>
     <span>Estimated loan amount</span>
     <strong>{{ getEstimatedLoanAmount() | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
     <small>Based on current form values before final calculation.</small>
@@ -29,10 +30,12 @@
     <div class="card-heading">
       <div>
         <p class="section-eyebrow">Calculator Form</p>
-        <h2>Enter financing details</h2>
+        <h2>Build a clean estimate</h2>
+        <small>Use database pricing or type your own values for a manual reference.</small>
       </div>
 
       <button mat-stroked-button type="button" class="reset-btn" (click)="resetCalculator()">
+        <mat-icon>restart_alt</mat-icon>
         Reset
       </button>
     </div>
@@ -55,135 +58,143 @@
       </div>
     }
 
-    <div class="calculator-section">
-      <div class="section-mini-heading">
-        <span>1</span>
-        <div>
-          <h3>Honda model</h3>
-          <p>Use official model/variant prices from the database or enter a custom price.</p>
+    <div class="calculator-flow">
+      <section class="form-step">
+        <div class="step-head">
+          <span class="step-number">1</span>
+          <mat-icon>directions_car</mat-icon>
+
+          <div>
+            <h3>Model and variant</h3>
+            <p>Choose from your Honda database, then the price fills in automatically.</p>
+          </div>
         </div>
-      </div>
 
-      <div class="form-grid">
-        <mat-form-field appearance="outline">
-          <mat-label>Honda model</mat-label>
-          <mat-select formControlName="car_model_id" (selectionChange)="onCarModelChange()">
-            <mat-option [value]="null">Select Honda model</mat-option>
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Honda model</mat-label>
+            <mat-select formControlName="car_model_id" (selectionChange)="onCarModelChange()">
+              <mat-option [value]="null">Manual estimate</mat-option>
 
-            @for (car of cars; track car.id) {
-              <mat-option [value]="car.id">
-                {{ car.name }} - From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+              @for (car of cars; track car.id) {
+                <mat-option [value]="car.id">
+                  {{ car.name }} - From {{ car.estimated_price_from | currency:'MYR':'symbol-narrow':'1.0-0' }}
+                </mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>directions_car</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Variant</mat-label>
+            <mat-select
+              formControlName="car_variant_id"
+              (selectionChange)="onVariantChange()"
+              [disabled]="variants.length === 0 || isLoadingVariants">
+              <mat-option [value]="null">
+                {{ isLoadingVariants ? 'Loading variants...' : 'No variant selected' }}
               </mat-option>
-            }
-          </mat-select>
-          <mat-icon matPrefix>directions_car</mat-icon>
-        </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Variant</mat-label>
-          <mat-select
-            formControlName="car_variant_id"
-            (selectionChange)="onVariantChange()"
-            [disabled]="variants.length === 0 || isLoadingVariants">
-            <mat-option [value]="null">
-              {{ isLoadingVariants ? 'Loading variants...' : 'Select variant' }}
-            </mat-option>
-
-            @for (variant of variants; track variant.id) {
-              <mat-option [value]="variant.id">
-                {{ variant.variant_name }} - {{ variant.estimated_price | currency:'MYR':'symbol-narrow':'1.0-0' }}
-              </mat-option>
-            }
-          </mat-select>
-          <mat-icon matPrefix>tune</mat-icon>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="calculator-section">
-      <div class="section-mini-heading">
-        <span>2</span>
-        <div>
-          <h3>Financing values</h3>
-          <p>Adjust the price, upfront payment, trade-in, and estimated annual interest.</p>
+              @for (variant of variants; track variant.id) {
+                <mat-option [value]="variant.id">
+                  {{ variant.variant_name }} - {{ variant.estimated_price | currency:'MYR':'symbol-narrow':'1.0-0' }}
+                </mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>tune</mat-icon>
+          </mat-form-field>
         </div>
-      </div>
+      </section>
 
-      <div class="form-grid">
-        <mat-form-field appearance="outline">
-          <mat-label>Car price</mat-label>
-          <input matInput type="number" formControlName="car_price" min="1" placeholder="84900" />
-          <span matTextPrefix>RM&nbsp;</span>
-        </mat-form-field>
+      <section class="form-step">
+        <div class="step-head">
+          <span class="step-number">2</span>
+          <mat-icon>payments</mat-icon>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Down payment</mat-label>
-          <input matInput type="number" formControlName="down_payment" min="0" placeholder="8490" />
-          <span matTextPrefix>RM&nbsp;</span>
-        </mat-form-field>
+          <div>
+            <h3>Price and upfront amount</h3>
+            <p>Keep the finance inputs together so the estimate is easier to scan.</p>
+          </div>
+        </div>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Trade-in value</mat-label>
-          <input matInput type="number" formControlName="trade_in_value" min="0" placeholder="0" />
-          <span matTextPrefix>RM&nbsp;</span>
-        </mat-form-field>
+        <div class="finance-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Car price</mat-label>
+            <input matInput type="number" formControlName="car_price" min="1" placeholder="84900" />
+            <span matTextPrefix>RM&nbsp;</span>
+          </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Interest rate per year</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="interest_rate"
-            min="0.01"
-            max="20"
-            step="0.01"
-            placeholder="2.35" />
-          <span matTextSuffix>%</span>
-        </mat-form-field>
-      </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Down payment</mat-label>
+            <input matInput type="number" formControlName="down_payment" min="0" placeholder="8490" />
+            <span matTextPrefix>RM&nbsp;</span>
+          </mat-form-field>
 
-      <div class="quick-tools">
-        <span>Quick down payment</span>
+          <mat-form-field appearance="outline">
+            <mat-label>Trade-in value</mat-label>
+            <input matInput type="number" formControlName="trade_in_value" min="0" placeholder="0" />
+            <span matTextPrefix>RM&nbsp;</span>
+          </mat-form-field>
 
-        <mat-button-toggle-group aria-label="Quick down payment percentage">
-          @for (percentage of downPaymentQuickOptions; track percentage) {
-            <mat-button-toggle
-              [value]="percentage"
-              (click)="applyDownPaymentPercentage(percentage)">
-              {{ percentage }}%
+          <mat-form-field appearance="outline">
+            <mat-label>Interest rate per year</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="interest_rate"
+              min="0.01"
+              max="20"
+              step="0.01"
+              placeholder="2.35" />
+            <span matTextSuffix>%</span>
+          </mat-form-field>
+        </div>
+
+        <div class="quick-tools">
+          <span>Quick down payment</span>
+
+          <mat-button-toggle-group aria-label="Quick down payment percentage">
+            @for (percentage of downPaymentQuickOptions; track percentage) {
+              <mat-button-toggle
+                [value]="percentage"
+                (click)="applyDownPaymentPercentage(percentage)">
+                {{ percentage }}%
+              </mat-button-toggle>
+            }
+          </mat-button-toggle-group>
+        </div>
+      </section>
+
+      <section class="form-step">
+        <div class="step-head">
+          <span class="step-number">3</span>
+          <mat-icon>event_repeat</mat-icon>
+
+          <div>
+            <h3>Loan period</h3>
+            <p>Select a common hire-purchase period for the monthly reference.</p>
+          </div>
+        </div>
+
+        <mat-button-toggle-group
+          class="loan-years-toggle"
+          formControlName="loan_years"
+          aria-label="Loan period">
+          @for (year of loanYearOptions; track year) {
+            <mat-button-toggle [value]="year">
+              <strong>{{ year }}</strong>
+              <small>years</small>
             </mat-button-toggle>
           }
         </mat-button-toggle-group>
-      </div>
+      </section>
     </div>
 
-    <div class="calculator-section">
-      <div class="section-mini-heading">
-        <span>3</span>
-        <div>
-          <h3>Loan period</h3>
-          <p>Choose a common Malaysian hire-purchase period for the estimate.</p>
-        </div>
-      </div>
-
-      <mat-button-toggle-group
-        class="loan-years-toggle"
-        formControlName="loan_years"
-        aria-label="Loan period">
-        @for (year of loanYearOptions; track year) {
-          <mat-button-toggle [value]="year">
-            <strong>{{ year }}</strong>
-            <small>years</small>
-          </mat-button-toggle>
-        }
-      </mat-button-toggle-group>
-    </div>
-
-    <div class="live-preview">
+    <div class="live-preview" aria-label="Loan estimate preview">
       <div>
-        <mat-icon>payments</mat-icon>
-        <span>Car price</span>
-        <strong>{{ loanForm.value.car_price || 0 | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+        <mat-icon>directions_car</mat-icon>
+        <span>Model</span>
+        <strong>{{ getSelectedCarName() }}</strong>
       </div>
 
       <div>
@@ -205,22 +216,24 @@
       </div>
     </div>
 
-    <div class="form-actions">
-      <button mat-flat-button type="submit" class="primary-btn" [disabled]="isCalculating">
-        <mat-icon>calculate</mat-icon>
-        {{ isCalculating ? 'Calculating...' : 'Calculate Monthly Payment' }}
-      </button>
+    <div class="calc-actions-bar">
+      <div class="disclaimer-card">
+        Estimated monthly installment only. Final price, interest rate, insurance,
+        road tax, promotions, stock availability, and bank approval must be confirmed
+        with the advisor, dealership, or Honda Malaysia.
+      </div>
 
-      <button mat-stroked-button type="button" class="secondary-btn" (click)="saveCalculation()" [disabled]="isSaving">
-        <mat-icon>bookmark_add</mat-icon>
-        {{ isSaving ? 'Saving...' : 'Save Calculation' }}
-      </button>
-    </div>
+      <div class="form-actions">
+        <button mat-flat-button type="submit" class="primary-btn" [disabled]="isCalculating">
+          <mat-icon>calculate</mat-icon>
+          {{ isCalculating ? 'Calculating...' : 'Calculate Payment' }}
+        </button>
 
-    <div class="disclaimer-card">
-      Estimated monthly installment only. Final price, interest rate, insurance,
-      road tax, promotions, stock availability, and bank approval must be confirmed
-      with the advisor, dealership, or Honda Malaysia.
+        <button mat-stroked-button type="button" class="secondary-btn" (click)="saveCalculation()" [disabled]="isSaving">
+          <mat-icon>bookmark_add</mat-icon>
+          {{ isSaving ? 'Saving...' : 'Save Estimate' }}
+        </button>
+      </div>
     </div>
   </form>
 
@@ -230,8 +243,8 @@
         <span><mat-icon>calculate</mat-icon></span>
         <h2>Your estimate will appear here</h2>
         <p>
-          Fill in the calculator form and click calculate to view monthly payment,
-          total interest, loan amount, and advisor notes.
+          Fill the form and calculate to see monthly payment, total interest,
+          loan amount, and advisor notes.
         </p>
       </div>
     }

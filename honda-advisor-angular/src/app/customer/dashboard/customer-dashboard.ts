@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AuthService } from '../../core/services/auth.service';
 import { AppointmentsService } from '../../core/services/appointments.service';
@@ -12,6 +13,7 @@ import { LoanCalculationResult } from '../../core/models/loan-calculation.model'
   selector: 'app-customer-dashboard',
   imports: [
     CommonModule,
+    MatIconModule,
     RouterLink
   ],
   templateUrl: './customer-dashboard.html',

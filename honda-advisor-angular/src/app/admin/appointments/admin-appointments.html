@@ -12,7 +12,7 @@
   </div>
 
   <div class="booking-rules-card">
-    <span>📅 Booking Rule</span>
+    <span><mat-icon>event_available</mat-icon> Booking Rule</span>
     <strong>One confirmed appointment per time slot</strong>
     <small>
       Pending requests can overlap, but only one appointment can be confirmed
@@ -48,7 +48,7 @@
 
   @if (!isLoading && filteredAppointments.length === 0) {
     <div class="empty-state">
-      <span>📅</span>
+      <span><mat-icon>event_available</mat-icon></span>
       <h2>No appointments found</h2>
       <p>No appointment requests match this filter.</p>
     </div>

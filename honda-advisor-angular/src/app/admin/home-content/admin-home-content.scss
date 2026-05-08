@@ -33,8 +33,24 @@
 
   span,
   small {
-    display: block;
     color: #d1d5db;
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  small {
+    display: block;
+  }
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    color: #fca5a5;
+    font-size: 18px;
   }
 
   strong {

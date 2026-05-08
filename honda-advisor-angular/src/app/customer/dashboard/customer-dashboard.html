@@ -89,7 +89,7 @@
 
       @if (!isLoadingAppointments && !appointmentErrorMessage && appointments.length === 0) {
         <div class="empty-state">
-          <span>📅</span>
+          <span><mat-icon>event_available</mat-icon></span>
           <h3>No appointments yet</h3>
           <p>
             Once you request a showroom visit, test drive, or consultation,
@@ -123,8 +123,8 @@
               </div>
 
               <div class="appointment-meta">
-                <span>📅 {{ appointment.preferred_date }}</span>
-                <span>🕒 {{ formatTimeSlot(appointment.preferred_time) }}</span>
+                <span><mat-icon>calendar_month</mat-icon> {{ appointment.preferred_date }}</span>
+                <span><mat-icon>schedule</mat-icon> {{ formatTimeSlot(appointment.preferred_time) }}</span>
               </div>
 
               @if (appointment.message) {
@@ -162,7 +162,7 @@
 
       @if (!isLoadingLoanCalculations && !loanCalculationErrorMessage && loanCalculations.length === 0) {
         <div class="empty-state">
-          <span>🧮</span>
+          <span><mat-icon>calculate</mat-icon></span>
           <h3>No saved loan calculations yet</h3>
           <p>
             Save a calculation from the loan calculator and it will appear here
@@ -226,10 +226,10 @@
     <article class="side-card">
       <h3>Quick actions</h3>
 
-      <a routerLink="/cars">🚗 Explore Honda Models</a>
-      <a routerLink="/loan-calculator">🧮 Calculate Loan</a>
-      <a routerLink="/inquiry">💬 Submit Inquiry</a>
-      <a routerLink="/appointment">📅 Book Appointment</a>
+      <a routerLink="/cars"><mat-icon>directions_car</mat-icon> Explore Honda Models</a>
+      <a routerLink="/loan-calculator"><mat-icon>calculate</mat-icon> Calculate Loan</a>
+      <a routerLink="/inquiry"><mat-icon>forum</mat-icon> Submit Inquiry</a>
+      <a routerLink="/appointment"><mat-icon>event_available</mat-icon> Book Appointment</a>
     </article>
   </aside>
 </section>

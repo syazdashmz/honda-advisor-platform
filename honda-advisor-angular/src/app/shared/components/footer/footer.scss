@@ -52,6 +52,32 @@
   }
 }
 
+.support-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  span {
+    min-height: 34px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f9fafb;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  mat-icon {
+    width: 17px;
+    height: 17px;
+    color: #fca5a5;
+    font-size: 17px;
+  }
+}
+
 @media (max-width: 820px) {
   .footer {
     padding: 36px 20px;
@@ -65,6 +91,8 @@
 .admin-footer-link {
   margin-top: 14px;
   display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 16px;
   border-radius: 999px;
   background: #fff;
@@ -77,6 +105,12 @@
     background: var(--honda-red);
     color: #fff;
     transform: translateY(-2px);
+  }
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
   }
 }
 

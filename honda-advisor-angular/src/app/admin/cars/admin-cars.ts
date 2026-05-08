@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AdminCarsService } from '../../core/services/admin-cars.service';
 import {
@@ -20,6 +21,7 @@ import {
   selector: 'app-admin-cars',
   imports: [
     CommonModule,
+    MatIconModule,
     ReactiveFormsModule
   ],
   templateUrl: './admin-cars.html',

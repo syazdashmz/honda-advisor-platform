@@ -21,7 +21,12 @@
 
     <div>
       <h4>Quick Support</h4>
-      <p>🚗 Model guidance · 🧮 Loan estimate · 📅 Appointment · 💬 Inquiry</p>
+      <div class="support-chips">
+        <span><mat-icon>directions_car</mat-icon> Model guidance</span>
+        <span><mat-icon>calculate</mat-icon> Loan estimate</span>
+        <span><mat-icon>event_available</mat-icon> Appointment</span>
+        <span><mat-icon>forum</mat-icon> Inquiry</span>
+      </div>
     </div>
 
     <div>
@@ -32,7 +37,8 @@
       </p>
 
       <a routerLink="/admin/login" class="admin-footer-link">
-        Admin Login →
+        <mat-icon>admin_panel_settings</mat-icon>
+        Admin Login
       </a>
     </div>
 

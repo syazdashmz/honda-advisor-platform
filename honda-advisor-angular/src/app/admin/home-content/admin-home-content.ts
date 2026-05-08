@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 import { SiteContentService } from '../../core/services/site-content.service';
 import { HomeContent } from '../../core/models/site-content.model';
@@ -13,6 +14,7 @@ import { HomeContent } from '../../core/models/site-content.model';
   selector: 'app-admin-home-content',
   imports: [
     CommonModule,
+    MatIconModule,
     ReactiveFormsModule
   ],
   templateUrl: './admin-home-content.html',

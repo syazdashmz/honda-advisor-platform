@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 import { InquiriesService } from '../../core/services/inquiries.service';
 import {
@@ -10,7 +11,8 @@ import {
 @Component({
   selector: 'app-admin-inquiries',
   imports: [
-    CommonModule
+    CommonModule,
+    MatIconModule
   ],
   templateUrl: './admin-inquiries.html',
   styleUrl: './admin-inquiries.scss'

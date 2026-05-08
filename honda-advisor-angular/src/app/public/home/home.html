@@ -18,7 +18,7 @@
     </div>
 
     <div class="admin-status-card">
-      <span>🛠️ Admin Mode</span>
+      <span><mat-icon>engineering</mat-icon> Admin Mode</span>
       <strong>Website Control Panel</strong>
       <small>
         Updates from admin pages are saved to MySQL and reflected automatically on the public site.
@@ -29,7 +29,7 @@
   <section class="admin-control-grid">
     @for (card of adminCards; track card.title) {
       <a class="admin-control-card" [routerLink]="card.link">
-        <span>{{ card.icon }}</span>
+        <span><mat-icon>{{ card.icon }}</mat-icon></span>
         <h2>{{ card.title }}</h2>
         <p>{{ card.text }}</p>
       </a>
@@ -54,15 +54,18 @@
 
       <div class="hero-actions">
         <a [routerLink]="homeContent.primary_cta_link" class="primary-btn">
-          🚗 {{ homeContent.primary_cta_label }}
+          <mat-icon>directions_car</mat-icon>
+          {{ homeContent.primary_cta_label }}
         </a>
 
         <a [routerLink]="homeContent.secondary_cta_link" class="secondary-btn">
-          🧮 {{ homeContent.secondary_cta_label }}
+          <mat-icon>calculate</mat-icon>
+          {{ homeContent.secondary_cta_label }}
         </a>
 
         <a routerLink="/appointment" class="ghost-btn">
-          📅 Book Appointment
+          <mat-icon>event_available</mat-icon>
+          Book Appointment
         </a>
       </div>
     </div>
@@ -70,7 +73,7 @@
     <div class="hero-visual">
       <div class="car-showcase">
         <div class="showcase-top">
-          <span class="showcase-icon">🚗</span>
+          <span class="showcase-icon"><mat-icon>directions_car</mat-icon></span>
           <span class="mock-pill">Homepage Preview</span>
         </div>
 
@@ -99,7 +102,7 @@
   <section class="trust-section">
     @for (badge of trustBadges; track badge.title) {
       <article class="trust-card">
-        <span>{{ badge.icon }}</span>
+        <span><mat-icon>{{ badge.icon }}</mat-icon></span>
         <h3>{{ badge.title }}</h3>
         <p>{{ badge.text }}</p>
       </article>

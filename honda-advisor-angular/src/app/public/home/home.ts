@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AuthService } from '../../core/services/auth.service';
 import { SiteContentService } from '../../core/services/site-content.service';
@@ -27,6 +28,7 @@ const fallbackHomeContent: HomeContent = {
 @Component({
   selector: 'app-home',
   imports: [
+    MatIconModule,
     RouterLink
   ],
   templateUrl: './home.html',
@@ -48,22 +50,22 @@ export class Home implements OnInit {
 
   trustBadges = [
     {
-      icon: '🏆',
+      icon: 'emoji_events',
       title: 'Since 2002',
       text: 'Long-term Honda advisor experience'
     },
     {
-      icon: '💬',
+      icon: 'forum',
       title: 'Personal Guidance',
       text: 'Clear explanation before booking'
     },
     {
-      icon: '🧮',
+      icon: 'calculate',
       title: 'Loan Estimate',
       text: 'Monthly payment reference'
     },
     {
-      icon: '📍',
+      icon: 'location_on',
       title: 'Tenaga Setia',
       text: 'Based in Petaling Jaya'
     }
@@ -71,19 +73,19 @@ export class Home implements OnInit {
 
   adminCards = [
     {
-      icon: '📊',
+      icon: 'dashboard',
       title: 'Admin Dashboard',
       text: 'View system summary, recent leads, appointment activity, and platform metrics.',
       link: '/admin/dashboard'
     },
     {
-      icon: '🚗',
+      icon: 'directions_car',
       title: 'Manage Cars',
       text: 'Update Honda model information, estimated prices, variant data, and model visibility.',
       link: '/admin/cars'
     },
     {
-      icon: '🖼️',
+      icon: 'web',
       title: 'Homepage Content',
       text: 'Update homepage hero text, front-view image, advisor section, and call-to-action buttons.',
       link: '/admin/home-content'

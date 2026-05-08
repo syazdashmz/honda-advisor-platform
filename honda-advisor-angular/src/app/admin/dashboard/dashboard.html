@@ -10,9 +10,18 @@
     </p>
 
     <div class="hero-actions">
-      <a routerLink="/admin/cars" class="primary-btn">🚗 Manage Cars</a>
-      <a routerLink="/admin/home-content" class="secondary-btn">🖼️ Home Content</a>
-      <button type="button" class="ghost-btn" (click)="logout()">Logout</button>
+      <a routerLink="/admin/cars" class="primary-btn">
+        <mat-icon>directions_car</mat-icon>
+        Manage Cars
+      </a>
+      <a routerLink="/admin/home-content" class="secondary-btn">
+        <mat-icon>web</mat-icon>
+        Home Content
+      </a>
+      <button type="button" class="ghost-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
     </div>
   </div>
 
@@ -36,31 +45,31 @@
   @if (dashboardData) {
     <section class="summary-grid">
       <article class="summary-card">
-        <span>💬</span>
+        <span><mat-icon>forum</mat-icon></span>
         <p>Total Inquiries</p>
         <strong>{{ dashboardData.summary.total_inquiries }}</strong>
       </article>
 
       <article class="summary-card">
-        <span>📅</span>
+        <span><mat-icon>event_note</mat-icon></span>
         <p>Total Appointments</p>
         <strong>{{ dashboardData.summary.total_appointments }}</strong>
       </article>
 
       <article class="summary-card warning">
-        <span>⏳</span>
+        <span><mat-icon>pending_actions</mat-icon></span>
         <p>Pending Appointments</p>
         <strong>{{ dashboardData.summary.pending_appointments }}</strong>
       </article>
 
       <article class="summary-card">
-        <span>🚗</span>
+        <span><mat-icon>directions_car</mat-icon></span>
         <p>Active Car Models</p>
         <strong>{{ dashboardData.summary.active_car_models }}</strong>
       </article>
 
       <article class="summary-card">
-        <span>🧮</span>
+        <span><mat-icon>calculate</mat-icon></span>
         <p>Loan Calculations</p>
         <strong>{{ dashboardData.summary.total_loan_calculations }}</strong>
       </article>
@@ -185,10 +194,10 @@
         <h2>Admin actions</h2>
 
         <div class="quick-actions">
-          <a routerLink="/admin/cars">🚗 Manage car prices and variants</a>
-          <a routerLink="/admin/home-content">🖼️ Update homepage content</a>
-          <a routerLink="/cars">👀 View public model page</a>
-          <a routerLink="/loan-calculator">🧮 Test public loan calculator</a>
+          <a routerLink="/admin/cars"><mat-icon>directions_car</mat-icon> Manage car prices and variants</a>
+          <a routerLink="/admin/home-content"><mat-icon>web</mat-icon> Update homepage content</a>
+          <a routerLink="/cars"><mat-icon>visibility</mat-icon> View public model page</a>
+          <a routerLink="/loan-calculator"><mat-icon>calculate</mat-icon> Test public loan calculator</a>
         </div>
       </article>
 

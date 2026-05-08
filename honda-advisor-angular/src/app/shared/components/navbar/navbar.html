@@ -8,90 +8,110 @@
     </span>
   </a>
 
-  <nav class="nav-links">
+  <nav class="nav-links" aria-label="Main navigation">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      Home
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
     </a>
 
     <a routerLink="/cars" routerLinkActive="active">
-      Models
+      <mat-icon>directions_car</mat-icon>
+      <span>Models</span>
     </a>
 
     @if (!user()) {
       <a routerLink="/loan-calculator" routerLinkActive="active">
-        Loan
+        <mat-icon>calculate</mat-icon>
+        <span>Loan</span>
       </a>
 
       <a routerLink="/inquiry" routerLinkActive="active">
-        Inquiry
+        <mat-icon>forum</mat-icon>
+        <span>Inquiry</span>
       </a>
 
       <a routerLink="/appointment" routerLinkActive="active">
-        Appointment
+        <mat-icon>event_available</mat-icon>
+        <span>Appointment</span>
       </a>
 
       <a routerLink="/login" routerLinkActive="active">
-        Customer Login
+        <mat-icon>account_circle</mat-icon>
+        <span>Customer Login</span>
       </a>
 
       <a routerLink="/register" class="login-link">
-        Register
+        <mat-icon>person_add</mat-icon>
+        <span>Register</span>
       </a>
     }
 
     @if (isCustomer()) {
       <a routerLink="/loan-calculator" routerLinkActive="active">
-        Loan
+        <mat-icon>calculate</mat-icon>
+        <span>Loan</span>
       </a>
 
       <a routerLink="/inquiry" routerLinkActive="active">
-        Inquiry
+        <mat-icon>forum</mat-icon>
+        <span>Inquiry</span>
       </a>
 
       <a routerLink="/appointment" routerLinkActive="active">
-        Appointment
+        <mat-icon>event_available</mat-icon>
+        <span>Appointment</span>
       </a>
 
       <a routerLink="/dashboard" routerLinkActive="active">
-        My Dashboard
+        <mat-icon>dashboard</mat-icon>
+        <span>My Dashboard</span>
       </a>
 
       <span class="user-pill">
-        👤 {{ user()?.full_name }}
+        <mat-icon>account_circle</mat-icon>
+        <span>{{ user()?.full_name }}</span>
       </span>
 
       <button type="button" class="logout-btn" (click)="logout()">
-        Logout
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
       </button>
     }
 
     @if (isAdmin()) {
       <a routerLink="/admin/dashboard" routerLinkActive="active">
-        Admin Dashboard
+        <mat-icon>admin_panel_settings</mat-icon>
+        <span>Admin Dashboard</span>
       </a>
 
       <a routerLink="/admin/inquiries" routerLinkActive="active">
-        Inquiries
+        <mat-icon>mark_email_unread</mat-icon>
+        <span>Inquiries</span>
       </a>
 
       <a routerLink="/admin/appointments" routerLinkActive="active">
-        Appointments
+        <mat-icon>event_note</mat-icon>
+        <span>Appointments</span>
       </a>
 
       <a routerLink="/admin/cars" routerLinkActive="active">
-        Manage Cars
+        <mat-icon>directions_car</mat-icon>
+        <span>Manage Cars</span>
       </a>
 
       <a routerLink="/admin/home-content" routerLinkActive="active">
-        Home Content
+        <mat-icon>web</mat-icon>
+        <span>Home Content</span>
       </a>
 
       <span class="admin-pill">
-        🛠️ {{ user()?.full_name }}
+        <mat-icon>engineering</mat-icon>
+        <span>{{ user()?.full_name }}</span>
       </span>
 
       <button type="button" class="logout-btn" (click)="logout()">
-        Logout
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
       </button>
     }
   </nav>

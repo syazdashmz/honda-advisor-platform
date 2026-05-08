@@ -330,6 +330,13 @@ export class LoanCalculator implements OnInit {
     return Math.max(carPrice - downPayment - tradeInValue, 0);
   }
 
+  getSelectedCarName(): string {
+    const selectedCarId = Number(this.loanForm.value.car_model_id || 0);
+    const car = this.cars.find((item) => item.id === selectedCarId);
+
+    return car?.name || 'Manual estimate';
+  }
+
   private buildPayload(): LoanCalculationPayload {
     return {
       car_model_id: this.loanForm.value.car_model_id || null,

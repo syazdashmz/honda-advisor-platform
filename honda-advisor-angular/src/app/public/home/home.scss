@@ -31,6 +31,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
 }
 
 .home-announcement {
@@ -87,7 +93,13 @@
   place-items: center;
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.1);
-  font-size: 30px;
+
+  mat-icon {
+    width: 32px;
+    height: 32px;
+    color: #fff;
+    font-size: 32px;
+  }
 }
 
 .car-silhouette {
@@ -180,7 +192,19 @@
   border: 1px solid var(--border);
 
   span {
-    font-size: 28px;
+    width: 42px;
+    height: 42px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    background: #fef2f2;
+    color: var(--honda-red);
+
+    mat-icon {
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+    }
   }
 
   h3 {
@@ -296,8 +320,24 @@
 
   span,
   small {
-    display: block;
     color: #d1d5db;
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  small {
+    display: block;
+  }
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    color: #fca5a5;
+    font-size: 18px;
   }
 
   strong {
@@ -336,7 +376,13 @@
     place-items: center;
     border-radius: 22px;
     background: #fef2f2;
-    font-size: 30px;
+    color: var(--honda-red);
+
+    mat-icon {
+      width: 32px;
+      height: 32px;
+      font-size: 32px;
+    }
   }
 
   h2 {

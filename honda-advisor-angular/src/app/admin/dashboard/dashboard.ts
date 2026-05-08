@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AuthService } from '../../core/services/auth.service';
 import { AdminDashboardService } from '../../core/services/admin-dashboard.service';
@@ -21,6 +22,7 @@ import {
   selector: 'app-dashboard',
   imports: [
     CommonModule,
+    MatIconModule,
     ReactiveFormsModule,
     RouterLink,
   ],
