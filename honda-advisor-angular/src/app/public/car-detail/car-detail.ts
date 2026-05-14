@@ -50,12 +50,8 @@ export class CarDetail implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    console.log('Fetching car detail for slug:', slug);
-
     this.carsService.getCarBySlug(slug).subscribe({
       next: (response) => {
-        console.log('Car detail API response:', response);
-
         this.car = response.data;
         this.selectedVariant = this.car?.variants?.[0];
 
