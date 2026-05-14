@@ -70,7 +70,8 @@
           <h2>Your appointment requests</h2>
         </div>
 
-        <a routerLink="/appointment" class="mini-action">
+        <a mat-stroked-button routerLink="/appointment" class="mini-action">
+          <mat-icon>add</mat-icon>
           New Appointment
         </a>
       </div>
@@ -96,7 +97,8 @@
             it will appear here.
           </p>
 
-          <a routerLink="/appointment" class="primary-btn">
+          <a mat-flat-button routerLink="/appointment" class="primary-btn">
+            <mat-icon>event_available</mat-icon>
             Book Appointment
           </a>
         </div>
@@ -143,7 +145,8 @@
           <h2>Your saved loan calculations</h2>
         </div>
 
-        <a routerLink="/loan-calculator" class="mini-action">
+        <a mat-stroked-button routerLink="/loan-calculator" class="mini-action">
+          <mat-icon>add</mat-icon>
           New Estimate
         </a>
       </div>
@@ -169,7 +172,8 @@
             under your customer account.
           </p>
 
-          <a routerLink="/loan-calculator" class="primary-btn">
+          <a mat-flat-button routerLink="/loan-calculator" class="primary-btn">
+            <mat-icon>calculate</mat-icon>
             Calculate Loan
           </a>
         </div>
@@ -226,10 +230,10 @@
     <article class="side-card">
       <h3>Quick actions</h3>
 
-      <a routerLink="/cars"><mat-icon>directions_car</mat-icon> Explore Honda Models</a>
-      <a routerLink="/loan-calculator"><mat-icon>calculate</mat-icon> Calculate Loan</a>
-      <a routerLink="/inquiry"><mat-icon>forum</mat-icon> Submit Inquiry</a>
-      <a routerLink="/appointment"><mat-icon>event_available</mat-icon> Book Appointment</a>
+      <a mat-stroked-button routerLink="/cars"><mat-icon>directions_car</mat-icon> Explore Honda Models</a>
+      <a mat-stroked-button routerLink="/loan-calculator"><mat-icon>calculate</mat-icon> Calculate Loan</a>
+      <a mat-stroked-button routerLink="/inquiry"><mat-icon>forum</mat-icon> Submit Inquiry</a>
+      <a mat-stroked-button routerLink="/appointment"><mat-icon>event_available</mat-icon> Book Appointment</a>
     </article>
   </aside>
 </section>

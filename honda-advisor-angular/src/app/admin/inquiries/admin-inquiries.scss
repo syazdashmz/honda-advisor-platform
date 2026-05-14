@@ -77,38 +77,37 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  border: 0;
 
-  button {
-    padding: 11px 16px;
+  .mat-button-toggle {
     border-radius: 999px;
     border: 1px solid var(--border);
     background: #fff;
     color: var(--graphite);
-    cursor: pointer;
     font-weight: 900;
     text-transform: capitalize;
     transition: 0.2s ease;
 
-    span {
-      margin-left: 8px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: var(--soft-grey);
-      color: var(--graphite);
-      font-size: 12px;
-    }
-
     &:hover,
-    &.active {
+    &.mat-button-toggle-checked {
       background: var(--honda-red);
       color: #fff;
       border-color: var(--honda-red);
-
-      span {
-        background: rgba(255, 255, 255, 0.2);
-        color: #fff;
-      }
     }
+  }
+
+  .filter-count {
+    margin-left: 8px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--soft-grey);
+    color: var(--graphite);
+    font-size: 12px;
+  }
+
+  .mat-button-toggle-checked .filter-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
   }
 }
 
@@ -241,16 +240,15 @@
 
 .contact-actions {
   a {
-    padding: 10px 14px;
     border-radius: 999px;
-    background: var(--ink-black);
-    color: #fff;
+    color: var(--ink-black);
     text-decoration: none;
     font-weight: 900;
     transition: 0.2s ease;
 
     &:hover {
-      background: var(--honda-red);
+      border-color: var(--honda-red);
+      color: var(--honda-red);
       transform: translateY(-2px);
     }
   }
@@ -258,13 +256,8 @@
 
 .status-actions {
   button {
-    padding: 10px 14px;
-    border: 0;
     border-radius: 999px;
-    color: #fff;
-    cursor: pointer;
     font-weight: 900;
-    transition: 0.2s ease;
 
     &:hover {
       transform: translateY(-2px);
@@ -280,26 +273,32 @@
 
   .contacted {
     background: #2563eb;
+    color: #fff;
   }
 
   .interested {
     background: #059669;
+    color: #fff;
   }
 
   .appointment {
     background: #7c3aed;
+    color: #fff;
   }
 
   .loan {
     background: #ca8a04;
+    color: #fff;
   }
 
   .won {
     background: #16a34a;
+    color: #fff;
   }
 
   .lost {
-    background: #dc2626;
+    border-color: #fecaca;
+    color: #dc2626;
   }
 }
 
@@ -311,6 +310,12 @@
   border-radius: 20px;
   font-weight: 800;
   line-height: 1.6;
+}
+
+.state-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .state-card,

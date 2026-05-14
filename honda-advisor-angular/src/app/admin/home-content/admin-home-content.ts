@@ -5,7 +5,12 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SiteContentService } from '../../core/services/site-content.service';
 import { HomeContent } from '../../core/models/site-content.model';
@@ -14,7 +19,12 @@ import { HomeContent } from '../../core/models/site-content.model';
   selector: 'app-admin-home-content',
   imports: [
     CommonModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule
   ],
   templateUrl: './admin-home-content.html',

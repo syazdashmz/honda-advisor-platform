@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { CarsService } from '../../core/services/cars.service';
 import { CarModel } from '../../core/models/car.model';
@@ -9,6 +11,8 @@ import { CarModel } from '../../core/models/car.model';
   selector: 'app-cars',
   imports: [
     CommonModule,
+    MatButtonModule,
+    MatButtonToggleModule,
     RouterLink,
     CurrencyPipe
   ],

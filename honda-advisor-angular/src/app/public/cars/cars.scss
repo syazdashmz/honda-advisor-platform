@@ -30,20 +30,19 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  border: 0;
 
-  button {
-    padding: 10px 18px;
+  .mat-button-toggle {
     border: 1px solid var(--border);
     border-radius: 999px;
     background: #fff;
-    cursor: pointer;
     font-weight: 800;
     color: var(--graphite);
     transition: 0.2s ease;
   }
 
-  button:hover,
-  button.active {
+  .mat-button-toggle:hover,
+  .mat-button-toggle-checked {
     background: var(--honda-red);
     color: #fff;
     border-color: var(--honda-red);
@@ -160,7 +159,6 @@
 
   a {
     flex: 1;
-    padding: 12px 14px;
     border-radius: 14px;
     text-align: center;
     text-decoration: none;

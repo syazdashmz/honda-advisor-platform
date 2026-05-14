@@ -53,17 +53,17 @@
       }
 
       <div class="hero-actions">
-        <a [routerLink]="homeContent.primary_cta_link" class="primary-btn">
+        <a mat-flat-button [routerLink]="homeContent.primary_cta_link" class="primary-btn">
           <mat-icon>directions_car</mat-icon>
           {{ homeContent.primary_cta_label }}
         </a>
 
-        <a [routerLink]="homeContent.secondary_cta_link" class="secondary-btn">
+        <a mat-flat-button [routerLink]="homeContent.secondary_cta_link" class="secondary-btn">
           <mat-icon>calculate</mat-icon>
           {{ homeContent.secondary_cta_label }}
         </a>
 
-        <a routerLink="/appointment" class="ghost-btn">
+        <a mat-stroked-button routerLink="/appointment" class="ghost-btn">
           <mat-icon>event_available</mat-icon>
           Book Appointment
         </a>

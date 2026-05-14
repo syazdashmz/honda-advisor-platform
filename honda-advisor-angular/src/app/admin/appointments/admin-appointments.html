@@ -30,20 +30,24 @@
     <div class="success-alert">{{ successMessage }}</div>
   }
 
-  <section class="filter-row">
+  <mat-button-toggle-group
+    class="filter-row"
+    [value]="selectedStatus"
+    aria-label="Appointment status filter"
+    (change)="applyFilter($event.value)">
     @for (status of statusFilters; track status) {
-      <button
-        type="button"
-        [class.active]="selectedStatus === status"
-        (click)="applyFilter(status)">
-        {{ formatStatus(status) }}
-        <span>{{ getStatusCount(status) }}</span>
-      </button>
+      <mat-button-toggle [value]="status">
+        <span class="filter-label">{{ formatStatus(status) }}</span>
+        <span class="filter-count">{{ getStatusCount(status) }}</span>
+      </mat-button-toggle>
     }
-  </section>
+  </mat-button-toggle-group>
 
   @if (isLoading) {
-    <div class="state-card">Loading appointments...</div>
+    <div class="state-card">
+      <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+      <span>Loading appointments...</span>
+    </div>
   }
 
   @if (!isLoading && filteredAppointments.length === 0) {
@@ -107,46 +111,56 @@
           <div class="actions">
             @if (appointment.status === 'pending') {
               <button
+                mat-flat-button
                 type="button"
                 class="confirm"
                 [disabled]="updatingAppointmentId === appointment.id"
                 (click)="updateStatus(appointment, 'confirmed')">
+                <mat-icon>check_circle</mat-icon>
                 Accept
               </button>
 
               <button
+                mat-stroked-button
                 type="button"
                 class="decline"
                 [disabled]="updatingAppointmentId === appointment.id"
                 (click)="updateStatus(appointment, 'declined')">
+                <mat-icon>cancel</mat-icon>
                 Decline
               </button>
             }
 
             @if (appointment.status === 'confirmed') {
               <button
+                mat-flat-button
                 type="button"
                 class="complete"
                 [disabled]="updatingAppointmentId === appointment.id"
                 (click)="updateStatus(appointment, 'completed')">
+                <mat-icon>task_alt</mat-icon>
                 Complete
               </button>
 
               <button
+                mat-stroked-button
                 type="button"
                 class="cancel"
                 [disabled]="updatingAppointmentId === appointment.id"
                 (click)="updateStatus(appointment, 'cancelled')">
+                <mat-icon>event_busy</mat-icon>
                 Cancel
               </button>
             }
 
             @if (appointment.status === 'declined' || appointment.status === 'cancelled') {
               <button
+                mat-flat-button
                 type="button"
                 class="confirm"
                 [disabled]="updatingAppointmentId === appointment.id"
                 (click)="updateStatus(appointment, 'confirmed')">
+                <mat-icon>restart_alt</mat-icon>
                 Re-accept
               </button>
             }

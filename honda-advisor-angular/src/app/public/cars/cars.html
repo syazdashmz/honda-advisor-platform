@@ -7,14 +7,18 @@
   </p>
 </section>
 
-<section class="filters">
-  <button [class.active]="selectedCategory === 'all'" (click)="filterByCategory('all')">All</button>
-  <button [class.active]="selectedCategory === 'sedan'" (click)="filterByCategory('sedan')">Sedan</button>
-  <button [class.active]="selectedCategory === 'hatchback'" (click)="filterByCategory('hatchback')">Hatchback</button>
-  <button [class.active]="selectedCategory === 'suv'" (click)="filterByCategory('suv')">SUV</button>
-  <button [class.active]="selectedCategory === 'ev'" (click)="filterByCategory('ev')">EV</button>
-  <button [class.active]="selectedCategory === 'performance'" (click)="filterByCategory('performance')">Performance</button>
-</section>
+<mat-button-toggle-group
+  class="filters"
+  [value]="selectedCategory"
+  aria-label="Filter Honda models by category"
+  (change)="filterByCategory($event.value)">
+  <mat-button-toggle value="all">All</mat-button-toggle>
+  <mat-button-toggle value="sedan">Sedan</mat-button-toggle>
+  <mat-button-toggle value="hatchback">Hatchback</mat-button-toggle>
+  <mat-button-toggle value="suv">SUV</mat-button-toggle>
+  <mat-button-toggle value="ev">EV</mat-button-toggle>
+  <mat-button-toggle value="performance">Performance</mat-button-toggle>
+</mat-button-toggle-group>
 
 @if (isLoading) {
   <div class="state-card">Loading Honda models...</div>
@@ -61,8 +65,8 @@
           <p class="data-status">{{ car.data_status }}</p>
 
           <div class="actions">
-            <a [routerLink]="['/cars', car.slug]" class="primary-btn">View Details</a>
-            <a routerLink="/inquiry" class="secondary-btn">Ask Advisor</a>
+            <a mat-flat-button [routerLink]="['/cars', car.slug]" class="primary-btn">View Details</a>
+            <a mat-stroked-button routerLink="/inquiry" class="secondary-btn">Ask Advisor</a>
           </div>
         </div>
       </article>

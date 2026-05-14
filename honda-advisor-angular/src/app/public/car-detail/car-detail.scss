@@ -245,14 +245,19 @@
 }
 
 .variant-card {
+  width: 100%;
+  height: auto;
+  min-height: 84px;
   padding: 18px;
+  display: block;
   border-radius: 22px;
   border: 1px solid var(--border);
   background: #fff;
   text-align: left;
-  cursor: pointer;
+  line-height: normal;
   box-shadow: 0 10px 30px rgba(17, 24, 39, 0.05);
   transition: 0.2s ease;
+  white-space: normal;
 
   span,
   strong {

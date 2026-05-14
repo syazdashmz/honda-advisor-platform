@@ -1,6 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { InquiriesService } from '../../core/services/inquiries.service';
 import {
@@ -12,7 +15,10 @@ import {
   selector: 'app-admin-inquiries',
   imports: [
     CommonModule,
-    MatIconModule
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './admin-inquiries.html',
   styleUrl: './admin-inquiries.scss'

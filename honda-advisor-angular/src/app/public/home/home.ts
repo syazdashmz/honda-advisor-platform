@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { AuthService } from '../../core/services/auth.service';
@@ -28,6 +29,7 @@ const fallbackHomeContent: HomeContent = {
 @Component({
   selector: 'app-home',
   imports: [
+    MatButtonModule,
     MatIconModule,
     RouterLink
   ],

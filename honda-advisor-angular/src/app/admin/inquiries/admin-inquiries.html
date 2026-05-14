@@ -28,20 +28,24 @@
     <div class="success-alert">{{ successMessage }}</div>
   }
 
-  <section class="filter-row">
+  <mat-button-toggle-group
+    class="filter-row"
+    [value]="selectedStatus"
+    aria-label="Inquiry status filter"
+    (change)="applyFilter($event.value)">
     @for (status of statusFilters; track status) {
-      <button
-        type="button"
-        [class.active]="selectedStatus === status"
-        (click)="applyFilter(status)">
-        {{ formatStatus(status) }}
-        <span>{{ getStatusCount(status) }}</span>
-      </button>
+      <mat-button-toggle [value]="status">
+        <span class="filter-label">{{ formatStatus(status) }}</span>
+        <span class="filter-count">{{ getStatusCount(status) }}</span>
+      </mat-button-toggle>
     }
-  </section>
+  </mat-button-toggle-group>
 
   @if (isLoading) {
-    <div class="state-card">Loading inquiries...</div>
+    <div class="state-card">
+      <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+      <span>Loading inquiries...</span>
+    </div>
   }
 
   @if (!isLoading && filteredInquiries.length === 0) {
@@ -114,18 +118,22 @@
 
           <div class="contact-actions">
             <a
+              mat-stroked-button
               [href]="createWhatsAppLink(inquiry.phone_number)"
               target="_blank"
               rel="noopener">
+              <mat-icon>chat</mat-icon>
               WhatsApp
             </a>
 
-            <a [href]="createPhoneLink(inquiry.phone_number)">
+            <a mat-stroked-button [href]="createPhoneLink(inquiry.phone_number)">
+              <mat-icon>call</mat-icon>
               Call
             </a>
 
             @if (inquiry.email) {
-              <a [href]="createEmailLink(inquiry.email)">
+              <a mat-stroked-button [href]="createEmailLink(inquiry.email)">
+                <mat-icon>mail</mat-icon>
                 Email
               </a>
             }
@@ -134,70 +142,84 @@
           <div class="status-actions">
             @if (inquiry.status === 'new') {
               <button
+                mat-flat-button
                 type="button"
                 class="contacted"
                 [disabled]="updatingInquiryId === inquiry.id"
                 (click)="updateStatus(inquiry, 'contacted')">
+                <mat-icon>done</mat-icon>
                 Mark Contacted
               </button>
             }
 
             @if (inquiry.status === 'contacted') {
               <button
+                mat-flat-button
                 type="button"
                 class="interested"
                 [disabled]="updatingInquiryId === inquiry.id"
                 (click)="updateStatus(inquiry, 'interested')">
+                <mat-icon>favorite</mat-icon>
                 Mark Interested
               </button>
             }
 
             @if (inquiry.status === 'interested') {
               <button
+                mat-flat-button
                 type="button"
                 class="appointment"
                 [disabled]="updatingInquiryId === inquiry.id"
                 (click)="updateStatus(inquiry, 'appointment_booked')">
+                <mat-icon>event_available</mat-icon>
                 Appointment Booked
               </button>
             }
 
             @if (inquiry.status === 'appointment_booked') {
               <button
+                mat-flat-button
                 type="button"
                 class="loan"
                 [disabled]="updatingInquiryId === inquiry.id"
                 (click)="updateStatus(inquiry, 'loan_processing')">
+                <mat-icon>request_quote</mat-icon>
                 Loan Processing
               </button>
             }
 
             @if (inquiry.status === 'loan_processing' || inquiry.status === 'appointment_booked' || inquiry.status === 'interested') {
               <button
+                mat-flat-button
                 type="button"
                 class="won"
                 [disabled]="updatingInquiryId === inquiry.id"
                 (click)="updateStatus(inquiry, 'won')">
+                <mat-icon>emoji_events</mat-icon>
                 Mark Won
               </button>
             }
 
             @if (inquiry.status !== 'won' && inquiry.status !== 'lost') {
               <button
+                mat-stroked-button
                 type="button"
                 class="lost"
                 [disabled]="updatingInquiryId === inquiry.id"
                 (click)="updateStatus(inquiry, 'lost')">
+                <mat-icon>close</mat-icon>
                 Mark Lost
               </button>
             }
 
             @if (inquiry.status === 'lost') {
               <button
+                mat-flat-button
                 type="button"
                 class="interested"
                 [disabled]="updatingInquiryId === inquiry.id"
                 (click)="updateStatus(inquiry, 'interested')">
+                <mat-icon>restart_alt</mat-icon>
                 Reopen Lead
               </button>
             }

@@ -5,7 +5,13 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AdminCarsService } from '../../core/services/admin-cars.service';
 import {
@@ -21,7 +27,13 @@ import {
   selector: 'app-admin-cars',
   imports: [
     CommonModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
     ReactiveFormsModule
   ],
   templateUrl: './admin-cars.html',

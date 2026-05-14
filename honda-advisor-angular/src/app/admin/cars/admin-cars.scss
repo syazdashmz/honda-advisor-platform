@@ -104,6 +104,9 @@
 
 .admin-car-item,
 .variant-item {
+  width: 100%;
+  min-height: 74px;
+  height: auto;
   padding: 16px;
   border-radius: 20px;
   border: 1px solid var(--border);
@@ -113,7 +116,9 @@
   gap: 12px;
   cursor: pointer;
   text-align: left;
+  line-height: normal;
   transition: 0.2s ease;
+  white-space: normal;
 
   span,
   strong,
@@ -154,6 +159,8 @@
 .admin-form-card,
 .variant-form {
   padding: 30px;
+  display: grid;
+  gap: 16px;
 }
 
 .empty-editor {
@@ -206,6 +213,11 @@
   gap: 18px;
 }
 
+mat-form-field,
+.full-field {
+  width: 100%;
+}
+
 .model-image-preview {
   position: relative;
   min-height: 220px;
@@ -240,43 +252,6 @@
   }
 }
 
-label {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 16px;
-  color: var(--ink-black);
-  font-weight: 900;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: #fff;
-  color: var(--ink-black);
-  outline: none;
-  transition: 0.2s ease;
-
-  &:focus {
-    border-color: var(--honda-red);
-    box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.1);
-  }
-}
-
-input,
-select {
-  height: 52px;
-  padding: 0 16px;
-}
-
-textarea {
-  padding: 14px 16px;
-  resize: vertical;
-  line-height: 1.7;
-}
-
 .switch-grid {
   display: flex;
   gap: 12px;
@@ -284,20 +259,10 @@ textarea {
 }
 
 .switch-card {
-  padding: 13px 15px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  padding: 10px 12px;
   border-radius: 18px;
   background: var(--warm-silver);
   border: 1px solid var(--border);
-  cursor: pointer;
-
-  input {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--honda-red);
-  }
 
   span {
     font-weight: 900;
@@ -321,18 +286,27 @@ textarea {
 }
 
 .state-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background: var(--warm-silver);
   color: var(--graphite);
   border: 1px solid var(--border);
 }
 
 .error-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background: #fef2f2;
   color: #991b1b;
   border: 1px solid #fecaca;
 }
 
 .success-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background: #ecfdf5;
   color: #065f46;
   border: 1px solid #a7f3d0;

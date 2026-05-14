@@ -34,15 +34,15 @@
       </div>
 
       <div class="hero-actions">
-        <a routerLink="/inquiry" class="primary-btn">
+        <a mat-flat-button routerLink="/inquiry" class="primary-btn">
           <mat-icon>forum</mat-icon>
           Ask Advisor
         </a>
-        <a routerLink="/loan-calculator" class="secondary-btn">
+        <a mat-flat-button routerLink="/loan-calculator" class="secondary-btn">
           <mat-icon>calculate</mat-icon>
           Calculate Loan
         </a>
-        <a routerLink="/appointment" class="ghost-btn">
+        <a mat-stroked-button routerLink="/appointment" class="ghost-btn">
           <mat-icon>event_available</mat-icon>
           Book Appointment
         </a>
@@ -101,7 +101,7 @@
         advisor can guide you through model selection, loan planning, and appointment setup.
       </p>
 
-      <a routerLink="/inquiry" class="primary-btn">Start Inquiry</a>
+      <a mat-flat-button routerLink="/inquiry" class="primary-btn">Start Inquiry</a>
     </article>
   </section>
 
@@ -146,6 +146,7 @@
         <div class="variant-list">
           @for (variant of car.variants; track variant.id) {
             <button
+              mat-stroked-button
               type="button"
               class="variant-card"
               [class.active]="selectedVariant?.id === variant.id"

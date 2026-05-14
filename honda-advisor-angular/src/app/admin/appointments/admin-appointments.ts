@@ -1,6 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppointmentsService } from '../../core/services/appointments.service';
 import {
@@ -12,7 +15,10 @@ import {
   selector: 'app-admin-appointments',
   imports: [
     CommonModule,
-    MatIconModule
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './admin-appointments.html',
   styleUrl: './admin-appointments.scss'

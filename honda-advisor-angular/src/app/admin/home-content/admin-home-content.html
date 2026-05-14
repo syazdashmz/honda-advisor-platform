@@ -20,17 +20,26 @@
 </section>
 
 <section class="home-content-page">
-  <form class="content-form" [formGroup]="contentForm" (ngSubmit)="saveContent()">
+  <form class="content-form honda-material-form" [formGroup]="contentForm" (ngSubmit)="saveContent()">
     @if (isLoading) {
-      <div class="state-card">Loading homepage content...</div>
+      <div class="state-card">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+        <span>Loading homepage content...</span>
+      </div>
     }
 
     @if (errorMessage) {
-      <div class="error-alert">{{ errorMessage }}</div>
+      <div class="error-alert">
+        <mat-icon>error</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
     }
 
     @if (successMessage) {
-      <div class="success-alert">{{ successMessage }}</div>
+      <div class="success-alert">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{ successMessage }}</span>
+      </div>
     }
 
     <div class="form-heading">
@@ -39,7 +48,8 @@
         <h2>Public homepage content</h2>
       </div>
 
-      <button type="submit" class="primary-btn" [disabled]="isSaving">
+      <button mat-flat-button type="submit" class="primary-btn" [disabled]="isSaving">
+        <mat-icon>save</mat-icon>
         {{ isSaving ? 'Saving...' : 'Save Homepage Content' }}
       </button>
     </div>
@@ -54,29 +64,32 @@
       </div>
 
       <div class="form-grid">
-        <label>
-          Hero badge
-          <input type="text" formControlName="hero_badge" />
-        </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Hero badge</mat-label>
+          <mat-icon matPrefix>verified</mat-icon>
+          <input matInput type="text" formControlName="hero_badge" />
+        </mat-form-field>
 
-        <label>
-          Hero image URL / asset path
+        <mat-form-field appearance="outline">
+          <mat-label>Hero image URL / asset path</mat-label>
+          <mat-icon matPrefix>image</mat-icon>
           <input
+            matInput
             type="text"
             formControlName="hero_image_url"
             placeholder="/images/home/home-showroom-01.webp" />
-        </label>
+        </mat-form-field>
       </div>
 
-      <label>
-        Hero title
-        <input type="text" formControlName="hero_title" />
-      </label>
+      <mat-form-field appearance="outline" class="full-field">
+        <mat-label>Hero title</mat-label>
+        <input matInput type="text" formControlName="hero_title" />
+      </mat-form-field>
 
-      <label>
-        Hero subtitle
-        <textarea rows="4" formControlName="hero_subtitle"></textarea>
-      </label>
+      <mat-form-field appearance="outline" class="full-field">
+        <mat-label>Hero subtitle</mat-label>
+        <textarea matInput rows="4" formControlName="hero_subtitle"></textarea>
+      </mat-form-field>
     </section>
 
     <section class="form-section">
@@ -89,25 +102,29 @@
       </div>
 
       <div class="form-grid">
-        <label>
-          Primary CTA label
-          <input type="text" formControlName="primary_cta_label" />
-        </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Primary CTA label</mat-label>
+          <mat-icon matPrefix>ads_click</mat-icon>
+          <input matInput type="text" formControlName="primary_cta_label" />
+        </mat-form-field>
 
-        <label>
-          Primary CTA link
-          <input type="text" formControlName="primary_cta_link" />
-        </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Primary CTA link</mat-label>
+          <mat-icon matPrefix>link</mat-icon>
+          <input matInput type="text" formControlName="primary_cta_link" />
+        </mat-form-field>
 
-        <label>
-          Secondary CTA label
-          <input type="text" formControlName="secondary_cta_label" />
-        </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Secondary CTA label</mat-label>
+          <mat-icon matPrefix>ads_click</mat-icon>
+          <input matInput type="text" formControlName="secondary_cta_label" />
+        </mat-form-field>
 
-        <label>
-          Secondary CTA link
-          <input type="text" formControlName="secondary_cta_link" />
-        </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Secondary CTA link</mat-label>
+          <mat-icon matPrefix>link</mat-icon>
+          <input matInput type="text" formControlName="secondary_cta_link" />
+        </mat-form-field>
       </div>
     </section>
 
@@ -120,23 +137,26 @@
         </div>
       </div>
 
-      <label>
-        Advisor title
-        <input type="text" formControlName="advisor_title" />
-      </label>
+      <mat-form-field appearance="outline" class="full-field">
+        <mat-label>Advisor title</mat-label>
+        <mat-icon matPrefix>workspace_premium</mat-icon>
+        <input matInput type="text" formControlName="advisor_title" />
+      </mat-form-field>
 
-      <label>
-        Advisor text
-        <textarea rows="5" formControlName="advisor_text"></textarea>
-      </label>
+      <mat-form-field appearance="outline" class="full-field">
+        <mat-label>Advisor text</mat-label>
+        <textarea matInput rows="5" formControlName="advisor_text"></textarea>
+      </mat-form-field>
 
-      <label>
-        Advisor image URL / asset path
+      <mat-form-field appearance="outline" class="full-field">
+        <mat-label>Advisor image URL / asset path</mat-label>
+        <mat-icon matPrefix>portrait</mat-icon>
         <input
+          matInput
           type="text"
           formControlName="advisor_image_url"
           placeholder="/images/advisor/advisor-profile.webp" />
-      </label>
+      </mat-form-field>
     </section>
 
     <section class="form-section">
@@ -148,15 +168,14 @@
         </div>
       </div>
 
-      <label>
-        Announcement text
-        <textarea rows="3" formControlName="announcement_text"></textarea>
-      </label>
+      <mat-form-field appearance="outline" class="full-field">
+        <mat-label>Announcement text</mat-label>
+        <textarea matInput rows="3" formControlName="announcement_text"></textarea>
+      </mat-form-field>
 
-      <label class="switch-card">
-        <input type="checkbox" formControlName="is_active" />
-        <span>Homepage content active</span>
-      </label>
+      <mat-checkbox class="switch-card" formControlName="is_active">
+        Homepage content active
+      </mat-checkbox>
     </section>
 
     <div class="disclaimer-card">
@@ -192,7 +211,7 @@
     <div class="admin-tip">
       <strong>Recommended image sizes</strong>
       <p>
-        Hero image: 1600×900. Advisor image: 800×1000. Export as .webp for fast loading.
+        Hero image: 1600 x 900. Advisor image: 800 x 1000. Export as .webp for fast loading.
       </p>
     </div>
   </aside>
