@@ -145,7 +145,10 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field
+            appearance="outline"
+            class="date-picker-field"
+            (click)="appointmentPicker.open()">
             <mat-label>Preferred date</mat-label>
 
             <input

@@ -395,6 +395,21 @@ textarea {
   cursor: pointer;
 }
 
+.date-picker-field {
+  cursor: pointer;
+}
+
+:host ::ng-deep .date-picker-field .mat-mdc-text-field-wrapper,
+:host ::ng-deep .date-picker-field .mat-mdc-form-field-flex,
+:host ::ng-deep .date-picker-field .mat-mdc-input-element {
+  cursor: pointer;
+}
+
+:host ::ng-deep .date-picker-field .mdc-notched-outline,
+:host ::ng-deep .date-picker-field .mat-mdc-floating-label {
+  pointer-events: none;
+}
+
 .date-open-button {
   margin-right: 4px;
   color: var(--honda-red);

@@ -90,7 +90,17 @@ textarea {
 
 .honda-material-form mat-form-field,
 .honda-material-form .full-field {
+  min-width: 0;
   width: 100%;
+}
+
+.mat-mdc-form-field {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.mat-mdc-form-field-infix {
+  min-width: 0;
 }
 
 .app-main {
