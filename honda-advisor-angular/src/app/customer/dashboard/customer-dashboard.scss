@@ -100,23 +100,43 @@
   }
 }
 
-.status-pill,
-.mini-action {
+.status-pill {
   padding: 9px 13px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 900;
   text-decoration: none;
-}
-
-.status-pill {
   background: #ecfdf5;
   color: #065f46;
 }
 
 .mini-action {
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border: 0;
   background: var(--honda-red);
   color: #fff;
+  transition: background 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+  line-height: 1;
+
+  &:hover {
+    background: #a80d28;
+    transform: translateY(-1px);
+  }
+
+  mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
 }
 
 .profile-grid {
@@ -150,15 +170,55 @@
   }
 }
 
-.info-note {
-  margin-top: 18px;
-  padding: 14px;
-  border-radius: 18px;
-  background: #fff7ed;
-  color: #9a3412;
-  border: 1px solid #fed7aa;
+.status-active {
+  color: #065f46;
+}
+
+.success-alert,
+.error-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  margin-bottom: 18px;
   font-weight: 700;
-  line-height: 1.6;
+
+  mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+}
+
+.success-alert {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.error-alert {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.profile-edit-form {
+  display: grid;
+  gap: 16px;
+}
+
+.form-grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.profile-form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .state-card,
@@ -364,6 +424,188 @@
   }
 }
 
+.inquiry-list {
+  display: grid;
+  gap: 14px;
+}
+
+.inquiry-item {
+  padding: 18px;
+  border-radius: 22px;
+  background: var(--warm-silver);
+  border: 1px solid var(--border);
+
+  p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+}
+
+.inquiry-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+
+  strong,
+  small {
+    display: block;
+  }
+
+  small {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
+    text-transform: capitalize;
+  }
+}
+
+.inquiry-status {
+  height: fit-content;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: var(--graphite);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: capitalize;
+  white-space: nowrap;
+
+  &.new {
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  &.contacted {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+
+  &.interested {
+    background: #fefce8;
+    color: #a16207;
+  }
+
+  &.appointment_booked {
+    background: #f3e8ff;
+    color: #6b21a8;
+  }
+
+  &.loan_processing {
+    background: #ecfdf5;
+    color: #065f46;
+  }
+
+  &.won {
+    background: #ecfdf5;
+    color: #065f46;
+  }
+
+  &.lost {
+    background: #fef2f2;
+    color: #991b1b;
+  }
+}
+
+.inquiry-meta {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  span {
+    padding: 7px 11px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #fff;
+    color: var(--graphite);
+    font-weight: 800;
+    font-size: 12px;
+
+    mat-icon {
+      width: 14px;
+      height: 14px;
+      font-size: 14px;
+      color: var(--honda-red);
+    }
+  }
+}
+
+.how-list {
+  display: grid;
+  gap: 14px;
+
+  div {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 14px;
+  }
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--honda-red);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.contact-card {
+  text-align: center;
+
+  h3 {
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  a {
+    margin-top: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 14px;
+    background: none;
+    color: inherit;
+    font-weight: 900;
+    text-decoration: none;
+
+    &:hover {
+      background: none;
+    }
+  }
+}
+
+.contact-icon {
+  width: 48px;
+  height: 48px;
+  font-size: 48px;
+  color: var(--honda-red);
+  margin: 0 auto 12px;
+  display: block;
+}
+
 .dashboard-side {
   display: grid;
   gap: 18px;
@@ -423,6 +665,23 @@
     ul {
       color: #d1d5db;
     }
+
+    a {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+
+      &:hover {
+        background: var(--honda-red);
+      }
+
+      mat-icon {
+        color: #fca5a5;
+      }
+
+      &:hover mat-icon {
+        color: #fff;
+      }
+    }
   }
 }
 
@@ -443,12 +702,23 @@
     padding: 44px 20px;
   }
 
-  .profile-grid {
+  .profile-grid,
+  .form-grid-two {
     grid-template-columns: 1fr;
   }
 
   .card-heading,
-  .appointment-top {
+  .appointment-top,
+  .inquiry-top {
     flex-direction: column;
+  }
+
+  .profile-form-actions {
+    flex-direction: column;
+
+    button,
+    a {
+      width: 100%;
+    }
   }
 }

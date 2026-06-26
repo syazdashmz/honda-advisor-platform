@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Honda June 2026 Experience More Hybrid Joy promotion poster</title>
+  <desc id="desc">Promotion reference for Honda Malaysia June 2026 rewards, with selected model reward values and advisor contact call-to-action.</desc>
+  <defs>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="0.45" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#c8102e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7bf"/>
+      <stop offset="0.5" stop-color="#f4c84b"/>
+      <stop offset="1" stop-color="#a45c00"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f6f7f9"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#07111f" flood-opacity="0.25"/>
+    </filter>
+    <filter id="textShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#07111f" flood-opacity="0.34"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1500" rx="46" fill="#f6f7f9"/>
+  <rect width="1200" height="690" rx="46" fill="url(#hero)"/>
+  <path d="M0 0h340c-52 88-112 154-190 201H0z" fill="#c8102e"/>
+  <circle cx="1020" cy="120" r="220" fill="#ffffff" opacity="0.09"/>
+  <circle cx="205" cy="476" r="210" fill="#ffffff" opacity="0.08"/>
+  <path d="M804 70c102 30 177 110 219 233 25 72 33 150 25 235H822c-58-82-91-160-99-234-9-92 18-170 81-234z" fill="#ffffff" opacity="0.11"/>
+
+  <text x="72" y="80" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="900" letter-spacing="3">HONDA</text>
+  <text x="72" y="126" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="800" letter-spacing="2">THE POWER OF DREAMS</text>
+
+  <rect x="72" y="176" width="236" height="48" rx="24" fill="#fff" opacity="0.16"/>
+  <text x="92" y="207" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="900" letter-spacing="2">JUNE 2026</text>
+
+  <text x="72" y="300" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="62" font-weight="950" filter="url(#textShadow)">Experience More</text>
+  <text x="72" y="416" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="118" font-weight="950" filter="url(#textShadow)">Hybrid Joy</text>
+  <text x="72" y="474" fill="#d1fae5" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="850">Official Honda Malaysia rewards reference</text>
+
+  <g transform="translate(72 526)" filter="url(#shadow)">
+    <rect width="488" height="132" rx="28" fill="#ffffff"/>
+    <text x="28" y="43" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="900" letter-spacing="1.8">TOTAL REWARDS WORTH UP TO</text>
+    <text x="28" y="106" fill="#c8102e" font-family="Inter,Arial,sans-serif" font-size="70" font-weight="950">RM34,000*</text>
+  </g>
+
+  <g transform="translate(598 526)" filter="url(#shadow)">
+    <rect width="530" height="132" rx="28" fill="#101827"/>
+    <text x="28" y="43" fill="#fca5a5" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="900" letter-spacing="1.8">HYBRID SUPPORT</text>
+    <text x="28" y="80" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="33" font-weight="950">RM2,000 Hybrid Support*</text>
+    <text x="28" y="112" fill="#d1d5db" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="850">+ 2 years free labour cost*</text>
+  </g>
+
+  <g transform="translate(72 722)" filter="url(#shadow)">
+    <rect width="1056" height="424" rx="34" fill="#ffffff"/>
+    <text x="34" y="54" fill="#111827" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="950">Selected June 2026 Rewards</text>
+    <text x="34" y="88" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700">Values vary by model, variant, excise year, eligibility, and available stock.</text>
+
+    <g transform="translate(34 126)">
+      <rect width="312" height="122" rx="24" fill="url(#card)" stroke="#e5e7eb"/>
+      <text x="22" y="36" fill="#111827" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="950">City</text>
+      <text x="22" y="78" fill="#c8102e" font-family="Inter,Arial,sans-serif" font-size="32" font-weight="950">up to RM10k*</text>
+      <text x="22" y="105" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="800">+ Double Bonanza Rewards*</text>
+      <image href="/images/cars/city/hero.webp" x="156" y="36" width="138" height="76" preserveAspectRatio="xMidYMid meet"/>
+    </g>
+
+    <g transform="translate(372 126)">
+      <rect width="312" height="122" rx="24" fill="url(#card)" stroke="#e5e7eb"/>
+      <text x="22" y="36" fill="#111827" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="950">WR-V</text>
+      <text x="22" y="80" fill="#c8102e" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="950">RM11k*</text>
+      <text x="22" y="105" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="800">Cash rebate + Joy Reward*</text>
+      <image href="/images/cars/wr-v/hero.webp" x="152" y="36" width="140" height="76" preserveAspectRatio="xMidYMid meet"/>
+    </g>
+
+    <g transform="translate(710 126)">
+      <rect width="312" height="122" rx="24" fill="url(#card)" stroke="#e5e7eb"/>
+      <text x="22" y="36" fill="#111827" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="950">Civic</text>
+      <text x="22" y="80" fill="#c8102e" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="950">up to RM12k*</text>
+      <text x="22" y="105" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="800">e:HEV RS includes Hybrid Support*</text>
+      <image href="/images/cars/civic/hero.webp" x="154" y="36" width="140" height="76" preserveAspectRatio="xMidYMid meet"/>
+    </g>
+
+    <g transform="translate(34 270)">
+      <rect width="312" height="122" rx="24" fill="url(#card)" stroke="#e5e7eb"/>
+      <text x="22" y="36" fill="#111827" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="950">HR-V</text>
+      <text x="22" y="80" fill="#c8102e" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="950">up to RM11k*</text>
+      <text x="22" y="105" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="800">Selected variants only*</text>
+      <image href="/images/cars/hr-v/hero.webp" x="152" y="35" width="140" height="78" preserveAspectRatio="xMidYMid meet"/>
+    </g>
+
+    <g transform="translate(372 270)">
+      <rect width="312" height="122" rx="24" fill="url(#card)" stroke="#e5e7eb"/>
+      <text x="22" y="36" fill="#111827" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="950">CR-V</text>
+      <text x="22" y="80" fill="#c8102e" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="950">RM9k*</text>
+      <text x="22" y="105" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="800">Selected CR-V variants*</text>
+      <image href="/images/cars/cr-v/hero.webp" x="150" y="36" width="144" height="78" preserveAspectRatio="xMidYMid meet"/>
+    </g>
+
+    <g transform="translate(710 270)">
+      <rect width="312" height="122" rx="24" fill="#111827" stroke="#374151"/>
+      <text x="22" y="36" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="950">e:N1</text>
+      <text x="22" y="80" fill="url(#gold)" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="950">RM34k*</text>
+      <text x="22" y="105" fill="#d1d5db" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="800">2025 model reward reference*</text>
+      <image href="/images/cars/en1/hero.webp" x="150" y="36" width="144" height="78" preserveAspectRatio="xMidYMid meet"/>
+    </g>
+  </g>
+
+  <g transform="translate(72 1188)" filter="url(#shadow)">
+    <rect width="1056" height="190" rx="34" fill="#c8102e"/>
+    <rect x="754" width="302" height="190" rx="34" fill="#111827"/>
+    <text x="34" y="52" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="900" letter-spacing="1.8">READY TO CHECK ELIGIBILITY?</text>
+    <text x="34" y="96" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="950">Ask Fauziah to check your</text>
+    <text x="34" y="132" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="950">Honda reward eligibility</text>
+    <text x="34" y="164" fill="#ffe4e6" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="850">Model selection • loan guidance • appointment • delivery support</text>
+
+    <text x="790" y="62" fill="#fca5a5" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="900">CONTACT FAUZIAH</text>
+    <text x="790" y="112" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="32" font-weight="950">012 267 1977</text>
+    <text x="790" y="150" fill="#d1d5db" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="800">Tenaga Setia Resources</text>
+  </g>
+
+  <text x="72" y="1428" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">*Promotion reference based on Honda Malaysia June 2026 “Experience More Hybrid Joy”. Registration period: 1 June 2026 to 30 June 2026.</text>
+  <text x="72" y="1454" fill="#6b7280" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">Terms, eligibility, variant, excise year, and stock conditions apply. Final details must be confirmed with the advisor, dealership, or Honda Malaysia.</text>
+  <text x="72" y="1480" fill="#9ca3af" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="700">This advisor website is not an official Honda Malaysia website.</text>
+</svg>

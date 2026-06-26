@@ -1,5 +1,5 @@
 <header class="navbar">
-  <a class="brand" routerLink="/">
+  <a class="brand" routerLink="/" (click)="closeMenu()">
     <span class="brand-mark">H</span>
 
     <span class="brand-copy">
@@ -8,61 +8,77 @@
     </span>
   </a>
 
-  <nav class="nav-links" aria-label="Main navigation">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <button
+    type="button"
+    class="hamburger"
+    [class.open]="menuOpen()"
+    (click)="toggleMenu()"
+    aria-label="Toggle navigation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav class="nav-links" [class.open]="menuOpen()" aria-label="Main navigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
       <mat-icon>home</mat-icon>
       <span>Home</span>
     </a>
 
-    <a routerLink="/cars" routerLinkActive="active">
+    <a routerLink="/cars" routerLinkActive="active" (click)="closeMenu()">
       <mat-icon>directions_car</mat-icon>
       <span>Models</span>
     </a>
 
+    <a routerLink="/compare" routerLinkActive="active" (click)="closeMenu()">
+      <mat-icon>compare_arrows</mat-icon>
+      <span>Compare</span>
+    </a>
+
     @if (!user()) {
-      <a routerLink="/loan-calculator" routerLinkActive="active">
+      <a routerLink="/loan-calculator" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>calculate</mat-icon>
         <span>Loan</span>
       </a>
 
-      <a routerLink="/inquiry" routerLinkActive="active">
+      <a routerLink="/inquiry" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>forum</mat-icon>
         <span>Inquiry</span>
       </a>
 
-      <a routerLink="/appointment" routerLinkActive="active">
+      <a routerLink="/appointment" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>event_available</mat-icon>
         <span>Appointment</span>
       </a>
 
-      <a routerLink="/login" routerLinkActive="active">
+      <a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>account_circle</mat-icon>
         <span>Customer Login</span>
       </a>
 
-      <a routerLink="/register" class="login-link">
+      <a routerLink="/register" class="login-link" (click)="closeMenu()">
         <mat-icon>person_add</mat-icon>
         <span>Register</span>
       </a>
     }
 
     @if (isCustomer()) {
-      <a routerLink="/loan-calculator" routerLinkActive="active">
+      <a routerLink="/loan-calculator" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>calculate</mat-icon>
         <span>Loan</span>
       </a>
 
-      <a routerLink="/inquiry" routerLinkActive="active">
+      <a routerLink="/inquiry" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>forum</mat-icon>
         <span>Inquiry</span>
       </a>
 
-      <a routerLink="/appointment" routerLinkActive="active">
+      <a routerLink="/appointment" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>event_available</mat-icon>
         <span>Appointment</span>
       </a>
 
-      <a routerLink="/dashboard" routerLinkActive="active">
+      <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>dashboard</mat-icon>
         <span>My Dashboard</span>
       </a>
@@ -79,27 +95,27 @@
     }
 
     @if (isAdmin()) {
-      <a routerLink="/admin/dashboard" routerLinkActive="active">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>admin_panel_settings</mat-icon>
         <span>Admin Dashboard</span>
       </a>
 
-      <a routerLink="/admin/inquiries" routerLinkActive="active">
+      <a routerLink="/admin/inquiries" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>mark_email_unread</mat-icon>
         <span>Inquiries</span>
       </a>
 
-      <a routerLink="/admin/appointments" routerLinkActive="active">
+      <a routerLink="/admin/appointments" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>event_note</mat-icon>
         <span>Appointments</span>
       </a>
 
-      <a routerLink="/admin/cars" routerLinkActive="active">
+      <a routerLink="/admin/cars" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>directions_car</mat-icon>
         <span>Manage Cars</span>
       </a>
 
-      <a routerLink="/admin/home-content" routerLinkActive="active">
+      <a routerLink="/admin/home-content" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon>web</mat-icon>
         <span>Home Content</span>
       </a>
@@ -115,4 +131,8 @@
       </button>
     }
   </nav>
+
+  @if (menuOpen()) {
+    <div class="nav-overlay" (click)="closeMenu()"></div>
+  }
 </header>

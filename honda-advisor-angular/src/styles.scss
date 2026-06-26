@@ -1,4 +1,5 @@
 @import '@angular/material/prebuilt-themes/rose-red.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
 
 :root {
@@ -30,7 +31,7 @@ html {
 
 body {
   margin: 0;
-  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
   background: var(--white);
   color: var(--ink-black);
   --mat-sys-primary: var(--honda-red);
@@ -104,7 +105,7 @@ textarea {
 }
 
 .app-main {
-  min-height: calc(100vh - 78px);
+  min-height: calc(100vh - 82px);
 }
 
 .page-shell {
@@ -185,21 +186,12 @@ textarea {
   }
 }
 
-.mock-pill {
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #fff7ed;
-  color: #c2410c;
-  font-size: 12px;
-  font-weight: 900;
-}
-
 .disclaimer-card {
   padding: 16px 18px;
   border-radius: var(--radius-md);
-  background: #fff7ed;
-  color: #9a3412;
-  border: 1px solid #fed7aa;
+  background: #f8fafc;
+  color: var(--graphite);
+  border: 1px solid var(--border);
   font-size: 13px;
   line-height: 1.6;
 }

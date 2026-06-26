@@ -15,6 +15,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SiteContentService } from '../../core/services/site-content.service';
 import { HomeContent } from '../../core/models/site-content.model';
 
+type HomeImagePreset = {
+  label: string;
+  target: 'hero_image_url' | 'advisor_image_url';
+  path: string;
+  icon: string;
+};
+
 @Component({
   selector: 'app-admin-home-content',
   imports: [
@@ -44,15 +51,15 @@ export class AdminHomeContent implements OnInit {
   contentForm = this.formBuilder.nonNullable.group({
     id: [null as number | null],
 
-    hero_badge: ['Trusted Honda Advisor'],
+    hero_badge: ['Trusted Honda Sales Advisor'],
     hero_title: ['', [Validators.required]],
     hero_subtitle: ['', [Validators.required]],
     hero_image_url: [''],
 
-    primary_cta_label: ['View Honda Models', [Validators.required]],
-    primary_cta_link: ['/cars', [Validators.required]],
-    secondary_cta_label: ['Calculate Loan', [Validators.required]],
-    secondary_cta_link: ['/loan-calculator', [Validators.required]],
+    primary_cta_label: ['Compare Models', [Validators.required]],
+    primary_cta_link: ['/compare', [Validators.required]],
+    secondary_cta_label: ['View Honda Models', [Validators.required]],
+    secondary_cta_link: ['/cars', [Validators.required]],
 
     advisor_title: ['', [Validators.required]],
     advisor_text: ['', [Validators.required]],
@@ -61,6 +68,33 @@ export class AdminHomeContent implements OnInit {
     announcement_text: [''],
     is_active: [true]
   });
+
+  imagePresets: HomeImagePreset[] = [
+    {
+      label: 'Dealership visual',
+      target: 'hero_image_url' as const,
+      path: '/images/home/home-showroom-01.webp',
+      icon: 'storefront'
+    },
+    {
+      label: 'Advisor profile',
+      target: 'advisor_image_url' as const,
+      path: '/images/advisor/advisor-profile.webp',
+      icon: 'portrait'
+    },
+    {
+      label: 'Award moment',
+      target: 'advisor_image_url' as const,
+      path: '/images/advisor/fauziah-award.jpg',
+      icon: 'emoji_events'
+    },
+    {
+      label: 'Azlina delivery',
+      target: 'hero_image_url' as const,
+      path: '/images/testimonials/delivery-azlina-private.jpg',
+      icon: 'redeem'
+    }
+  ];
 
   ngOnInit(): void {
     this.loadContent();
@@ -76,14 +110,14 @@ export class AdminHomeContent implements OnInit {
 
         this.contentForm.patchValue({
           id: content.id || null,
-          hero_badge: content.hero_badge || 'Trusted Honda Advisor',
+          hero_badge: content.hero_badge || 'Trusted Honda Sales Advisor',
           hero_title: content.hero_title || '',
           hero_subtitle: content.hero_subtitle || '',
           hero_image_url: content.hero_image_url || '',
-          primary_cta_label: content.primary_cta_label || 'View Honda Models',
-          primary_cta_link: content.primary_cta_link || '/cars',
-          secondary_cta_label: content.secondary_cta_label || 'Calculate Loan',
-          secondary_cta_link: content.secondary_cta_link || '/loan-calculator',
+          primary_cta_label: content.primary_cta_label || 'Compare Models',
+          primary_cta_link: content.primary_cta_link || '/compare',
+          secondary_cta_label: content.secondary_cta_label || 'View Honda Models',
+          secondary_cta_link: content.secondary_cta_link || '/cars',
           advisor_title: content.advisor_title || '',
           advisor_text: content.advisor_text || '',
           advisor_image_url: content.advisor_image_url || '',
@@ -140,6 +174,18 @@ export class AdminHomeContent implements OnInit {
         this.isSaving = false;
         this.cdr.detectChanges();
       }
+    });
+  }
+
+  applyImagePreset(preset: HomeImagePreset): void {
+    this.contentForm.patchValue({
+      [preset.target]: preset.path
+    });
+  }
+
+  clearAnnouncement(): void {
+    this.contentForm.patchValue({
+      announcement_text: ''
     });
   }
 

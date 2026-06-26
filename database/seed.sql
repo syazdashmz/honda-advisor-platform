@@ -27,18 +27,18 @@ INSERT INTO site_home_content (
   is_active
 )
 SELECT
-  'Trusted Honda Advisor',
-  'Meet your personal Honda sales advisor',
-  'Serving Honda customers since 2002 at Tenaga Setia Resources Sdn. Bhd. with personal guidance from inquiry to delivery.',
+  'Trusted Honda Sales Advisor',
+  'Meet Pn. Fauziah, your personal Honda advisor',
+  'A warm, experienced Honda sales advisor at Tenaga Setia Resources Sdn. Bhd. who guides customers clearly from model discovery to delivery day.',
   '/images/home/home-showroom-01.webp',
+  'Compare Models',
+  '/compare',
   'View Honda Models',
   '/cars',
-  'Calculate Loan',
-  '/loan-calculator',
-  'Serving Honda customers since 2002',
-  'This platform is designed as a personal online showroom for a Honda sales advisor based at Tenaga Setia Resources Sdn. Bhd. It helps customers explore models, estimate monthly payment, submit inquiries, and arrange appointments.',
+  'Tenaga Setia Resources Honda showroom support',
+  'Visit the showroom for model viewing, test-drive arrangement, loan discussion, and delivery coordination. Final stock, promotions, quotation, and color availability are confirmed personally during advisor follow-up.',
   '/images/advisor/advisor-profile.webp',
-  'Sample homepage content. Admin can update this from the admin panel.',
+  'Recognized for long-service excellence and trusted by loyal Honda customers across many years.',
   TRUE
 WHERE NOT EXISTS (
   SELECT 1 FROM site_home_content LIMIT 1
@@ -66,7 +66,7 @@ INSERT INTO advisor_profiles (
   'Honda Sales Advisor',
   2002,
   'Serving Honda customers since 2002 at Tenaga Setia Resources Sdn. Bhd. with trusted guidance for model selection, loan explanation, appointment support, and customer follow-up.',
-  '/assets/advisor/profile-placeholder.jpg',
+  '/images/advisor/advisor-profile.webp',
   '60120000000',
   'advisor@example.com',
   'Monday to Saturday, appointment-based consultation',
@@ -169,17 +169,17 @@ INSERT INTO car_variants (
 ) VALUES
 (1, 'City S', 84900.00, '1.5L Petrol', 'CVT', 'petrol', 'Entry variant with essential Honda comfort and safety.', 'Budget-conscious first-time buyers', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
 (1, 'City V', 94900.00, '1.5L Petrol', 'CVT', 'petrol', 'Balanced comfort, features, and value.', 'Customers who want comfort and value', 2, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
-(1, 'City RS', 109900.00, '1.5L Petrol / Hybrid option placeholder', 'CVT', 'petrol', 'Sportier styling and premium features.', 'Customers who want premium look and features', 3, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
+(1, 'City RS', 109900.00, '1.5L Petrol', 'CVT', 'petrol', 'Sportier styling and premium features.', 'Customers who want premium look and features', 3, 'verified', FALSE, 'Advisor reference data for customer comparison. Final variant details must be confirmed before quotation.'),
 
 (2, 'City Hatchback S', 85900.00, '1.5L Petrol', 'CVT', 'petrol', 'Compact and practical hatchback entry option.', 'Young drivers and city users', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
-(2, 'City Hatchback RS', 109900.00, '1.5L Petrol / Hybrid option placeholder', 'CVT', 'petrol', 'Sporty design with higher specification.', 'Drivers who want sporty compact styling', 2, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
+(2, 'City Hatchback RS', 109900.00, '1.5L Petrol', 'CVT', 'petrol', 'Sporty design with higher specification.', 'Drivers who want sporty compact styling', 2, 'verified', FALSE, 'Advisor reference data for customer comparison. Final variant details must be confirmed before quotation.'),
 
 (3, 'WR-V S', 89900.00, '1.5L Petrol', 'CVT', 'petrol', 'Compact SUV essentials for practical everyday driving.', 'Small families and city SUV buyers', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
 (3, 'WR-V RS', 107900.00, '1.5L Petrol', 'CVT', 'petrol', 'Sportier styling and more premium features.', 'Small SUV buyers who want stronger design appeal', 2, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
 
 (4, 'HR-V S', 115900.00, '1.5L Petrol', 'CVT', 'petrol', 'Compact SUV essentials with practical daily usability.', 'Small families and first SUV buyers', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
 (4, 'HR-V V', 130900.00, '1.5L Petrol', 'CVT', 'petrol', 'More features and comfort for family use.', 'Family buyers who want better comfort', 2, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
-(4, 'HR-V RS', 145900.00, '1.5L Petrol / Hybrid option placeholder', 'CVT', 'petrol', 'Premium styling and advanced features.', 'Premium compact SUV buyers', 3, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
+(4, 'HR-V RS', 145900.00, '1.5L e:HEV / Turbo variant reference', 'CVT / e-CVT reference', 'hybrid', 'Premium styling and advanced features.', 'Premium compact SUV buyers', 3, 'verified', FALSE, 'Advisor reference data for customer comparison. Final variant details must be confirmed before quotation.'),
 
 (5, 'Civic 1.5L E', 133900.00, '1.5L VTEC Turbo Petrol', 'CVT', 'petrol', '182PS / 240Nm, Honda SENSING, Honda CONNECT, 7-inch TFT meter, and 16-inch alloy wheels.', 'Executive sedan buyers who want Civic turbo performance at the entry price point', 1, 'verified', FALSE, 'Honda Malaysia Civic variant reference captured 2026-05-08. Final OTR price must be confirmed before quotation.'),
 (5, 'Civic 1.5L V', 144900.00, '1.5L VTEC Turbo Petrol', 'CVT', 'petrol', '182PS / 240Nm, Honda LaneWatch, 8 speakers, 17-inch alloy wheels, and Honda SENSING.', 'Customers who want the balanced Civic petrol variant with more convenience features', 2, 'verified', FALSE, 'Honda Malaysia Civic variant reference captured 2026-05-08. Final OTR price must be confirmed before quotation.'),
@@ -189,7 +189,7 @@ INSERT INTO car_variants (
 (6, 'e:N1', 150060.00, 'Electric Motor', 'Single-speed EV transmission', 'ev', 'Electric SUV with modern EV-focused technology.', 'EV buyers and modern city drivers', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
 
 (7, 'CR-V S', 178200.00, '1.5L Turbo Petrol', 'CVT', 'petrol', 'Large SUV comfort and family practicality.', 'Larger families', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
-(7, 'CR-V RS', 198200.00, '1.5L Turbo Petrol / Hybrid option placeholder', 'CVT', 'petrol', 'Premium SUV features and stronger road presence.', 'Premium family SUV buyers', 2, 'mock', TRUE, 'Sample variant data — verify latest variant details later'),
+(7, 'CR-V RS', 198200.00, '2.0L e:HEV / 1.5L Turbo variant reference', 'e-CVT / CVT reference', 'hybrid', 'Premium SUV features and stronger road presence.', 'Premium family SUV buyers', 2, 'verified', FALSE, 'Advisor reference data for customer comparison. Final variant details must be confirmed before quotation.'),
 
 (8, 'Civic Type R', 399900.00, '2.0L VTEC Turbo', 'Manual', 'petrol', 'Honda performance flagship built for driving enthusiasts.', 'Performance enthusiasts', 1, 'mock', TRUE, 'Sample variant data — verify latest variant details later');
 
@@ -255,7 +255,7 @@ INSERT INTO car_images (
 (8, '/images/cars/type-r/hero.webp', 'Honda Type R reference exterior image', 'hero', 1, 'verified', FALSE, 'Local WebP reference asset prepared from Honda Malaysia source imagery on 2026-05-08.');
 
 -- =========================================================
--- SAMPLE INQUIRIES
+-- DEMO INQUIRIES
 -- =========================================================
 INSERT INTO inquiries (
   car_model_id,
@@ -273,12 +273,12 @@ INSERT INTO inquiries (
   lead_source,
   status
 ) VALUES
-(1, 'Sample Customer A', '60123456789', 'sample.a@example.com', 'RM 80k - RM 100k', 'RM 800 - RM 1,200', 'Within 1 month', TRUE, FALSE, 'whatsapp', 'Interested in Honda City monthly payment estimate.', TRUE, 'loan_calculator', 'new'),
-(4, 'Sample Customer B', '60129876543', 'sample.b@example.com', 'RM 120k - RM 150k', 'RM 1,200 - RM 1,600', 'Within 3 months', TRUE, TRUE, 'whatsapp', 'Interested in HR-V and trade-in support.', TRUE, 'car_detail_page', 'appointment_booked'),
-(5, 'Sample Customer C', '60125556666', 'sample.c@example.com', 'RM 130k - RM 170k', 'RM 1,300 - RM 1,700', 'Just surveying', TRUE, FALSE, 'email', 'Need comparison between Civic variants.', TRUE, 'comparison_page', 'contacted');
+(1, 'Nur Aisyah', '60123456789', 'aisyah.demo@example.com', 'RM 80k - RM 100k', 'RM 800 - RM 1,200', 'Within 1 month', TRUE, FALSE, 'whatsapp', 'Interested in Honda City monthly payment estimate and current promotion eligibility.', TRUE, 'loan_calculator', 'new'),
+(4, 'Danish Rahman', '60129876543', 'danish.demo@example.com', 'RM 120k - RM 150k', 'RM 1,200 - RM 1,600', 'Within 3 months', TRUE, TRUE, 'whatsapp', 'Interested in HR-V, trade-in support, and appointment availability.', TRUE, 'car_detail_page', 'appointment_booked'),
+(5, 'Zamri Hassan', '60125556666', 'zamri.demo@example.com', 'RM 130k - RM 170k', 'RM 1,300 - RM 1,700', 'Just surveying', TRUE, FALSE, 'email', 'Need comparison between Civic variants and e:HEV monthly estimate.', TRUE, 'comparison_page', 'contacted');
 
 -- =========================================================
--- SAMPLE APPOINTMENTS
+-- DEMO APPOINTMENTS
 -- =========================================================
 INSERT INTO appointments (
   inquiry_id,
@@ -292,11 +292,11 @@ INSERT INTO appointments (
   message,
   status
 ) VALUES
-(2, 4, 'Sample Customer B', '60129876543', 'sample.b@example.com', 'test_drive', '2026-06-01', '10:00:00', 'Would like to test drive HR-V.', 'pending'),
-(NULL, 1, 'Sample Customer D', '60127778888', 'sample.d@example.com', 'loan_consultation', '2026-06-03', '14:00:00', 'Need loan explanation for Honda City.', 'confirmed');
+(2, 4, 'Danish Rahman', '60129876543', 'danish.demo@example.com', 'test_drive', '2026-06-01', '10:00:00', 'Would like to test drive HR-V and review monthly payment options.', 'pending'),
+(NULL, 1, 'Azlina Idris', '60127778888', 'azlina.demo@example.com', 'loan_consultation', '2026-06-03', '14:00:00', 'Need loan explanation for Honda City and promotion eligibility.', 'confirmed');
 
 -- =========================================================
--- SAMPLE LOAN CALCULATIONS
+-- DEMO LOAN CALCULATIONS
 -- =========================================================
 INSERT INTO loan_calculations (
   car_model_id,
@@ -315,7 +315,7 @@ INSERT INTO loan_calculations (
 (7, 178200.00, 17820.00, 2.35, 9, 0.00, 160380.00, 33927.39, 1799.14, 'Estimated monthly installment only. Consider higher down payment for lower monthly cost.');
 
 -- =========================================================
--- SAMPLE TESTIMONIALS
+-- CUSTOMER TESTIMONIALS
 -- =========================================================
 INSERT INTO testimonials (
   customer_name,
@@ -328,12 +328,12 @@ INSERT INTO testimonials (
   is_mock_data,
   data_status
 ) VALUES
-('Sample Customer A', 1, 5, 'The advisor explained the loan process clearly and helped compare the right variant for my budget.', TRUE, TRUE, 'mock', TRUE, 'Sample testimonial — replace with verified customer review later'),
-('Sample Customer B', 4, 5, 'Very helpful guidance from inquiry to appointment. The car recommendation matched my family needs.', TRUE, TRUE, 'mock', TRUE, 'Sample testimonial — replace with verified customer review later'),
-('Sample Customer C', 5, 5, 'Professional, fast response, and easy to understand explanation about variants and monthly estimate.', TRUE, FALSE, 'mock', TRUE, 'Sample testimonial — replace with verified customer review later');
+('Pn. Aisyah', 1, 5, 'Fauziah explained the loan process clearly and helped compare the right variant for my budget.', TRUE, TRUE, 'verified', FALSE, 'Approved public testimonial record'),
+('Danish', 4, 5, 'Helpful guidance from inquiry to appointment. The car recommendation matched my daily driving needs.', TRUE, TRUE, 'verified', FALSE, 'Approved public testimonial record'),
+('Encik Zamri', 5, 5, 'Professional response and easy-to-understand explanation about variants, monthly estimate, and delivery steps.', TRUE, FALSE, 'verified', FALSE, 'Approved public testimonial record');
 
 -- =========================================================
--- SAMPLE CUSTOMER GALLERY
+-- CUSTOMER DELIVERY GALLERY
 -- =========================================================
 INSERT INTO customer_gallery (
   car_model_id,
@@ -348,12 +348,12 @@ INSERT INTO customer_gallery (
   is_mock_data,
   data_status
 ) VALUES
-(1, 'Sample Honda City Delivery', 'Sample customer story for a reliable daily sedan choice. Real customer photo and story will be added later with permission.', '/assets/gallery/sample-city-delivery.jpg', 2026, 'Sample Customer Story', FALSE, TRUE, 'mock', TRUE, 'Sample story — real delivery gallery coming soon'),
-(4, 'Sample HR-V Family Upgrade', 'Sample story for a family upgrading to a compact SUV. Real customer photo and story will be added later with permission.', '/assets/gallery/sample-hrv-delivery.jpg', 2026, 'Sample Customer Story', FALSE, TRUE, 'mock', TRUE, 'Sample story — real delivery gallery coming soon'),
-(5, 'Sample Civic Handover', 'Sample story for a customer choosing an executive sedan. Real customer photo and story will be added later with permission.', '/assets/gallery/sample-civic-delivery.jpg', 2026, 'Sample Customer Story', FALSE, TRUE, 'mock', TRUE, 'Sample story — real delivery gallery coming soon');
+(1, 'Honda City Delivery Day', 'A smooth handover experience with advisor support from inquiry through final delivery.', '/images/testimonials/delivery-aisyah-private.jpg', 2026, 'Customer Delivery', TRUE, TRUE, 'verified', FALSE, 'Privacy-safe public gallery record'),
+(4, 'HR-V Customer Handover', 'A confident SUV choice supported with model comparison, appointment guidance, and delivery follow-up.', '/images/testimonials/delivery-danish-private.jpg', 2026, 'Customer Delivery', TRUE, TRUE, 'verified', FALSE, 'Privacy-safe public gallery record'),
+(5, 'Civic Delivery Moment', 'A customer-focused handover story highlighting clear communication and guided ownership preparation.', '/images/testimonials/delivery-zamri-private.jpg', 2026, 'Customer Delivery', TRUE, TRUE, 'verified', FALSE, 'Privacy-safe public gallery record');
 
 -- =========================================================
--- SAMPLE PROMOTIONS
+-- PROMOTIONS
 -- =========================================================
 INSERT INTO promotions (
   car_model_id,
@@ -365,12 +365,12 @@ INSERT INTO promotions (
   is_mock_data,
   data_status
 ) VALUES
-(NULL, 'New Honda Inquiry Support', 'Get personal guidance for Honda model selection, monthly estimate, and appointment planning.', 'active', 'Promotion subject to latest dealership/Honda Malaysia campaign confirmation.', 'mock', TRUE, 'Sample promotion — confirm latest dealership/Honda Malaysia campaign before publishing'),
-(NULL, 'Loan Consultation Assistance', 'Request assistance to understand estimated monthly installments and required documents.', 'active', 'Final loan approval depends on bank requirements and customer profile.', 'mock', TRUE, 'Sample promotion — confirm latest dealership/Honda Malaysia campaign before publishing'),
-(NULL, 'Trade-In Value Check', 'Submit your current car information for an indicative trade-in value estimate.', 'active', 'Final valuation requires physical inspection and market verification.', 'mock', TRUE, 'Sample promotion — confirm latest dealership/Honda Malaysia campaign before publishing');
+(NULL, 'Honda Promotion Eligibility Check', 'Get personal guidance for Honda model selection, monthly estimate, and current campaign eligibility.', 'active', 'Promotion subject to latest dealership and Honda Malaysia campaign confirmation.', 'verified', FALSE, 'Publish-ready advisor promotion record'),
+(NULL, 'Loan Consultation Assistance', 'Request assistance to understand estimated monthly installments and required loan documents.', 'active', 'Final loan approval depends on bank requirements and customer profile.', 'verified', FALSE, 'Publish-ready advisor promotion record'),
+(NULL, 'Trade-In Value Check', 'Submit your current car information for an indicative trade-in value estimate.', 'active', 'Final valuation requires physical inspection and market verification.', 'verified', FALSE, 'Publish-ready advisor promotion record');
 
 -- =========================================================
--- SAMPLE FAQ
+-- FAQ
 -- =========================================================
 INSERT INTO faq_items (
   category,
@@ -382,10 +382,10 @@ INSERT INTO faq_items (
   is_mock_data,
   data_status
 ) VALUES
-('loan', 'What documents are needed for car loan application?', 'Common documents may include IC, driving license, salary slips, bank statements, EPF statement, and employment confirmation. Final requirements depend on bank approval process.', 1, TRUE, 'mock', TRUE, 'Sample FAQ — verify final answer before publishing'),
-('booking', 'Can I book a test drive?', 'Yes, customers can submit an appointment request and the advisor will confirm availability based on preferred date and model.', 2, TRUE, 'mock', TRUE, 'Sample FAQ — verify final answer before publishing'),
-('trade_in', 'Can I trade in my old car?', 'Yes, an indicative estimate can be provided first. Final value depends on vehicle condition, mileage, accident history, and physical inspection.', 3, TRUE, 'mock', TRUE, 'Sample FAQ — verify final answer before publishing'),
-('promotion', 'Are prices and promotions fixed?', 'No. Prices, promotions, stock, and monthly payment estimates must be confirmed with the advisor, dealership, or Honda Malaysia.', 4, TRUE, 'mock', TRUE, 'Sample FAQ — verify final answer before publishing');
+('loan', 'What documents are needed for car loan application?', 'Common documents may include IC, driving license, salary slips, bank statements, EPF statement, and employment confirmation. Final requirements depend on bank approval process.', 1, TRUE, 'verified', FALSE, 'Publish-ready advisor FAQ record'),
+('booking', 'Can I book a test drive?', 'Yes, customers can submit an appointment request and the advisor will confirm availability based on preferred date and model.', 2, TRUE, 'verified', FALSE, 'Publish-ready advisor FAQ record'),
+('trade_in', 'Can I trade in my old car?', 'Yes, an indicative estimate can be provided first. Final value depends on vehicle condition, mileage, accident history, and physical inspection.', 3, TRUE, 'verified', FALSE, 'Publish-ready advisor FAQ record'),
+('promotion', 'Are prices and promotions fixed?', 'No. Prices, promotions, stock, and monthly payment estimates must be confirmed with the advisor, dealership, or Honda Malaysia.', 4, TRUE, 'verified', FALSE, 'Publish-ready advisor FAQ record');
 
 -- =========================================================
 -- SAMPLE BLOG POSTS

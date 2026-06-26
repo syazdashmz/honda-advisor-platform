@@ -5,9 +5,8 @@
     <h1>Welcome back, {{ user()?.full_name }}</h1>
 
     <p>
-      This is your personal Honda advisor dashboard. You can track your appointment
-      requests, saved loan calculations, profile details, and later your inquiry
-      history and saved Honda models.
+      Track your appointment requests, saved loan calculations, inquiry history,
+      and manage your Honda advisor account from one place.
     </p>
   </div>
 
@@ -19,13 +18,15 @@
     <div>
       <strong>{{ user()?.full_name }}</strong>
       <small>{{ user()?.email }}</small>
-      <small>{{ user()?.phone_number || 'Phone number not added yet' }}</small>
+      <small>{{ user()?.phone_number || 'Phone not added yet' }}</small>
     </div>
   </div>
 </section>
 
 <section class="dashboard-page">
   <div class="dashboard-main">
+
+    <!-- Profile Overview -->
     <article class="dashboard-card">
       <div class="card-heading">
         <div>
@@ -33,36 +34,161 @@
           <h2>Your customer account</h2>
         </div>
 
-        <span class="status-pill">Active</span>
+        @if (!isEditingProfile) {
+          <button type="button" class="mini-action" (click)="startEditingProfile()">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
+          </button>
+        }
       </div>
 
-      <div class="profile-grid">
-        <div>
-          <span>Full Name</span>
-          <strong>{{ user()?.full_name }}</strong>
+      @if (profileSaveSuccess) {
+        <div class="success-alert">
+          <mat-icon>check_circle</mat-icon>
+          <span>{{ profileSaveSuccess }}</span>
         </div>
+      }
 
-        <div>
-          <span>Email</span>
-          <strong>{{ user()?.email }}</strong>
+      @if (!isEditingProfile) {
+        <div class="profile-grid">
+          <div>
+            <span>Full Name</span>
+            <strong>{{ user()?.full_name }}</strong>
+          </div>
+
+          <div>
+            <span>Email</span>
+            <strong>{{ user()?.email }}</strong>
+          </div>
+
+          <div>
+            <span>Phone</span>
+            <strong>{{ user()?.phone_number || 'Not provided' }}</strong>
+          </div>
+
+          <div>
+            <span>Account Status</span>
+            <strong class="status-active">Active</strong>
+          </div>
         </div>
+      }
 
-        <div>
-          <span>Phone</span>
-          <strong>{{ user()?.phone_number || 'Not provided' }}</strong>
-        </div>
+      @if (isEditingProfile) {
+        <form class="profile-edit-form honda-material-form" [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+          @if (profileSaveError) {
+            <div class="error-alert">
+              <mat-icon>error</mat-icon>
+              <span>{{ profileSaveError }}</span>
+            </div>
+          }
 
-        <div>
-          <span>Role</span>
-          <strong>{{ user()?.role_name }}</strong>
-        </div>
-      </div>
+          <div class="form-grid-two">
+            <mat-form-field appearance="outline">
+              <mat-label>Full name</mat-label>
+              <input matInput type="text" formControlName="full_name" placeholder="Your full name" />
+              @if (profileForm.controls.full_name.touched && profileForm.controls.full_name.invalid) {
+                <mat-error>Full name must be at least 2 characters.</mat-error>
+              }
+            </mat-form-field>
 
-      <div class="info-note">
-        Profile editing will be added in the next phase with backend update support.
-      </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Phone number</mat-label>
+              <input matInput type="tel" formControlName="phone_number" placeholder="601xxxxxxxx" />
+            </mat-form-field>
+          </div>
+
+          <div class="profile-form-actions">
+            <button mat-flat-button type="submit" class="primary-btn" [disabled]="profileForm.invalid || isSavingProfile">
+              <mat-icon>save</mat-icon>
+              {{ isSavingProfile ? 'Saving...' : 'Save Changes' }}
+            </button>
+
+            <button mat-stroked-button type="button" class="ghost-btn" (click)="cancelEditingProfile()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      }
     </article>
 
+    <!-- Inquiry History -->
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <p class="section-eyebrow">Inquiry History</p>
+          <h2>Your submitted inquiries</h2>
+        </div>
+
+        <a routerLink="/inquiry" class="mini-action">
+          <mat-icon>add</mat-icon>
+          New Inquiry
+        </a>
+      </div>
+
+      @if (isLoadingInquiries) {
+        <div class="state-card">
+          Loading your inquiries...
+        </div>
+      }
+
+      @if (inquiryErrorMessage) {
+        <div class="state-card error">
+          {{ inquiryErrorMessage }}
+        </div>
+      }
+
+      @if (!isLoadingInquiries && !inquiryErrorMessage && inquiries.length === 0) {
+        <div class="empty-state">
+          <span><mat-icon>forum</mat-icon></span>
+          <h3>No inquiries yet</h3>
+          <p>
+            Submit an inquiry and your Honda advisor will follow up with you directly.
+          </p>
+
+          <a mat-flat-button routerLink="/inquiry" class="primary-btn">
+            <mat-icon>forum</mat-icon>
+            Submit Inquiry
+          </a>
+        </div>
+      }
+
+      @if (!isLoadingInquiries && inquiries.length > 0) {
+        <div class="inquiry-list">
+          @for (inquiry of inquiries; track inquiry.id) {
+            <article class="inquiry-item">
+              <div class="inquiry-top">
+                <div>
+                  <strong>{{ inquiry.car_model_name || 'Advisor recommendation' }}</strong>
+                  <small>{{ inquiry.preferred_contact_method | titlecase }} · {{ formatDate(inquiry.created_at ?? '') }}</small>
+                </div>
+
+                <span class="inquiry-status" [class]="getInquiryStatusClass(inquiry.status)">
+                  {{ getStatusLabel(inquiry.status) }}
+                </span>
+              </div>
+
+              @if (inquiry.message) {
+                <p>{{ inquiry.message }}</p>
+              }
+
+              <div class="inquiry-meta">
+                @if (inquiry.budget_range) {
+                  <span><mat-icon>payments</mat-icon> {{ inquiry.budget_range }}</span>
+                }
+                @if (inquiry.buying_timeline) {
+                  <span><mat-icon>schedule</mat-icon> {{ inquiry.buying_timeline }}</span>
+                }
+                @if (inquiry.needs_loan) {
+                  <span><mat-icon>account_balance</mat-icon> Needs loan</span>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </article>
+
+    <!-- Appointment History -->
     <article class="dashboard-card">
       <div class="card-heading">
         <div>
@@ -70,7 +196,7 @@
           <h2>Your appointment requests</h2>
         </div>
 
-        <a mat-stroked-button routerLink="/appointment" class="mini-action">
+        <a routerLink="/appointment" class="mini-action">
           <mat-icon>add</mat-icon>
           New Appointment
         </a>
@@ -125,7 +251,7 @@
               </div>
 
               <div class="appointment-meta">
-                <span><mat-icon>calendar_month</mat-icon> {{ appointment.preferred_date }}</span>
+                <span><mat-icon>calendar_month</mat-icon> {{ formatDate(appointment.preferred_date) }}</span>
                 <span><mat-icon>schedule</mat-icon> {{ formatTimeSlot(appointment.preferred_time) }}</span>
               </div>
 
@@ -138,6 +264,7 @@
       }
     </article>
 
+    <!-- Loan Estimates -->
     <article class="dashboard-card">
       <div class="card-heading">
         <div>
@@ -145,7 +272,7 @@
           <h2>Your saved loan calculations</h2>
         </div>
 
-        <a mat-stroked-button routerLink="/loan-calculator" class="mini-action">
+        <a routerLink="/loan-calculator" class="mini-action">
           <mat-icon>add</mat-icon>
           New Estimate
         </a>
@@ -218,22 +345,41 @@
 
   <aside class="dashboard-side">
     <article class="side-card dark">
-      <h3>Next dashboard features</h3>
+      <h3>Quick actions</h3>
 
-      <ul>
-        <li>Inquiry history</li>
-        <li>Saved Honda models</li>
-        <li>Profile edit/update</li>
-      </ul>
+      <a routerLink="/cars"><mat-icon>directions_car</mat-icon> Explore Honda Models</a>
+      <a routerLink="/loan-calculator"><mat-icon>calculate</mat-icon> Calculate Loan</a>
+      <a routerLink="/inquiry"><mat-icon>forum</mat-icon> Submit Inquiry</a>
+      <a routerLink="/appointment"><mat-icon>event_available</mat-icon> Book Appointment</a>
     </article>
 
     <article class="side-card">
-      <h3>Quick actions</h3>
+      <h3>How it works</h3>
 
-      <a mat-stroked-button routerLink="/cars"><mat-icon>directions_car</mat-icon> Explore Honda Models</a>
-      <a mat-stroked-button routerLink="/loan-calculator"><mat-icon>calculate</mat-icon> Calculate Loan</a>
-      <a mat-stroked-button routerLink="/inquiry"><mat-icon>forum</mat-icon> Submit Inquiry</a>
-      <a mat-stroked-button routerLink="/appointment"><mat-icon>event_available</mat-icon> Book Appointment</a>
+      <div class="how-list">
+        <div>
+          <span class="step-num">1</span>
+          <p>Submit an inquiry or book an appointment</p>
+        </div>
+        <div>
+          <span class="step-num">2</span>
+          <p>Advisor follows up and confirms your details</p>
+        </div>
+        <div>
+          <span class="step-num">3</span>
+          <p>Finalize loan, model selection, and delivery date</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="side-card contact-card">
+      <mat-icon class="contact-icon">support_agent</mat-icon>
+      <h3>Need immediate help?</h3>
+      <p>Send a focused inquiry and the advisor can follow up using your preferred contact method.</p>
+      <a mat-flat-button class="primary-btn" routerLink="/inquiry">
+        <mat-icon>forum</mat-icon>
+        Send Inquiry
+      </a>
     </article>
   </aside>
 </section>

@@ -62,7 +62,7 @@ SELECT
   'Serving Honda customers since 2002',
   'This platform is designed as a personal online showroom for a Honda sales advisor based at Tenaga Setia Resources Sdn. Bhd. It helps customers explore models, estimate monthly payment, submit inquiries, and arrange appointments.',
   '/images/advisor/advisor-profile.webp',
-  'Sample homepage content. Admin can update this from the admin panel.',
+  'Get guided model selection, monthly estimate support, and appointment planning from inquiry to delivery.',
   TRUE
 WHERE NOT EXISTS (
   SELECT 1 FROM site_home_content LIMIT 1

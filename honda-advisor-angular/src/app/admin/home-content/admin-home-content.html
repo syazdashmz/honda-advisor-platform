@@ -5,7 +5,7 @@
     <h1>Update what customers see on the homepage</h1>
 
     <p>
-      Change hero text, homepage image, advisor story, announcement, and CTA buttons
+      Change advisor hero text, dealership image, showroom section, announcement, and CTA buttons
       without touching code. These changes are saved into MySQL and reflected on the public homepage.
     </p>
   </div>
@@ -14,7 +14,7 @@
     <span><mat-icon>web</mat-icon> CMS Control</span>
     <strong>No coding needed</strong>
     <small>
-      Paste asset paths or image URLs. Later, this can be upgraded with direct image upload.
+      Use local asset presets or paste a verified image URL for customer-facing content.
     </small>
   </div>
 </section>
@@ -59,7 +59,7 @@
         <span>1</span>
         <div>
           <h3>Hero section</h3>
-          <p>Main homepage headline and front-view image.</p>
+          <p>Main advisor headline plus the dealership image used lower on the homepage.</p>
         </div>
       </div>
 
@@ -71,14 +71,31 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Hero image path</mat-label>
-          <mat-icon matPrefix>image</mat-icon>
+          <mat-label>Dealership image path</mat-label>
+          <mat-icon matPrefix>storefront</mat-icon>
           <input
             matInput
             type="text"
             formControlName="hero_image_url"
             placeholder="/images/home/home-showroom-01.webp" />
         </mat-form-field>
+      </div>
+
+      <div class="preset-panel">
+        <span>Quick image presets</span>
+
+        <div class="preset-row">
+          @for (preset of imagePresets; track preset.label) {
+            <button
+              mat-stroked-button
+              type="button"
+              class="ghost-btn"
+              (click)="applyImagePreset(preset)">
+              <mat-icon>{{ preset.icon }}</mat-icon>
+              {{ preset.label }}
+            </button>
+          }
+        </div>
       </div>
 
       <mat-form-field appearance="outline" class="full-field">
@@ -132,24 +149,24 @@
       <div class="section-title-row">
         <span>3</span>
         <div>
-          <h3>Advisor section</h3>
-          <p>Control advisor story and profile visual.</p>
+          <h3>Showroom section and advisor visual</h3>
+          <p>Control lower dealership copy and the advisor image shown at the top.</p>
         </div>
       </div>
 
       <mat-form-field appearance="outline" class="full-field">
-        <mat-label>Advisor title</mat-label>
-        <mat-icon matPrefix>workspace_premium</mat-icon>
+        <mat-label>Showroom section title</mat-label>
+        <mat-icon matPrefix>storefront</mat-icon>
         <input matInput type="text" formControlName="advisor_title" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-field">
-        <mat-label>Advisor text</mat-label>
+        <mat-label>Showroom section text</mat-label>
         <textarea matInput rows="5" formControlName="advisor_text"></textarea>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-field">
-        <mat-label>Advisor image path</mat-label>
+        <mat-label>Top advisor image path</mat-label>
         <mat-icon matPrefix>portrait</mat-icon>
         <input
           matInput
@@ -173,14 +190,21 @@
         <textarea matInput rows="3" formControlName="announcement_text"></textarea>
       </mat-form-field>
 
+      <div class="preset-row">
+        <button mat-stroked-button type="button" class="ghost-btn" (click)="clearAnnouncement()">
+          <mat-icon>hide_source</mat-icon>
+          Hide announcement
+        </button>
+      </div>
+
       <mat-checkbox class="switch-card" formControlName="is_active">
         Homepage content active
       </mat-checkbox>
     </section>
 
     <div class="disclaimer-card">
-      Image uploads are not enabled yet. For now, place images inside Angular assets
-      and paste paths like <strong>/images/home/home-showroom-01.webp</strong>.
+      Use optimized local assets where possible. Confirm any external image URL
+      has permission for public website use before publishing.
     </div>
   </form>
 
@@ -194,12 +218,12 @@
         {{ contentForm.value.hero_subtitle || 'Homepage subtitle preview will appear here.' }}
       </p>
 
-      @if (contentForm.value.hero_image_url) {
+      @if (contentForm.value.advisor_image_url) {
         <img
-          [src]="contentForm.value.hero_image_url"
-          alt="Hero preview" />
+          [src]="contentForm.value.advisor_image_url"
+          alt="Advisor preview" />
       } @else {
-        <div class="image-placeholder">Hero image preview</div>
+        <div class="image-empty">No advisor image selected</div>
       }
 
       <div class="preview-actions">
@@ -211,7 +235,8 @@
     <div class="admin-tip">
       <strong>Recommended image sizes</strong>
       <p>
-        Hero image: 1600 x 900. Advisor image: 800 x 1000. Export as .webp for fast loading.
+        Recommended: portrait-friendly advisor images for the top hero and 1600 x 900 dealership visuals for the showroom section.
+        Local WebP/JPEG assets keep Cloudflare delivery fast.
       </p>
     </div>
   </aside>

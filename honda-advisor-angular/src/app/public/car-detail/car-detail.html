@@ -13,14 +13,15 @@
 @if (!isLoading && !errorMessage && car) {
   <section class="detail-hero honda-gradient">
     <div class="detail-copy">
+      <a class="back-link" routerLink="/cars">
+        <mat-icon>arrow_back</mat-icon>
+        Honda Models
+      </a>
+
       <p class="section-eyebrow">Honda Model Details</p>
 
       <div class="title-row">
         <h1>{{ car.name }}</h1>
-
-        @if (car.is_mock_data) {
-          <span class="mock-pill">Sample Data</span>
-        }
       </div>
 
       <p class="hero-text">
@@ -46,6 +47,13 @@
           <mat-icon>event_available</mat-icon>
           Book Appointment
         </a>
+
+        @if (car.brochure_url) {
+          <a mat-stroked-button [href]="car.brochure_url" target="_blank" rel="noopener" class="ghost-btn">
+            <mat-icon>picture_as_pdf</mat-icon>
+            Brochure
+          </a>
+        }
       </div>
     </div>
 
@@ -59,7 +67,7 @@
         @if (car.hero_image_url) {
           <img
             class="detail-car-image"
-            [src]="car.hero_image_url"
+            [src]="getDisplayImage()"
             [alt]="car.name + ' preview'" />
         } @else {
           <div class="car-stage">
@@ -72,7 +80,7 @@
 
         <div class="visual-bottom">
           <strong>{{ car.name }}</strong>
-          <small>Honda-inspired preview visual</small>
+          <small>Color reference: {{ getSelectedColorLabel() }}</small>
         </div>
       </div>
     </div>
@@ -85,9 +93,8 @@
       <h2>{{ car.best_for }}</h2>
 
       <p>
-        This model is shown using sample development data. Final specifications,
-        stock, promotions, and prices should be confirmed with the advisor,
-        dealership, or Honda Malaysia.
+        Use this page to shortlist the right model before confirming the latest
+        stock, promotion, color availability, and quotation with the advisor.
       </p>
     </article>
 
@@ -105,18 +112,19 @@
     </article>
   </section>
 
-  @if (car.images.length > 0) {
+  @if (referenceImages.length > 0) {
     <section class="gallery-section page-shell">
       <div class="section-heading">
         <p class="section-eyebrow">Model Gallery</p>
-        <h2 class="section-title">Reference visuals</h2>
+        <h2 class="section-title">Exterior, interior, and feature references</h2>
         <p class="section-text">
-          These images are loaded from local WebP assets and can be changed later from the admin model manager.
+          Additional visuals help customers compare comfort, cabin layout, and
+          model character before the advisor confirms current showroom availability.
         </p>
       </div>
 
       <div class="gallery-grid">
-        @for (image of car.images; track image.id) {
+        @for (image of referenceImages; track image.image_url) {
           <article class="gallery-card">
             <img
               [src]="image.image_url"
@@ -135,7 +143,7 @@
       <div class="section-heading">
         <p class="section-eyebrow">Available Variants</p>
 
-        <h2 class="section-title">Compare sample variants</h2>
+        <h2 class="section-title">Compare available variants</h2>
 
         <p class="section-text">
           Select a variant to view estimated price, engine, transmission, and recommended use.
@@ -164,10 +172,6 @@
                 <p class="section-eyebrow">Selected Variant</p>
                 <h3>{{ selectedVariant.variant_name }}</h3>
               </div>
-
-              @if (selectedVariant.is_mock_data) {
-                <span class="mock-pill">Sample</span>
-              }
             </div>
 
             <div class="variant-price">
@@ -201,7 +205,8 @@
             </p>
 
             <div class="disclaimer-card">
-              {{ selectedVariant.data_status }}
+              Variant price is a reference for planning. The advisor will confirm
+              the latest quotation, package, and availability before purchase.
             </div>
           </div>
         }
@@ -213,7 +218,7 @@
     <section class="features-section page-shell">
       <div class="section-heading">
         <p class="section-eyebrow">Model Highlights</p>
-        <h2 class="section-title">Key sample features</h2>
+        <h2 class="section-title">Key model highlights</h2>
       </div>
 
       <div class="features-grid">
@@ -230,17 +235,38 @@
 
   @if (car.colors.length > 0) {
     <section class="colors-section page-shell">
-      <div class="section-heading">
-        <p class="section-eyebrow">Color Preview</p>
-        <h2 class="section-title">Sample available colors</h2>
+      <div class="color-layout">
+        <div class="section-heading">
+          <p class="section-eyebrow">Color Selector</p>
+          <h2 class="section-title">Choose a preferred color reference</h2>
+          <p class="section-text">
+            Select a color to prepare the advisor conversation. Actual color
+            availability, waiting time, and showroom stock are confirmed during follow-up.
+          </p>
+        </div>
+
+        <div class="color-preview-card">
+          <div class="preview-image-wrap">
+            <img [src]="getDisplayImage()" [alt]="car.name + ' selected color preview'" />
+          </div>
+          <div>
+            <span>Selected color</span>
+            <strong>{{ getSelectedColorLabel() }}</strong>
+          </div>
+        </div>
       </div>
 
-      <div class="colors-row">
+      <div class="colors-row" role="list" aria-label="Available color references">
         @for (color of car.colors; track color.id) {
-          <article class="color-chip">
+          <button
+            mat-stroked-button
+            type="button"
+            class="color-chip"
+            [class.active]="selectedColor?.id === color.id"
+            (click)="selectColor(color)">
             <span class="color-dot" [style.background]="color.color_hex"></span>
             <strong>{{ color.color_name }}</strong>
-          </article>
+          </button>
         }
       </div>
     </section>

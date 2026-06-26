@@ -34,6 +34,7 @@ export class Register {
 
   isSubmitting = false;
   errorMessage = '';
+  showPassword = false;
 
   registerForm = this.formBuilder.group({
     full_name: ['', [Validators.required, Validators.minLength(3)]],

@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './mock-data-badge.scss',
 })
 export class MockDataBadge {
-  @Input() label = 'Sample Data';
+  @Input() label = 'Needs Review';
   @Input() status = 'Verify before publishing';
 }

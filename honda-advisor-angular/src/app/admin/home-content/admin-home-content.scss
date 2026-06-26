@@ -150,6 +150,40 @@ mat-form-field,
   width: 100%;
 }
 
+.preset-panel {
+  margin: 4px 0 18px;
+  padding: 16px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid var(--border);
+
+  > span {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--graphite);
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+}
+
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  button {
+    min-height: 42px;
+  }
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+}
+
 .switch-card {
   width: fit-content;
   padding: 10px 12px;
@@ -182,7 +216,7 @@ mat-form-field,
   }
 
   img,
-  .image-placeholder {
+  .image-empty {
     width: 100%;
     height: 220px;
     margin: 18px 0;
@@ -192,7 +226,7 @@ mat-form-field,
     border: 1px solid var(--border);
   }
 
-  .image-placeholder {
+  .image-empty {
     display: grid;
     place-items: center;
     color: var(--muted);

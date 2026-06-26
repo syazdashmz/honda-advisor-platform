@@ -2,23 +2,59 @@
   <p class="section-eyebrow">Latest Honda Models</p>
   <h1>Explore Honda cars with personal advisor guidance</h1>
   <p>
-    Browse estimated model prices, best-for recommendations, and sample data
-    prepared for this personal Honda advisor platform.
+    Browse Honda models by body style, compare starting price references, and
+    ask the advisor to confirm the latest package, stock, and promotion details.
   </p>
+
+  <div class="hero-actions">
+    <a mat-flat-button routerLink="/compare" class="primary-btn">
+      <mat-icon>compare_arrows</mat-icon>
+      Compare Models
+    </a>
+    <a mat-stroked-button routerLink="/inquiry" class="ghost-btn">
+      <mat-icon>forum</mat-icon>
+      Ask Advisor
+    </a>
+  </div>
 </section>
 
-<mat-button-toggle-group
-  class="filters"
-  [value]="selectedCategory"
-  aria-label="Filter Honda models by category"
-  (change)="filterByCategory($event.value)">
-  <mat-button-toggle value="all">All</mat-button-toggle>
-  <mat-button-toggle value="sedan">Sedan</mat-button-toggle>
-  <mat-button-toggle value="hatchback">Hatchback</mat-button-toggle>
-  <mat-button-toggle value="suv">SUV</mat-button-toggle>
-  <mat-button-toggle value="ev">EV</mat-button-toggle>
-  <mat-button-toggle value="performance">Performance</mat-button-toggle>
-</mat-button-toggle-group>
+<section class="model-tools honda-material-form">
+  <mat-form-field appearance="outline" class="model-search">
+    <mat-label>Search Honda models</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      type="search"
+      [value]="searchTerm"
+      (input)="onSearchInput($event)"
+      placeholder="Search by model, use case, body style..." />
+
+    @if (searchTerm) {
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        aria-label="Clear model search"
+        (click)="clearSearch()">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+
+  <mat-button-toggle-group
+    class="filters"
+    [value]="selectedCategory"
+    aria-label="Filter Honda models by category"
+    (change)="filterByCategory($event.value)">
+    @for (filter of categoryFilters; track filter.value) {
+      <mat-button-toggle [value]="filter.value">{{ filter.label }}</mat-button-toggle>
+    }
+  </mat-button-toggle-group>
+
+  @if (!isLoading && !errorMessage) {
+    <span class="result-count">{{ getResultLabel() }}</span>
+  }
+</section>
 
 @if (isLoading) {
   <div class="state-card">Loading Honda models...</div>
@@ -28,7 +64,19 @@
   <div class="state-card error">{{ errorMessage }}</div>
 }
 
-@if (!isLoading && !errorMessage) {
+@if (!isLoading && !errorMessage && filteredCars.length === 0) {
+  <div class="empty-filter-state">
+    <span><mat-icon>directions_car</mat-icon></span>
+    <h3>No models in this category</h3>
+    <p>There are no Honda models matching the selected filter. Try another category.</p>
+    <button mat-flat-button class="primary-btn" (click)="filterByCategory('all')">
+      <mat-icon>grid_view</mat-icon>
+      Show All Models
+    </button>
+  </div>
+}
+
+@if (!isLoading && !errorMessage && filteredCars.length > 0) {
   <section class="cars-grid">
     @for (car of filteredCars; track car.id) {
       <article class="car-card">
@@ -47,9 +95,6 @@
           <div class="car-topline">
             <h2>{{ car.name }}</h2>
 
-            @if (car.is_mock_data) {
-              <span class="mock-badge">Sample</span>
-            }
           </div>
 
           <p class="description">{{ car.short_description }}</p>
@@ -62,11 +107,20 @@
             <strong>Best for:</strong> {{ car.best_for }}
           </p>
 
-          <p class="data-status">{{ car.data_status }}</p>
+          <p class="advisor-note">
+            Final quotation, current promotion, color availability, and delivery timeline
+            will be confirmed by the advisor.
+          </p>
 
           <div class="actions">
-            <a mat-flat-button [routerLink]="['/cars', car.slug]" class="primary-btn">View Details</a>
-            <a mat-stroked-button routerLink="/inquiry" class="secondary-btn">Ask Advisor</a>
+            <a mat-flat-button [routerLink]="['/cars', car.slug]" class="primary-btn">
+              <mat-icon>visibility</mat-icon>
+              View Details
+            </a>
+            <a mat-stroked-button routerLink="/inquiry" class="secondary-btn">
+              <mat-icon>forum</mat-icon>
+              Ask Advisor
+            </a>
           </div>
         </div>
       </article>

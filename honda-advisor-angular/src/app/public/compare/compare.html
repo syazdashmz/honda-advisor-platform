@@ -1,0 +1,173 @@
+<section class="compare-hero honda-gradient">
+  <div class="compare-copy">
+    <p class="section-eyebrow">Model Comparison</p>
+    <h1>Compare Honda models and variants side by side</h1>
+    <p>
+      Choose up to three Honda models, select the exact variant for each, and
+      compare price, engine, transmission, highlights, and suitability before
+      sending a more focused inquiry.
+    </p>
+
+    <div class="compare-actions">
+      <a mat-flat-button routerLink="/inquiry" class="primary-btn">
+        <mat-icon>forum</mat-icon>
+        Ask Advisor
+      </a>
+      <a mat-stroked-button routerLink="/cars" class="ghost-btn">
+        <mat-icon>directions_car</mat-icon>
+        Browse Models
+      </a>
+    </div>
+  </div>
+
+  <div class="compare-summary-card">
+    <span>Current shortlist</span>
+    <strong>{{ getSelectedSummary() }}</strong>
+    <small>Final stock, colors, promotions, and quotations are confirmed by the advisor.</small>
+  </div>
+</section>
+
+<section class="compare-support page-shell">
+  @for (item of quickFilters; track item.title) {
+    <article>
+      <span><mat-icon>{{ item.icon }}</mat-icon></span>
+      <h2>{{ item.title }}</h2>
+      <p>{{ item.text }}</p>
+    </article>
+  }
+</section>
+
+@if (isLoadingCars) {
+  <section class="page-shell">
+    <div class="state-card">Loading Honda models for comparison...</div>
+  </section>
+}
+
+@if (errorMessage) {
+  <section class="page-shell">
+    <div class="state-card error">{{ errorMessage }}</div>
+  </section>
+}
+
+@if (!isLoadingCars && !errorMessage) {
+  <section class="compare-page page-shell honda-material-form">
+    <div class="compare-board">
+      @for (slot of slots; track slot.id) {
+        <article class="compare-column">
+          <div class="column-heading">
+            <span>{{ slot.label }}</span>
+            <mat-form-field appearance="outline">
+              <mat-label>Honda model</mat-label>
+              <mat-select
+                [value]="slot.selectedSlug"
+                (selectionChange)="onModelChange(slot, $event.value)">
+                <mat-option value="">Select model</mat-option>
+                @for (car of cars; track car.id) {
+                  <mat-option [value]="car.slug">{{ car.name }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          @if (slot.isLoading) {
+            <div class="column-state">Loading model details...</div>
+          }
+
+          @if (slot.errorMessage) {
+            <div class="column-state error">{{ slot.errorMessage }}</div>
+          }
+
+          @if (!slot.isLoading && !slot.errorMessage && slot.car) {
+            <div class="model-visual">
+              <img
+                [src]="slot.car.hero_image_url"
+                [alt]="slot.car.name + ' preview'"
+                loading="lazy" />
+              <span>{{ slot.car.category }}</span>
+            </div>
+
+            <div class="model-title">
+              <h2>{{ slot.car.name }}</h2>
+              <p>{{ slot.car.best_for }}</p>
+            </div>
+
+            @if (slot.car.variants.length > 0) {
+              <mat-form-field appearance="outline" class="variant-select">
+                <mat-label>Variant</mat-label>
+                <mat-select
+                  [value]="slot.selectedVariant"
+                  (selectionChange)="selectVariant(slot, $event.value)">
+                  @for (variant of slot.car.variants; track variant.id) {
+                    <mat-option [value]="variant">{{ variant.variant_name }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            }
+
+            <div class="price-strip">
+              <span>Selected price reference</span>
+              <strong>{{ getVariantPrice(slot) | currency:'MYR':'symbol-narrow':'1.0-0' }}</strong>
+            </div>
+
+            <div class="comparison-table">
+              <div>
+                <span>Engine</span>
+                <strong>{{ slot.selectedVariant?.engine || 'Advisor confirmation needed' }}</strong>
+              </div>
+              <div>
+                <span>Transmission</span>
+                <strong>{{ slot.selectedVariant?.transmission || 'Advisor confirmation needed' }}</strong>
+              </div>
+              <div>
+                <span>Fuel type</span>
+                <strong>{{ slot.selectedVariant?.fuel_type || slot.car.fuel_type | uppercase }}</strong>
+              </div>
+              <div>
+                <span>Recommended for</span>
+                <strong>{{ slot.selectedVariant?.recommended_for || slot.car.best_for }}</strong>
+              </div>
+            </div>
+
+            <div class="highlight-box">
+              <span>Highlights</span>
+              @if (getHighlights(slot).length > 0) {
+                <ul>
+                  @for (highlight of getHighlights(slot); track highlight) {
+                    <li>{{ highlight }}</li>
+                  }
+                </ul>
+              } @else {
+                <p>{{ slot.selectedVariant?.key_highlights || slot.car.short_description }}</p>
+              }
+            </div>
+
+            <div class="column-actions">
+              <a mat-flat-button [routerLink]="['/cars', slot.car.slug]" class="primary-btn">
+                <mat-icon>visibility</mat-icon>
+                Details
+              </a>
+              <a mat-stroked-button routerLink="/inquiry" class="ghost-btn">
+                <mat-icon>forum</mat-icon>
+                Inquire
+              </a>
+            </div>
+          }
+
+          @if (!slot.isLoading && !slot.errorMessage && !slot.car) {
+            <div class="empty-column">
+              <mat-icon>add_circle</mat-icon>
+              <strong>Select a Honda model</strong>
+              <span>Use this slot to compare another model or variant.</span>
+            </div>
+          }
+        </article>
+      }
+    </div>
+
+    <div class="compare-note disclaimer-card">
+      This comparison is a planning reference. Variant prices, final OTR
+      quotation, promotion package, delivery timing, and color availability must
+      be confirmed by the advisor before purchase.
+    </div>
+  </section>
+}

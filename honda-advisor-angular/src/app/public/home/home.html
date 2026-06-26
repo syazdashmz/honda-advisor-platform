@@ -54,12 +54,12 @@
 
       <div class="hero-actions">
         <a mat-flat-button [routerLink]="homeContent.primary_cta_link" class="primary-btn">
-          <mat-icon>directions_car</mat-icon>
+          <mat-icon>compare_arrows</mat-icon>
           {{ homeContent.primary_cta_label }}
         </a>
 
         <a mat-flat-button [routerLink]="homeContent.secondary_cta_link" class="secondary-btn">
-          <mat-icon>calculate</mat-icon>
+          <mat-icon>directions_car</mat-icon>
           {{ homeContent.secondary_cta_label }}
         </a>
 
@@ -71,29 +71,24 @@
     </div>
 
     <div class="hero-visual">
-      <div class="car-showcase">
+      <div class="advisor-showcase">
         <div class="showcase-top">
-          <span class="showcase-icon"><mat-icon>directions_car</mat-icon></span>
-          <span class="mock-pill">Homepage Preview</span>
+          <span class="showcase-icon"><mat-icon>support_agent</mat-icon></span>
+          <span class="showcase-chip">Personal Advisor</span>
         </div>
 
-        @if (homeContent.hero_image_url) {
+        @if (homeContent.advisor_image_url) {
           <img
-            class="hero-uploaded-image"
-            [src]="homeContent.hero_image_url"
-            alt="Homepage hero preview" />
+            class="hero-uploaded-image advisor-portrait"
+            [src]="homeContent.advisor_image_url"
+            alt="Fauziah Honda sales advisor" />
         } @else {
-          <div class="car-silhouette">
-            <div class="car-roof"></div>
-            <div class="car-body"></div>
-            <div class="wheel wheel-left"></div>
-            <div class="wheel wheel-right"></div>
-          </div>
+          <div class="advisor-photo">Advisor Photo</div>
         }
 
         <div class="showcase-info">
-          <strong>Honda-inspired showroom preview</strong>
-          <small>Admin can update this visual from the homepage content manager.</small>
+          <strong>Fauziah Binti Mat Ta'is</strong>
+          <small>Honda advisor support for model selection, loan planning, appointment, and delivery coordination.</small>
         </div>
       </div>
     </div>
@@ -109,20 +104,159 @@
     }
   </section>
 
+  <section class="advisor-proof-section page-shell">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="section-eyebrow">About Fauziah</p>
+        <h2 class="section-title">A sales advisor customers return to.</h2>
+      </div>
+      <p class="section-text">
+        New customers need more than a brochure. They need a calm advisor who can
+        explain the right model, prepare the next step, and stay reachable until
+        the Honda is ready to collect.
+      </p>
+    </div>
+
+    <div class="advisor-proof-grid">
+      <article class="award-card">
+        <img
+          [src]="awardImage"
+          alt="Fauziah receiving Honda long-service recognition"
+          loading="lazy" />
+        <div>
+          <span><mat-icon>emoji_events</mat-icon> Recognition</span>
+          <h3>Long-service excellence with Honda</h3>
+          <p>
+            Fauziah's journey with Tenaga Setia Resources reflects consistent
+            service, careful follow-up, and the kind of trust customers remember
+            after the delivery day.
+          </p>
+        </div>
+      </article>
+
+      <div class="advisor-highlight-list">
+        @for (highlight of advisorHighlights; track highlight.title) {
+          <article class="advisor-highlight-card">
+            <span><mat-icon>{{ highlight.icon }}</mat-icon></span>
+            <div>
+              <h3>{{ highlight.title }}</h3>
+              <p>{{ highlight.text }}</p>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="journey-section page-shell">
+    <div class="section-heading">
+      <p class="section-eyebrow">Buying Journey</p>
+      <h2 class="section-title">A clearer path from browsing to delivery.</h2>
+      <p class="section-text">
+        Customers can move from model discovery to budget planning, inquiry,
+        appointment request, and delivery follow-up without guessing the next step.
+      </p>
+    </div>
+
+    <div class="journey-grid">
+      @for (step of buyerJourney; track step.title) {
+        <article class="journey-card">
+          <span><mat-icon>{{ step.icon }}</mat-icon></span>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.text }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="promo-section page-shell">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="section-eyebrow">Honda Promotion</p>
+        <h2 class="section-title">June 2026 Honda rewards, presented clearly.</h2>
+      </div>
+      <p class="section-text">
+        A cleaner promotion reference based on Honda Malaysia's current June
+        2026 campaign. Ask Fauziah to confirm exact eligibility, variant,
+        excise year, stock, and final package.
+      </p>
+    </div>
+
+    <div class="promo-layout">
+      <article class="promo-poster-card">
+        <img
+          [src]="promotionPoster"
+          alt="Honda Malaysia June 2026 promotion reference poster"
+          loading="lazy" />
+      </article>
+
+      <div class="promo-content-card">
+        <span class="promo-badge">Experience More Hybrid Joy</span>
+        <h3>Rewards worth up to RM34,000*</h3>
+        <p>
+          The campaign includes selected model rewards, Hybrid Support for
+          participating e:HEV models, Joy Reward eligibility, and City Bonanza
+          terms for selected City variants.
+        </p>
+
+        <div class="promo-highlight-grid">
+          @for (item of promotionHighlights; track item.title) {
+            <article>
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <div>
+                <strong>{{ item.title }}</strong>
+                <small>{{ item.text }}</small>
+              </div>
+            </article>
+          }
+        </div>
+
+        <div class="promo-model-strip" aria-label="Selected Honda promotion model rewards">
+          @for (item of promotionModelRewards; track item.model) {
+            <article>
+              <img [src]="item.image" [alt]="item.model + ' promotion model preview'" loading="lazy" />
+              <div>
+                <strong>{{ item.model }}</strong>
+                <span>{{ item.reward }}</span>
+                <small>{{ item.note }}</small>
+              </div>
+            </article>
+          }
+        </div>
+
+        <div class="promo-actions">
+          <a mat-flat-button routerLink="/inquiry" class="primary-btn">
+            <mat-icon>forum</mat-icon>
+            Check Eligibility
+          </a>
+          <a mat-stroked-button routerLink="/compare" class="ghost-btn">
+            <mat-icon>compare_arrows</mat-icon>
+            Compare Models
+          </a>
+        </div>
+
+        <div class="promo-terms">
+          Promotion period shown by Honda Malaysia: 1 June 2026 to 30 June 2026.
+          Terms, selected variants, excise year, and stock availability apply.
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="advisor-section page-shell">
     <div>
-      <p class="section-eyebrow">Advisor Story</p>
-      <h2 class="section-title">Built around trust, clarity, and personal follow-up.</h2>
+      <p class="section-eyebrow">Showroom & Dealership</p>
+      <h2 class="section-title">A proper Honda showroom visit, guided from start to finish.</h2>
     </div>
 
     <div class="advisor-card">
-      @if (homeContent.advisor_image_url) {
+      @if (homeContent.hero_image_url) {
         <img
           class="advisor-photo-img"
-          [src]="homeContent.advisor_image_url"
-          alt="Advisor profile" />
+          [src]="homeContent.hero_image_url"
+          alt="Tenaga Setia Resources Honda showroom" />
       } @else {
-        <div class="advisor-photo">Advisor Photo</div>
+        <div class="advisor-photo">Showroom Photo</div>
       }
 
       <div>
@@ -133,10 +267,137 @@
         </p>
 
         <div class="disclaimer-card">
-          Public homepage content can be updated by admin. Final car prices,
-          stock, promotions, and loan details must still be verified with the advisor,
-          dealership, or Honda Malaysia.
+          Final car prices, stock, promotions, and loan details are confirmed
+          during advisor follow-up before any purchase decision.
         </div>
+
+        <div class="showroom-highlight-grid">
+          @for (item of showroomHighlights; track item.title) {
+            <article>
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <strong>{{ item.title }}</strong>
+              <small>{{ item.text }}</small>
+            </article>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="loyal-section page-shell">
+    <div class="testimonials-heading">
+      <div>
+        <p class="section-eyebrow">Special Memories</p>
+        <h2 class="section-title">Loyal customers, year after year.</h2>
+        <p class="section-text">
+          The strongest proof is when existing customers return again. These
+          memories show trust built through careful explanation, updates, and
+          delivery-day preparation.
+        </p>
+      </div>
+
+      <a mat-flat-button routerLink="/compare" class="primary-btn">
+        <mat-icon>compare_arrows</mat-icon>
+        Compare Models
+      </a>
+    </div>
+
+    <div class="loyal-grid">
+      @for (memory of loyalMemories; track memory.title) {
+        <article class="loyal-card">
+          <img [src]="memory.photo" [alt]="memory.title" loading="lazy" />
+          <div>
+            <span>{{ memory.badge }}</span>
+            <h3>{{ memory.title }}</h3>
+            <p>{{ memory.text }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="testimonials-section page-shell">
+    <div class="testimonials-heading">
+      <div>
+        <p class="section-eyebrow">Customer Deliveries</p>
+        <h2 class="section-title">Real customers. Real Hondas. Real smiles.</h2>
+        <p class="section-text">
+          Delivery proof from customers guided through model selection, process
+          updates, and collection-day preparation.
+        </p>
+      </div>
+
+      <a mat-flat-button routerLink="/inquiry" class="primary-btn">
+        <mat-icon>forum</mat-icon>
+        Start Your Journey
+      </a>
+    </div>
+
+    <div class="testimonials-grid">
+      @for (testimonial of testimonials; track testimonial.name) {
+        <article class="testimonial-card">
+          <div class="testimonial-photo-wrap">
+            <img
+              class="testimonial-photo"
+              [src]="testimonial.photo"
+              [alt]="testimonial.name + ' delivery photo'"
+              loading="lazy" />
+            <span class="testimonial-badge">{{ testimonial.badge }}</span>
+          </div>
+
+          <div class="testimonial-body">
+            <div class="testimonial-stars">
+              <mat-icon>star</mat-icon>
+              <mat-icon>star</mat-icon>
+              <mat-icon>star</mat-icon>
+              <mat-icon>star</mat-icon>
+              <mat-icon>star</mat-icon>
+            </div>
+
+            <p class="testimonial-story">{{ testimonial.story }}</p>
+
+            <div class="testimonial-meta">
+              <div class="testimonial-avatar">
+                {{ testimonial.name.charAt(0) }}
+              </div>
+              <div>
+                <strong>{{ testimonial.name }}</strong>
+                <small>
+                  <mat-icon>directions_car</mat-icon>
+                  {{ testimonial.car }}
+                </small>
+              </div>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-card honda-gradient">
+      <div>
+        <p class="section-eyebrow">Ready to Drive Honda?</p>
+        <h2>Your next Honda is waiting for you.</h2>
+        <p>
+          Explore models, estimate your monthly payment, and connect
+          directly with your trusted Honda advisor at Tenaga Setia Resources.
+        </p>
+      </div>
+
+      <div class="cta-actions">
+        <a mat-flat-button routerLink="/cars" class="primary-btn">
+          <mat-icon>directions_car</mat-icon>
+          View All Honda Models
+        </a>
+        <a mat-flat-button routerLink="/loan-calculator" class="secondary-btn">
+          <mat-icon>calculate</mat-icon>
+          Calculate Loan
+        </a>
+        <a mat-stroked-button routerLink="/inquiry" class="ghost-btn">
+          <mat-icon>forum</mat-icon>
+          Send Inquiry
+        </a>
       </div>
     </div>
   </section>

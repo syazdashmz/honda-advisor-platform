@@ -68,9 +68,9 @@ export class AdminCars implements OnInit {
     brochure_url: [''],
     is_featured: [false],
     is_active: [true],
-    data_mode: ['mock'],
-    is_mock_data: [true],
-    data_status: ['Updated by admin']
+    data_mode: ['verified'],
+    is_mock_data: [false],
+    data_status: ['Reviewed by advisor']
   });
 
   variantForm = this.formBuilder.nonNullable.group({
@@ -83,10 +83,21 @@ export class AdminCars implements OnInit {
     recommended_for: [''],
     sort_order: [0],
     is_active: [true],
-    data_mode: ['mock'],
-    is_mock_data: [true],
-    data_status: ['Updated by admin']
+    data_mode: ['verified'],
+    is_mock_data: [false],
+    data_status: ['Reviewed by advisor']
   });
+
+  private readonly localImagePaths: Record<string, string> = {
+    'honda-city': '/images/cars/city/hero.webp',
+    'honda-city-hatchback': '/images/cars/city-hatchback/hero.webp',
+    'honda-wrv': '/images/cars/wr-v/hero.webp',
+    'honda-hrv': '/images/cars/hr-v/hero.webp',
+    'honda-civic': '/images/cars/civic/hero.webp',
+    'honda-crv': '/images/cars/cr-v/hero.webp',
+    'honda-en1': '/images/cars/en1/hero.webp',
+    'honda-type-r': '/images/cars/type-r/hero.webp'
+  };
 
   ngOnInit(): void {
     this.loadCars();
@@ -136,9 +147,9 @@ export class AdminCars implements OnInit {
           brochure_url: this.selectedCar.brochure_url || '',
           is_featured: Boolean(this.selectedCar.is_featured),
           is_active: Boolean(this.selectedCar.is_active),
-          data_mode: this.selectedCar.data_mode || 'mock',
+          data_mode: this.selectedCar.data_mode || 'verified',
           is_mock_data: Boolean(this.selectedCar.is_mock_data),
-          data_status: this.selectedCar.data_status || 'Updated by admin'
+          data_status: this.selectedCar.data_status || 'Reviewed by advisor'
         });
 
         this.isLoadingDetail = false;
@@ -219,9 +230,45 @@ export class AdminCars implements OnInit {
       recommended_for: variant.recommended_for || '',
       sort_order: Number(variant.sort_order || 0),
       is_active: Boolean(variant.is_active),
-      data_mode: variant.data_mode || 'mock',
+      data_mode: variant.data_mode || 'verified',
       is_mock_data: Boolean(variant.is_mock_data),
-      data_status: variant.data_status || 'Updated by admin'
+      data_status: variant.data_status || 'Reviewed by advisor'
+    });
+  }
+
+  getSuggestedImagePath(): string {
+    const slug = this.carForm.value.slug || this.selectedCar?.slug || '';
+    return this.localImagePaths[slug] || '';
+  }
+
+  applySuggestedImage(): void {
+    const suggestedPath = this.getSuggestedImagePath();
+
+    if (!suggestedPath) {
+      this.errorMessage = 'No local image preset is available for this slug yet.';
+      return;
+    }
+
+    this.carForm.patchValue({
+      hero_image_url: suggestedPath
+    });
+
+    this.errorMessage = '';
+  }
+
+  markModelReady(): void {
+    this.carForm.patchValue({
+      data_mode: 'verified',
+      is_mock_data: false,
+      data_status: 'Reviewed by advisor. Final customer quotation still depends on current stock, promotion, and approval.'
+    });
+  }
+
+  markVariantReady(): void {
+    this.variantForm.patchValue({
+      data_mode: 'verified',
+      is_mock_data: false,
+      data_status: 'Reviewed by advisor. Final variant quotation still depends on current stock, promotion, and approval.'
     });
   }
 

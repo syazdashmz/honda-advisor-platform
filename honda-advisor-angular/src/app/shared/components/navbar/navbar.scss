@@ -1,16 +1,17 @@
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 50;
-  min-height: 78px;
+  z-index: 100;
+  min-height: 82px;
   padding: 0 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid rgba(17, 24, 39, 0.08);
-  backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.04);
+  backdrop-filter: blur(20px);
 }
 
 .brand {
@@ -20,31 +21,36 @@
   color: var(--ink-black);
   text-decoration: none;
   flex-shrink: 0;
+  z-index: 101;
 }
 
 .brand-mark {
-  width: 44px;
-  height: 44px;
-  border-radius: 15px;
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, var(--honda-red), #7f0b1d);
+  background:
+    linear-gradient(135deg, #d60f2f 0%, #9f0d25 58%, #680817 100%);
   color: #fff;
   font-size: 22px;
   font-weight: 950;
-  box-shadow: 0 12px 28px rgba(200, 16, 46, 0.26);
+  box-shadow: 0 16px 34px rgba(200, 16, 46, 0.24);
 }
 
 .brand-copy {
   strong {
     display: block;
-    font-size: 16px;
+    color: var(--ink-black);
+    font-size: 17px;
+    font-weight: 900;
     line-height: 1.1;
   }
 
   small {
-    color: var(--muted);
+    color: #64748b;
     font-size: 12px;
+    font-weight: 600;
   }
 }
 
@@ -52,14 +58,14 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 7px;
   min-width: 0;
 
   a,
   .logout-btn,
   .user-pill,
   .admin-pill {
-    min-height: 40px;
+    min-height: 42px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -71,16 +77,21 @@
   }
 
   a {
-    padding: 9px 11px;
+    padding: 10px 13px;
     color: var(--graphite);
     text-decoration: none;
-    transition: 0.2s ease;
+    transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  a:hover,
-  a.active {
+  a:hover {
     color: var(--honda-red);
     background: #fef2f2;
+  }
+
+  a.active {
+    color: var(--honda-red);
+    background: #fff1f2;
+    box-shadow: inset 0 0 0 1px rgba(200, 16, 46, 0.08);
   }
 
   mat-icon {
@@ -91,7 +102,7 @@
 
   .login-link {
     padding-inline: 14px;
-    background: var(--ink-black);
+    background: linear-gradient(135deg, var(--ink-black), #2b3442);
     color: #fff;
 
     &:hover {
@@ -105,12 +116,13 @@
 
 .user-pill,
 .admin-pill {
-  padding: 9px 13px;
+  padding: 10px 14px;
 }
 
 .user-pill {
-  background: #fef2f2;
+  background: #fff1f2;
   color: var(--honda-red);
+  box-shadow: inset 0 0 0 1px rgba(200, 16, 46, 0.08);
 }
 
 .admin-pill {
@@ -119,9 +131,9 @@
 }
 
 .logout-btn {
-  padding: 9px 15px;
+  padding: 10px 16px;
   border: 0;
-  background: var(--honda-red);
+  background: linear-gradient(135deg, var(--honda-red), var(--honda-red-dark));
   color: #fff;
   cursor: pointer;
   transition: 0.2s ease;
@@ -133,19 +145,117 @@
   }
 }
 
+/* Hamburger button — hidden on desktop */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--soft-grey);
+  cursor: pointer;
+  z-index: 101;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+
+  span {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ink-black);
+    transform-origin: center;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  &.open {
+    background: #fef2f2;
+
+    span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+    }
+
+    span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+
+  &:hover {
+    background: #fef2f2;
+  }
+}
+
+/* Full-screen overlay for mobile menu */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background: rgba(17, 24, 39, 0.36);
+  backdrop-filter: blur(4px);
+}
+
 @media (max-width: 1180px) {
   .navbar {
-    height: auto;
-    padding: 16px 20px;
-    align-items: flex-start;
-    flex-direction: column;
+    padding: 0 20px;
+    flex-wrap: nowrap;
+  }
+
+  .hamburger {
+    display: flex;
   }
 
   .nav-links {
-    width: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    width: min(320px, 88vw);
+    padding: 96px 20px 32px;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 4px;
+    gap: 6px;
+    background: #fff;
+    box-shadow: -8px 0 40px rgba(17, 24, 39, 0.14);
+    overflow-y: auto;
+
+    &.open {
+      display: flex;
+    }
+
+    a,
+    .logout-btn,
+    .user-pill,
+    .admin-pill {
+      width: 100%;
+      justify-content: flex-start;
+      border-radius: 14px;
+      font-size: 15px;
+      padding: 13px 16px;
+    }
+
+    .login-link {
+      background: var(--ink-black);
+      color: #fff;
+    }
+
+    .logout-btn {
+      border-radius: 14px;
+    }
+
+    .user-pill,
+    .admin-pill {
+      padding: 13px 16px;
+    }
   }
 }
 

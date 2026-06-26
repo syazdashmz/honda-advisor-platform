@@ -543,7 +543,7 @@ CREATE TABLE testimonials (
 
   data_mode ENUM('mock', 'verified', 'archived') DEFAULT 'mock',
   is_mock_data BOOLEAN DEFAULT TRUE,
-  data_status VARCHAR(255) DEFAULT 'Sample testimonial — replace with verified customer review later',
+  data_status VARCHAR(255) DEFAULT 'Awaiting advisor review',
 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

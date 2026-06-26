@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -19,6 +19,7 @@ export class Navbar {
   private readonly router = inject(Router);
 
   user = this.authService.currentUser;
+  menuOpen = signal(false);
 
   isAdmin = computed(() => {
     const currentUser = this.user();
@@ -30,9 +31,17 @@ export class Navbar {
     return currentUser?.role_name === 'customer';
   });
 
+  toggleMenu(): void {
+    this.menuOpen.update(v => !v);
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+
   logout(): void {
     const wasAdmin = this.isAdmin();
-
+    this.closeMenu();
     this.authService.logout();
 
     if (wasAdmin) {

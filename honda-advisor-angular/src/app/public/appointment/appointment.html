@@ -242,7 +242,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Phone number</mat-label>
-            <input matInput type="tel" formControlName="phone_number" placeholder="60123456789" />
+            <input matInput type="tel" formControlName="phone_number" />
 
             @if (appointmentForm.controls.phone_number.touched && appointmentForm.controls.phone_number.invalid) {
               <mat-error>Please enter a valid phone number.</mat-error>

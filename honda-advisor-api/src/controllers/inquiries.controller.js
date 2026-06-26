@@ -1,5 +1,6 @@
 const { database } = require('../config/db');
 const { successResponse, errorResponse } = require('../utils/api-response');
+const { sendInquiryNotification } = require('../services/email.service');
 
 const allowedInquiryStatuses = [
   'new',
@@ -57,9 +58,12 @@ async function createInquiry(req, res) {
       });
     }
 
+    const userId = req.user?.id || null;
+
     const [result] = await database.query(
       `
       INSERT INTO inquiries (
+        user_id,
         car_model_id,
         full_name,
         phone_number,
@@ -75,9 +79,10 @@ async function createInquiry(req, res) {
         lead_source,
         status
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       [
+        userId,
         car_model_id || null,
         full_name,
         phone_number,
@@ -109,10 +114,30 @@ async function createInquiry(req, res) {
       [result.insertId]
     );
 
+    let emailNotification = {
+      sent: false,
+      recipient: process.env.INQUIRY_TO_EMAIL || 'syazdashmz@gmail.com',
+      reason: 'Notification not attempted',
+    };
+
+    try {
+      emailNotification = await sendInquiryNotification(createdInquiry[0]);
+    } catch (emailError) {
+      console.error('sendInquiryNotification error:', emailError);
+      emailNotification = {
+        sent: false,
+        recipient: process.env.INQUIRY_TO_EMAIL || 'syazdashmz@gmail.com',
+        reason: 'Email notification failed',
+      };
+    }
+
     return successResponse(
       res,
       'Inquiry submitted successfully',
-      createdInquiry[0],
+      {
+        ...createdInquiry[0],
+        email_notification: emailNotification,
+      },
       201
     );
   } catch (error) {
@@ -248,9 +273,53 @@ async function updateInquiryStatus(req, res) {
   }
 }
 
+async function getMyInquiries(req, res) {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return errorResponse(res, 'Unauthorized', 401);
+    }
+
+    const [inquiries] = await database.query(
+      `
+      SELECT
+        i.id,
+        i.car_model_id,
+        i.full_name,
+        i.phone_number,
+        i.email,
+        i.budget_range,
+        i.monthly_budget,
+        i.buying_timeline,
+        i.needs_loan,
+        i.has_trade_in,
+        i.preferred_contact_method,
+        i.message,
+        i.status,
+        i.created_at,
+        i.updated_at,
+        cm.name AS car_model_name,
+        cm.slug AS car_model_slug
+      FROM inquiries i
+      LEFT JOIN car_models cm ON i.car_model_id = cm.id
+      WHERE i.user_id = ?
+      ORDER BY i.created_at DESC
+      `,
+      [userId]
+    );
+
+    return successResponse(res, 'Your inquiries fetched successfully', inquiries);
+  } catch (error) {
+    console.error('getMyInquiries error:', error);
+    return errorResponse(res, 'Failed to fetch your inquiries');
+  }
+}
+
 module.exports = {
   createInquiry,
   getAllInquiries,
   getInquiryById,
   updateInquiryStatus,
+  getMyInquiries,
 };

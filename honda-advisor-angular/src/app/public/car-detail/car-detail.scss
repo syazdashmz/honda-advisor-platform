@@ -8,6 +8,32 @@
   overflow: hidden;
 }
 
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 22px;
+  padding: 9px 16px 9px 10px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.06);
+  color: var(--graphite);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 900;
+  transition: 0.2s ease;
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+
+  &:hover {
+    background: #fef2f2;
+    color: var(--honda-red);
+  }
+}
+
 .detail-copy {
   .title-row {
     display: flex;
@@ -431,13 +457,68 @@
   }
 }
 
+.color-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.color-preview-card {
+  padding: 24px;
+  border-radius: 30px;
+  background:
+    linear-gradient(145deg, rgba(17, 24, 39, 0.98), rgba(31, 41, 55, 0.98));
+  color: #fff;
+  box-shadow: var(--shadow-strong);
+
+  .preview-image-wrap {
+    height: 210px;
+    display: grid;
+    place-items: center;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 24px rgba(0, 0, 0, 0.28));
+  }
+
+  span,
+  strong {
+    display: block;
+  }
+
+  span {
+    margin-top: 18px;
+    color: #d1d5db;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  strong {
+    margin-top: 6px;
+    color: #fff;
+    font-size: 26px;
+    letter-spacing: 0;
+  }
+}
+
 .colors-row {
+  margin-top: 24px;
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
 }
 
 .color-chip {
+  min-height: 54px;
   padding: 14px 18px;
   display: inline-flex;
   align-items: center;
@@ -446,6 +527,20 @@
   background: #fff;
   border: 1px solid var(--border);
   box-shadow: 0 10px 30px rgba(17, 24, 39, 0.05);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover,
+  &.active {
+    transform: translateY(-2px);
+    border-color: var(--honda-red);
+    box-shadow: var(--shadow-soft);
+  }
+
+  &.active {
+    background: #fef2f2;
+    color: var(--honda-red);
+  }
 
   .color-dot {
     width: 28px;
@@ -476,7 +571,8 @@
 @media (max-width: 1100px) {
   .detail-hero,
   .detail-grid,
-  .variants-layout {
+  .variants-layout,
+  .color-layout {
     grid-template-columns: 1fr;
   }
 

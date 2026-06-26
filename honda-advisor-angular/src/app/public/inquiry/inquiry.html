@@ -106,7 +106,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Phone number</mat-label>
-          <input matInput type="tel" formControlName="phone_number" placeholder="60123456789" />
+          <input matInput type="tel" formControlName="phone_number" />
           <mat-hint>WhatsApp-friendly format is recommended.</mat-hint>
 
           @if (inquiryForm.controls.phone_number.touched && inquiryForm.controls.phone_number.invalid) {
@@ -271,7 +271,7 @@
 
     @if (submittedInquiry) {
       <div class="success-panel">
-        <span class="success-icon">Done</span>
+        <span class="success-icon"><mat-icon>check_circle</mat-icon></span>
 
         <p class="section-eyebrow">Inquiry Received</p>
 

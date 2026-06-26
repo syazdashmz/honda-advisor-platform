@@ -5,14 +5,17 @@ const {
   getAllInquiries,
   getInquiryById,
   updateInquiryStatus,
+  getMyInquiries,
 } = require('../controllers/inquiries.controller');
 
-const { protect } = require('../middleware/auth.middleware');
+const { protect, optionalProtect } = require('../middleware/auth.middleware');
 const { allowRoles } = require('../middleware/role.middleware');
 
 const router = express.Router();
 
-router.post('/', createInquiry);
+router.post('/', optionalProtect, createInquiry);
+
+router.get('/my', protect, getMyInquiries);
 
 router.get(
   '/',

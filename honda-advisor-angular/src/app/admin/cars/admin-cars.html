@@ -147,6 +147,36 @@
             <mat-icon matPrefix>image</mat-icon>
             <input matInput type="text" formControlName="hero_image_url" />
           </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Brochure URL</mat-label>
+            <mat-icon matPrefix>picture_as_pdf</mat-icon>
+            <input matInput type="text" formControlName="brochure_url" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Publish state</mat-label>
+            <mat-icon matPrefix>verified</mat-icon>
+            <mat-select formControlName="data_mode">
+              <mat-option value="verified">Published / reviewed</mat-option>
+              <mat-option value="mock">Needs review</mat-option>
+              <mat-option value="archived">Archived</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="helper-actions">
+          @if (getSuggestedImagePath()) {
+            <button mat-stroked-button type="button" class="ghost-btn" (click)="applySuggestedImage()">
+              <mat-icon>image</mat-icon>
+              Use local model image
+            </button>
+          }
+
+          <button mat-stroked-button type="button" class="ghost-btn" (click)="markModelReady()">
+            <mat-icon>verified</mat-icon>
+            Mark model ready
+          </button>
         </div>
 
         @if (carForm.value.hero_image_url) {
@@ -177,7 +207,7 @@
         <div class="switch-grid">
           <mat-checkbox class="switch-card" formControlName="is_featured">Featured model</mat-checkbox>
           <mat-checkbox class="switch-card" formControlName="is_active">Visible to users</mat-checkbox>
-          <mat-checkbox class="switch-card" formControlName="is_mock_data">Mock/sample data</mat-checkbox>
+          <mat-checkbox class="switch-card" formControlName="is_mock_data">Needs data review</mat-checkbox>
         </div>
       </form>
 
@@ -257,6 +287,23 @@
                 <mat-icon matPrefix>sort</mat-icon>
                 <input matInput type="number" formControlName="sort_order" />
               </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Publish state</mat-label>
+                <mat-icon matPrefix>verified</mat-icon>
+                <mat-select formControlName="data_mode">
+                  <mat-option value="verified">Published / reviewed</mat-option>
+                  <mat-option value="mock">Needs review</mat-option>
+                  <mat-option value="archived">Archived</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="helper-actions">
+              <button mat-stroked-button type="button" class="ghost-btn" (click)="markVariantReady()">
+                <mat-icon>verified</mat-icon>
+                Mark variant ready
+              </button>
             </div>
 
             <mat-form-field appearance="outline" class="full-field">
@@ -276,7 +323,7 @@
 
             <div class="switch-grid">
               <mat-checkbox class="switch-card" formControlName="is_active">Variant active</mat-checkbox>
-              <mat-checkbox class="switch-card" formControlName="is_mock_data">Mock/sample data</mat-checkbox>
+              <mat-checkbox class="switch-card" formControlName="is_mock_data">Needs data review</mat-checkbox>
             </div>
           </form>
         }

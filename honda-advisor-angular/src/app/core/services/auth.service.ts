@@ -89,4 +89,16 @@ export class AuthService {
     localStorage.setItem(this.userKey, JSON.stringify(user));
     this.currentUser.set(user);
   }
+
+  updateProfile(payload: { full_name: string; phone_number?: string }): Observable<ApiResponse<{ user: User }>> {
+    return this.apiService
+      .patch<{ user: User }>('/auth/profile', payload)
+      .pipe(
+        tap((response) => {
+          if (response.success && response.data?.user) {
+            this.updateCurrentUser(response.data.user);
+          }
+        })
+      );
+  }
 }

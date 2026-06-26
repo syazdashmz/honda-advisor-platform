@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { Home } from './public/home/home';
 import { Cars } from './public/cars/cars';
 import { CarDetail } from './public/car-detail/car-detail';
+import { Compare } from './public/compare/compare';
 import { LoanCalculator } from './public/loan-calculator/loan-calculator';
 import { Inquiry } from './public/inquiry/inquiry';
 import { Appointment } from './public/appointment/appointment';
@@ -26,6 +27,7 @@ import { adminGuard } from './core/guards/admin.guard';
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'cars', component: Cars },
+  { path: 'compare', component: Compare },
   { path: 'cars/:slug', component: CarDetail },
   { path: 'loan-calculator', component: LoanCalculator },
   { path: 'inquiry', component: Inquiry },

@@ -33,6 +33,7 @@ export class AdminLogin {
 
   isSubmitting = false;
   errorMessage = '';
+  showPassword = false;
 
   adminLoginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],

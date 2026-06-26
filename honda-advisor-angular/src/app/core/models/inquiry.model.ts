@@ -56,4 +56,11 @@ export interface InquiryResult {
 
   created_at?: string;
   updated_at?: string;
+
+  email_notification?: {
+    sent: boolean;
+    recipient: string;
+    reason?: string;
+    messageId?: string;
+  };
 }

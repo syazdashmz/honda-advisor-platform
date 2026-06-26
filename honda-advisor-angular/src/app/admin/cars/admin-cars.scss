@@ -252,6 +252,22 @@ mat-form-field,
   }
 }
 
+.helper-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  button {
+    min-height: 42px;
+  }
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+}
+
 .switch-grid {
   display: flex;
   gap: 12px;

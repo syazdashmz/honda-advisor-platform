@@ -35,4 +35,8 @@ export class InquiriesService {
       status
     });
   }
+
+  getMyInquiries(): Observable<ApiResponse<InquiryResult[]>> {
+    return this.apiService.get<InquiryResult[]>('/inquiries/my');
+  }
 }

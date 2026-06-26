@@ -201,6 +201,57 @@ async function getProfile(req, res) {
   }
 }
 
+async function updateProfile(req, res) {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return errorResponse(res, 'Unauthorized', 401);
+    }
+
+    const { full_name, phone_number } = req.body;
+
+    if (!full_name || full_name.trim().length < 2) {
+      return errorResponse(res, 'Full name must be at least 2 characters', 400);
+    }
+
+    await database.query(
+      `
+      UPDATE users
+      SET full_name = ?, phone_number = ?
+      WHERE id = ?
+      `,
+      [full_name.trim(), phone_number?.trim() || null, userId]
+    );
+
+    const [updatedUsers] = await database.query(
+      `
+      SELECT
+        u.id,
+        u.full_name,
+        u.email,
+        u.phone_number,
+        u.status,
+        u.created_at,
+        u.updated_at,
+        r.name AS role_name
+      FROM users u
+      INNER JOIN roles r ON u.role_id = r.id
+      WHERE u.id = ?
+      LIMIT 1
+      `,
+      [userId]
+    );
+
+    return successResponse(res, 'Profile updated successfully', {
+      user: sanitizeUser(updatedUsers[0]),
+    });
+  } catch (error) {
+    console.error('updateProfile error:', error);
+    return errorResponse(res, 'Failed to update profile');
+  }
+}
+
 /**
  * Development-only admin creator.
  * Use only locally so you can create your first admin account.
@@ -319,5 +370,6 @@ module.exports = {
   register,
   login,
   getProfile,
+  updateProfile,
   createDevAdmin,
 };

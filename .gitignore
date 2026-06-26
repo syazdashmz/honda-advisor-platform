@@ -3,3 +3,4 @@ node_modules/
 dist/
 .angular/
 .DS_Store
+honda-advisor-angular/.codex-ng-serve*.log

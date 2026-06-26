@@ -34,6 +34,7 @@ export class Login {
 
   isSubmitting = false;
   errorMessage = '';
+  showPassword = false;
 
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],

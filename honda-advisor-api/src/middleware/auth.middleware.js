@@ -49,6 +49,46 @@ async function protect(req, res, next) {
   }
 }
 
+async function optionalProtect(req, res, next) {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return next();
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const [users] = await database.query(
+      `
+      SELECT
+        u.id,
+        u.role_id,
+        u.full_name,
+        u.email,
+        u.phone_number,
+        u.status,
+        r.name AS role_name
+      FROM users u
+      INNER JOIN roles r ON u.role_id = r.id
+      WHERE u.id = ?
+      LIMIT 1
+      `,
+      [decoded.id]
+    );
+
+    if (users.length > 0 && users[0].status === 'active') {
+      req.user = users[0];
+    }
+
+    next();
+  } catch {
+    next();
+  }
+}
+
 module.exports = {
   protect,
+  optionalProtect,
 };
