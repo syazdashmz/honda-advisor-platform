@@ -1,6 +1,56 @@
 # Deployment Plan
 
-## Recommended Railway-Only Setup
+## Simplest Railway Setup
+
+Use one Railway project with two services:
+
+- `honda-advisor-platform` - Single web service that builds Angular and serves it from the Express API.
+- `MySQL` - Railway MySQL database plugin.
+
+This avoids frontend/API service coordination and keeps the deployment on one public domain.
+
+## Railway Single Web Service
+
+Create a service from the GitHub repo and use:
+
+- Repository: `syazdashmz/honda-advisor-platform`
+- Branch: `main`
+- Root directory: leave empty
+- Config file path, if Railway asks for one: `/railway.json`
+- Build command: handled by root `railway.json` (`npm run build`)
+- Start command: handled by root `railway.json` (`npm start`)
+
+The root build installs both sub-apps, builds Angular, and starts the Express API. The API serves `honda-advisor-angular/dist/honda-advisor-angular/browser` for non-API routes.
+
+Set API environment variables on this single web service:
+
+```text
+NODE_ENV=production
+JWT_SECRET=generate-a-long-random-secret
+JWT_EXPIRES_IN=7d
+DB_NAME=honda_advisor_db
+INQUIRY_TO_EMAIL=syazdashmz@gmail.com
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-gmail-app-password
+SMTP_FROM=Fauziah Auto Advisor <your-email@gmail.com>
+```
+
+Add MySQL reference variables from the `MySQL` service:
+
+```text
+MYSQLHOST=${{MySQL.MYSQLHOST}}
+MYSQLUSER=${{MySQL.MYSQLUSER}}
+MYSQLPASSWORD=${{MySQL.MYSQLPASSWORD}}
+MYSQLDATABASE=${{MySQL.MYSQLDATABASE}}
+MYSQLPORT=${{MySQL.MYSQLPORT}}
+```
+
+Because the frontend and API run on the same domain in this setup, `API_ORIGIN` and `CLIENT_URLS` are not required.
+
+## Alternative Railway Split Setup
 
 Use one Railway project with three services:
 
@@ -8,7 +58,7 @@ Use one Railway project with three services:
 - `honda-advisor-api` - Express API from `honda-advisor-api`.
 - `MySQL` - Railway MySQL database plugin.
 
-This keeps the whole app inside Railway and avoids managing Cloudflare, Render, and Aiven separately.
+This still works, but it requires two web services and extra URL wiring.
 
 ## Railway Frontend Service
 

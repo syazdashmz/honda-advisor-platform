@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('node:fs');
+const path = require('node:path');
 require('dotenv').config();
 
 const { testDatabaseConnection } = require('./config/db');
@@ -18,22 +20,33 @@ const adminAccountRoutes = require('./routes/admin-account.routes');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const allowedOrigins = (process.env.CLIENT_URLS || process.env.CLIENT_URL || 'http://localhost:4200')
+const configuredOrigins = (process.env.CLIENT_URLS || process.env.CLIENT_URL || 'http://localhost:4200')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
 
-app.use(
-  cors({
-    origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-        return;
-      }
+function isSameOriginRequest(origin, req) {
+  try {
+    const originUrl = new URL(origin);
+    return originUrl.host === req.get('host');
+  } catch {
+    return false;
+  }
+}
 
-      callback(new Error(`CORS origin not allowed: ${origin}`));
-    },
-    credentials: true,
+app.use(
+  cors((req, callback) => {
+    callback(null, {
+      origin(origin, originCallback) {
+        if (!origin || configuredOrigins.includes(origin) || isSameOriginRequest(origin, req)) {
+          originCallback(null, true);
+          return;
+        }
+
+        originCallback(new Error(`CORS origin not allowed: ${origin}`));
+      },
+      credentials: true,
+    });
   })
 );
 
@@ -59,6 +72,30 @@ app.use('/api/admin/cars', adminCarsRoutes);
 app.use('/api/site', siteContentRoutes);
 app.use('/api/admin/site', adminSiteContentRoutes);
 app.use('/api/admin/account', adminAccountRoutes);
+
+const frontendDistPath = path.resolve(
+  process.env.FRONTEND_DIST_DIR || path.join(__dirname, '../../honda-advisor-angular/dist/honda-advisor-angular/browser')
+);
+const frontendIndexPath = path.join(frontendDistPath, 'index.html');
+const hasFrontendBuild = fs.existsSync(frontendIndexPath);
+
+if (hasFrontendBuild) {
+  app.use(
+    express.static(frontendDistPath, {
+      index: false,
+      maxAge: process.env.NODE_ENV === 'production' ? '1y' : 0,
+    })
+  );
+
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      next();
+      return;
+    }
+
+    res.sendFile(frontendIndexPath);
+  });
+}
 
 app.use((req, res) => {
   res.status(404).json({

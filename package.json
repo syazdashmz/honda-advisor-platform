@@ -1,0 +1,11 @@
+{
+  "name": "honda-advisor-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Railway single-service deployment for the Honda Advisor Platform",
+  "scripts": {
+    "build": "npm --prefix honda-advisor-api ci && npm --prefix honda-advisor-angular ci && npm --prefix honda-advisor-angular run build",
+    "start": "node honda-advisor-api/src/server.js"
+  },
+  "packageManager": "npm@11.13.0"
+}
