@@ -17,8 +17,9 @@ Create a service from the GitHub repo and use:
 - Repository: `syazdashmz/honda-advisor-platform`
 - Branch: `main`
 - Root directory: `honda-advisor-angular`
-- Build command: `npm install && npm run build`
-- Start command: `npm start`
+- Config file path, if Railway asks for one: `/honda-advisor-angular/railway.json`
+- Build command: handled by `honda-advisor-angular/railway.json` (`npm run build`)
+- Start command: handled by `honda-advisor-angular/railway.json` (`npm start`)
 
 Set this frontend environment variable after the API service has a public URL:
 
@@ -35,8 +36,9 @@ Create another service from the same GitHub repo and use:
 - Repository: `syazdashmz/honda-advisor-platform`
 - Branch: `main`
 - Root directory: `honda-advisor-api`
-- Build command: `npm install`
-- Start command: `npm start`
+- Config file path, if Railway asks for one: `/honda-advisor-api/railway.json`
+- Build command: auto-detected by Railway Railpack
+- Start command: handled by `honda-advisor-api/railway.json` (`npm start`)
 
 Set API environment variables:
 
@@ -44,6 +46,7 @@ Set API environment variables:
 NODE_ENV=production
 JWT_SECRET=generate-a-long-random-secret
 JWT_EXPIRES_IN=7d
+DB_NAME=honda_advisor_db
 CLIENT_URLS=https://your-frontend-service.up.railway.app
 INQUIRY_TO_EMAIL=syazdashmz@gmail.com
 SMTP_HOST=smtp.gmail.com
@@ -62,6 +65,18 @@ MYSQLUSER
 MYSQLPASSWORD
 MYSQLDATABASE
 MYSQLPORT
+```
+
+Because the imported schema is named `honda_advisor_db`, keep `DB_NAME=honda_advisor_db` on the API service unless you imported the tables into Railway's default `railway` database.
+
+If they are not already visible in the API service Variables tab, add them as reference variables from the `MySQL` service:
+
+```text
+MYSQLHOST=${{MySQL.MYSQLHOST}}
+MYSQLUSER=${{MySQL.MYSQLUSER}}
+MYSQLPASSWORD=${{MySQL.MYSQLPASSWORD}}
+MYSQLDATABASE=${{MySQL.MYSQLDATABASE}}
+MYSQLPORT=${{MySQL.MYSQLPORT}}
 ```
 
 If the MySQL variables are not auto-injected, manually map them to:
