@@ -1,24 +1,97 @@
 # Deployment Plan
 
-## Frontend
+## Recommended Railway-Only Setup
 
-- Cloudflare Pages Git integration:
-  - Repository: `syazdashmz/honda-advisor-platform`
-  - Production branch: `main`
-  - Root directory: `honda-advisor-angular`
-  - Build command: `npm run build`
-  - Build output directory: `dist/honda-advisor-angular/browser`
-- The Angular app includes `public/_redirects` so direct visits to routes such as `/compare`, `/inquiry`, and `/appointment` resolve to `index.html`.
-- The Angular app includes `public/_headers` for basic security headers and static asset caching.
-- The production frontend calls `/api` on non-localhost domains. Cloudflare Pages Function `functions/api/[[path]].js` proxies those requests to the API host configured by `API_ORIGIN`.
+Use one Railway project with three services:
 
-## API
+- `honda-advisor-frontend` - Angular frontend served by `honda-advisor-angular/server.js`.
+- `honda-advisor-api` - Express API from `honda-advisor-api`.
+- `MySQL` - Railway MySQL database plugin.
 
-- The Express API is a Node server and needs a Node-compatible host, serverless Node target, or a Cloudflare Workers adaptation before full live functionality can work.
-- If using Cloudflare Pages for the frontend, set `API_ORIGIN` in Pages environment variables to the deployed API origin, for example `https://your-api-host.example.com`.
-- Required environment variables are listed in `honda-advisor-api/.env.example`.
-- Inquiry email notifications are sent to `INQUIRY_TO_EMAIL`, currently set to `syazdashmz@gmail.com` for showcase use.
-- Configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, and `SMTP_FROM` before expecting live email delivery.
+This keeps the whole app inside Railway and avoids managing Cloudflare, Render, and Aiven separately.
+
+## Railway Frontend Service
+
+Create a service from the GitHub repo and use:
+
+- Repository: `syazdashmz/honda-advisor-platform`
+- Branch: `main`
+- Root directory: `honda-advisor-angular`
+- Build command: `npm install && npm run build`
+- Start command: `npm start`
+
+Set this frontend environment variable after the API service has a public URL:
+
+```text
+API_ORIGIN=https://your-api-service.up.railway.app
+```
+
+The frontend server proxies `/api/*` to `API_ORIGIN`, so the Angular app can keep calling `/api` in production.
+
+## Railway API Service
+
+Create another service from the same GitHub repo and use:
+
+- Repository: `syazdashmz/honda-advisor-platform`
+- Branch: `main`
+- Root directory: `honda-advisor-api`
+- Build command: `npm install`
+- Start command: `npm start`
+
+Set API environment variables:
+
+```text
+NODE_ENV=production
+JWT_SECRET=generate-a-long-random-secret
+JWT_EXPIRES_IN=7d
+CLIENT_URLS=https://your-frontend-service.up.railway.app
+INQUIRY_TO_EMAIL=syazdashmz@gmail.com
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-gmail-app-password
+SMTP_FROM=Fauziah Auto Advisor <your-email@gmail.com>
+```
+
+The API automatically supports Railway MySQL variables:
+
+```text
+MYSQLHOST
+MYSQLUSER
+MYSQLPASSWORD
+MYSQLDATABASE
+MYSQLPORT
+```
+
+If the MySQL variables are not auto-injected, manually map them to:
+
+```text
+DB_HOST
+DB_USER
+DB_PASSWORD
+DB_NAME
+DB_PORT
+```
+
+## Railway MySQL
+
+Create a Railway MySQL database service in the same project. Then import SQL in this order:
+
+1. `database/schema.sql`
+2. `database/seed.sql`
+3. `database/migrations/2026-06-27-publish-polish.sql`
+
+Use Railway's MySQL connection tab or a local MySQL client connected to the Railway public TCP proxy.
+
+## Cloudflare Pages Alternative
+
+Cloudflare Pages is still a strong free frontend option. If you return to Cloudflare later:
+
+- Root directory: `honda-advisor-angular`
+- Build command: `npm run build`
+- Build output directory: `dist/honda-advisor-angular/browser`
+- Environment variable: `API_ORIGIN=https://your-api-service.up.railway.app`
 
 ## Final Checks
 
